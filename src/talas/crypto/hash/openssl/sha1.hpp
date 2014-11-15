@@ -13,36 +13,36 @@
 /// or otherwise) arising in any way out of the use of this software,
 /// even if advised of the possibility of such damage.
 ///
-///   File: sha256.hpp
+///   File: sha1.hpp
 ///
 /// Author: $author$
-///   Date: 11/11/2014
+///   Date: 11/14/2014
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_CRYPTO_HASH_OPENSSL_SHA256_HPP
-#define _TALAS_CRYPTO_HASH_OPENSSL_SHA256_HPP
+#ifndef _TALAS_CRYPTO_HASH_OPENSSL_SHA1_HPP
+#define _TALAS_CRYPTO_HASH_OPENSSL_SHA1_HPP
 
-#include "talas/crypto/hash/sha256.hpp"
+#include "talas/crypto/hash/sha1.hpp"
 
 namespace talas {
 namespace crypto {
 namespace hash {
 namespace openssl {
 
-typedef hash::sha256_implements sha256_implements;
-typedef hash::sha256 sha256_extends;
+typedef hash::sha1_implements sha1_implements;
+typedef hash::sha1 sha1_extends;
 ///////////////////////////////////////////////////////////////////////
-///  Class: sha256
+///  Class: sha1
 ///////////////////////////////////////////////////////////////////////
-class _EXPORT_CLASS sha256: virtual public sha256_implements, public sha256_extends {
+class _EXPORT_CLASS sha1: virtual public sha1_implements, public sha1_extends {
 public:
-    typedef sha256_implements Implements;
-    typedef sha256_extends Extends;
+    typedef sha1_implements Implements;
+    typedef sha1_extends Extends;
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    sha256() {
+    sha1() {
     }
-    virtual ~sha256() {
+    virtual ~sha1() {
     }
 
 protected:
@@ -55,8 +55,6 @@ protected:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-protected:
-    static uint32_t m_K[KONSTSIZE];
 };
 
 } // namespace openssl 
@@ -64,4 +62,4 @@ protected:
 } // namespace crypto 
 } // namespace talas 
 
-#endif // _TALAS_CRYPTO_HASH_OPENSSL_SHA256_HPP 
+#endif // _TALAS_CRYPTO_HASH_OPENSSL_SHA1_HPP 
