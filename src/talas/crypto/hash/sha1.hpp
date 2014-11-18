@@ -23,6 +23,8 @@
 
 #include "talas/crypto/hash/base.hpp"
 
+#define TALAS_CRYPTO_HASH_SHA1_NAME "sha1"
+
 namespace talas {
 namespace crypto {
 namespace hash {
@@ -91,6 +93,12 @@ public:
         memset(m_mac, 0, sizeof(m_mac));
         memset(m_hash, 0, sizeof(m_hash));
         return *this;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual const char* name() const {
+        return TALAS_CRYPTO_HASH_SHA1_NAME;
     }
 
     ///////////////////////////////////////////////////////////////////////

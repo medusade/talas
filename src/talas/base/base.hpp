@@ -24,6 +24,8 @@
 #include "xos/base/base.hpp"
 #include "xos/base/string.hpp"
 #include "xos/base/types.hpp"
+#include "xos/io/read/file.hpp"
+#include "xos/io/write/file.hpp"
 #include "xos/io/logger.hpp"
 
 #define TALAS_LOG_ANY XOS_LOG_ANY
@@ -91,6 +93,15 @@ typedef xos::base::chars_t chars_t;
 typedef xos::base::tchars_t tchars_t;
 typedef xos::base::wchars_t wchars_t;
 typedef xos::base::bytes_t bytes_t;
+
+namespace io {
+namespace read {
+typedef xos::io::read::file file;
+} // namespace read
+namespace write {
+typedef xos::io::write::file file;
+} // namespace write
+} // namespace io
 
 } // namespace talas
 

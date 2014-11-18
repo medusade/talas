@@ -56,11 +56,11 @@ public:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    inline UINT64 MSBToU64(const BYTE* bytes) {
+    inline UINT64 MSBToU64(const BYTE* bytes) const {
         UINT64 value = (((((((((((((((UINT64)bytes[0])<<8) | bytes[1])<<8) | bytes[2])<<8) | bytes[3])<<8) | bytes[4])<<8) | bytes[5])<<8) | bytes[6])<<8) | bytes[7];
         return value;
     }
-    inline BYTE* U64ToMSB(BYTE* bytes, UINT64 value) {
+    inline BYTE* U64ToMSB(BYTE* bytes, UINT64 value) const {
         *(bytes+=7)=(BYTE)(value & 0xFF);
         *(--bytes)=(BYTE)((value>>=8) & 0xFF);
         *(--bytes)=(BYTE)((value>>=8) & 0xFF);
@@ -72,11 +72,11 @@ public:
         return bytes;
     }
     ///////////////////////////////////////////////////////////////////////
-    inline UINT64 LSBToU64(const BYTE* bytes) {
+    inline UINT64 LSBToU64(const BYTE* bytes) const {
         UINT64 value = (((((((((((((((UINT64)bytes[7])<<8) | bytes[6])<<8) | bytes[5])<<8) | bytes[4])<<8) | bytes[3])<<8) | bytes[2])<<8) | bytes[1])<<8) | bytes[0];
         return value;
     }
-    inline BYTE* U64ToLSB(BYTE* bytes, UINT64 value) {
+    inline BYTE* U64ToLSB(BYTE* bytes, UINT64 value) const {
         *(bytes)=(BYTE)(value & 0xFF);
         *(++bytes)=(BYTE)((value>>=8) & 0xFF);
         *(++bytes)=(BYTE)((value>>=8) & 0xFF);
@@ -90,11 +90,11 @@ public:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    inline UINT32 MSBToU32(const BYTE* bytes) {
+    inline UINT32 MSBToU32(const BYTE* bytes) const {
         UINT32 value = (((((((UINT32)bytes[0])<<8) | bytes[1])<<8) | bytes[2])<<8) | bytes[3];
         return value;
     }
-    inline BYTE* U32ToMSB(BYTE* bytes, UINT32 value) {
+    inline BYTE* U32ToMSB(BYTE* bytes, UINT32 value) const {
         *(bytes+=3)=(BYTE)(value & 0xFF);
         *(--bytes)=(BYTE)((value>>=8) & 0xFF);
         *(--bytes)=(BYTE)((value>>=8) & 0xFF);
@@ -102,11 +102,11 @@ public:
         return bytes;
     }
     ///////////////////////////////////////////////////////////////////////
-    inline UINT32 LSBToU32(const BYTE* bytes) {
+    inline UINT32 LSBToU32(const BYTE* bytes) const {
         UINT32 value = (((((((UINT32)bytes[3])<<8) | bytes[2])<<8) | bytes[1])<<8) | bytes[0];
         return value;
     }
-    inline BYTE* U32ToLSB(BYTE* bytes, UINT32 value) {
+    inline BYTE* U32ToLSB(BYTE* bytes, UINT32 value) const {
         *(bytes)=(BYTE)(value & 0xFF);
         *(++bytes)=(BYTE)((value>>=8) & 0xFF);
         *(++bytes)=(BYTE)((value>>=8) & 0xFF);
@@ -116,7 +116,7 @@ public:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    inline BYTE *Copy8(BYTE *to, const BYTE *from) {
+    inline BYTE *Copy8(BYTE *to, const BYTE *from) const {
         *(to++) = *(from++);
         *(to++) = *(from++);
         *(to++) = *(from++);
@@ -131,7 +131,7 @@ public:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
     inline BYTE* CopyRepeat
-    (BYTE* to, int tosize, const BYTE* from, int fromsize) {
+    (BYTE* to, int tosize, const BYTE* from, int fromsize) const {
         for (int i=0; i<tosize; i+=fromsize)
         for (int j=0,k=i; (k<tosize) && (j<fromsize); k++,j++)
             to[k] = from[j];
