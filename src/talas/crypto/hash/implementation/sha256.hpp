@@ -13,28 +13,24 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: implementation.hpp
+///   File: sha256.hpp
 ///
 /// Author: $author$
-///   Date: 11/18/2014
+///   Date: 11/19/2014
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_CRYPTO_HASH_IMPLEMENTATION_HPP
-#define _TALAS_CRYPTO_HASH_IMPLEMENTATION_HPP
+#ifndef _TALAS_CRYPTO_HASH_IMPLEMENTATION_SHA256_HPP
+#define _TALAS_CRYPTO_HASH_IMPLEMENTATION_SHA256_HPP
 
-#include "talas/crypto/hash/base.hpp"
-#include "talas/crypto/hash/openssl/md5.hpp"
-#include "talas/crypto/hash/openssl/sha1.hpp"
-#include "talas/crypto/hash/openssl/sha256.hpp"
+#include "talas/crypto/hash/implementation/implementation.hpp"
 
 namespace talas {
 namespace crypto {
 namespace hash {
-namespace openssl { }
-
-namespace implementation = openssl;
 
 } // namespace hash 
 } // namespace crypto 
 } // namespace talas 
 
-#endif // _TALAS_CRYPTO_HASH_IMPLEMENTATION_HPP 
+#endif // _TALAS_CRYPTO_HASH_IMPLEMENTATION_SHA256_HPP 
+        
+
