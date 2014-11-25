@@ -1,0 +1,225 @@
+########################################################################
+# This software is provided by the author and contributors ``as is'' 
+# and any express or implied warranties, including, but not limited to, 
+# the implied warranties of merchantability and fitness for a particular 
+# purpose are disclaimed. In no event shall the author or contributors 
+# be liable for any direct, indirect, incidental, special, exemplary, 
+# or consequential damages (including, but not limited to, procurement 
+# of substitute goods or services; loss of use, data, or profits; or 
+# business interruption) however caused and on any theory of liability, 
+# whether in contract, strict liability, or tort (including negligence 
+# or otherwise) arising in any way out of the use of this software, 
+# even if advised of the possibility of such damage.
+#
+#   File: Makerules
+#
+# Author: $author$
+#   Date: 3/16/2012
+#
+# MacOSX Gcc Makefile rules
+########################################################################
+
+LIB_C_OBJS=$(LIB_C_SOURCES:.c=.o)
+LIB_M_OBJS=$(LIB_M_SOURCES:.m=.o)
+LIB_CC_OBJS=$(LIB_CC_SOURCES:.cc=.o)
+LIB_MM_OBJS=$(LIB_MM_SOURCES:.mm=.o)
+LIB_CPP_OBJS=$(LIB_CPP_SOURCES:.cpp=.o)
+LIB_CXX_OBJS=$(LIB_CXX_SOURCES:.cxx=.o)
+LIB_OBJS = $(LIB_C_OBJS) $(LIB_M_OBJS) $(LIB_CC_OBJS) $(LIB_MM_OBJS) $(LIB_CPP_OBJS) $(LIB_CXX_OBJS)
+
+SLIB_C_OBJS=$(SLIB_C_SOURCES:.c=.o)
+SLIB_M_OBJS=$(SLIB_M_SOURCES:.m=.o)
+SLIB_CC_OBJS=$(SLIB_CC_SOURCES:.cc=.o)
+SLIB_MM_OBJS=$(SLIB_MM_SOURCES:.mm=.o)
+SLIB_CPP_OBJS=$(SLIB_CPP_SOURCES:.cpp=.o)
+SLIB_CXX_OBJS=$(SLIB_CXX_SOURCES:.cxx=.o)
+SLIB_OBJS = $(SLIB_C_OBJS) $(SLIB_M_OBJS) $(SLIB_CC_OBJS) $(SLIB_MM_OBJS) $(SLIB_CPP_OBJS)  $(SLIB_CXX_OBJS)
+
+EXE_C_OBJS=$(EXE_C_SOURCES:.c=.o)
+EXE_M_OBJS=$(EXE_M_SOURCES:.m=.o)
+EXE_CC_OBJS=$(EXE_CC_SOURCES:.cc=.o)
+EXE_MM_OBJS=$(EXE_MM_SOURCES:.mm=.o)
+EXE_CPP_OBJS=$(EXE_CPP_SOURCES:.cpp=.o)
+EXE_CXX_OBJS=$(EXE_CXX_SOURCES:.cxx=.o)
+EXE_OBJS = $(EXE_C_OBJS) $(EXE_M_OBJS) $(EXE_CC_OBJS) $(EXE_MM_OBJS) $(EXE_CPP_OBJS) $(EXE_CXX_OBJS)
+
+ALL_OBJS = $(OBJS) $(LIB_OBJS) $(SLIB_OBJS) $(EXE_OBJS)
+ALL_TARGETS = $(EXETARGET) $(LIBTARGET) $(SLIBTARGET) $(USRTARGET)
+
+all: ${LIBTARGET} ${SLIBTARGET} ${KMODTARGET} ${EXETARGET}
+
+again: clean all
+
+this-again: clean-this all
+
+clean-this:
+	$(RM) $(ALL_OBJS)
+
+clean:
+	@for dir in $(SLIB_DIRS) $(SLIBDEP_DIRS); do \
+		(cd $$dir && make clean) || (echo "Make $$dir clean Failed") ; \
+	done
+	@for dir in $(EXE_DIRS) $(EXEDEP_DIRS); do \
+		(cd $$dir && make clean) || (echo "Make $$dir clean Failed") ; \
+	done
+	$(RM) $(ALL_OBJS)
+
+veryclean:
+	@for dir in $(SLIB_DIRS) $(SLIBDEP_DIRS); do \
+		(cd $$dir && make veryclean) || (echo "Make $$dir veryclean Failed") ; \
+	done
+	@for dir in $(EXE_DIRS) $(EXEDEP_DIRS); do \
+		(cd $$dir && make veryclean) || (echo "Make $$dir veryclean Failed") ; \
+	done
+	$(RM) $(ALL_OBJS) $(ALL_TARGETS)
+
+build-type:
+	@echo "BUILD_TYPE =" $(BUILD_TYPE)
+     
+cxxflags:
+	@echo "CXXFLAGS =" $(CXXFLAGS)
+     
+cflags:
+	@echo "CFLAGS =" $(CFLAGS)
+     
+ldflags:
+	@echo "LDFLAGS =" $(LDFLAGS)
+     
+libdir:
+	@echo "LIBDIR =" $(LIBDIR)
+     
+libdirs:
+	@echo "LIBDIRS =" $(LIBDIRS)
+     
+usrlibdirs:
+	@echo "USRLIBDIRS =" $(USRLIBDIRS)
+     
+arflags:
+	@echo "ARFLAGS =" $(ARFLAGS)
+     
+ar:
+	@echo "AR =" $(AR) $(ARFLAGS) ${LIBTARGET} $(LIB_OBJS)
+     
+cxxld:
+	@echo "CXXLD =" $(CXXLD) ${INCLUDES} $(LDFLAGS) -o ${EXETARGET} $(EXE_OBJS) $(EXE_USROBJS) $(LIBS)
+	
+${BINDIR}:
+	@echo "Makeing Binary Directory" $@ ...
+	@$(MKDIR) $(BINDIR)
+
+${LIBDIR}:
+	@echo "Makeing Library Directory" $@ ...
+	@$(MKDIR) $(LIBDIR)
+
+${LIBTARGET}: ${LIBDEP}  ${LIB_OBJS} ${LIBDIR}
+	@echo "Building Static Lib" $@ ...
+	@$(AR) $(ARFLAGS) $@ $(LIB_OBJS)
+	@$(MV) $@ $(LIBDIR)
+
+${SLIBTARGET}: ${SLIBDEP} ${SLIB_OBJS} ${LIBDIR}
+	@echo "Building Shared Lib" $@ ...
+	@for dir in $(SLIB_DIRS); do \
+		echo "Make $$dir" ; \
+		(cd $$dir && make) || (echo "Make $$dir Failed") ; \
+	done
+	@$(CXXDSO) ${INCLUDES} $(DSOFLAGS) -o $@ $(LDFLAGS) $(SLIB_OBJS) $(SLIB_USROBJS) $(LIBSSO)
+	@$(MV) $@ $(LIBDIR)
+
+${EXETARGET}: ${EXEDEP} ${EXE_OBJS} ${BINDIR}
+	@echo "Building Executable" $@ ...
+	@for dir in $(EXE_DIRS); do \
+		echo "Make $$dir" ; \
+		(cd $$dir && make) || (echo "Make $$dir Failed") ; \
+	done
+	@$(CXXLD) ${INCLUDES} $(LDFLAGS) -o $@ $(EXE_OBJS) $(EXE_USROBJS) $(LIBS)
+	@$(STRIP) $@ 
+	@$(MV) $@ $(BINDIR)
+
+#
+# C
+#
+	 
+$(LIB_C_SOURCES:.c=.o): %.o: %.c
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CC) -c $(CFLAGS) -o $@ $<
+
+$(SLIB_C_SOURCES:.c=.o): %.o: %.c
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CC) -c $(CFLAGS) -o $@ $<
+
+$(EXE_C_SOURCES:.c=.o): %.o: %.c
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CC) -c $(CFLAGS) -o $@ $<
+
+#
+# C++
+#
+
+$(LIB_CC_SOURCES:.cc=.o): %.o: %.cc
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CXX) -c $(CXXFLAGS) -o $@ $<
+	 
+$(SLIB_CC_SOURCES:.cc=.o): %.o: %.cc
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CXX) -c $(CXXFLAGS) -o $@ $<
+	 
+$(EXE_CC_SOURCES:.cc=.o): %.o: %.cc
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CXX) -c $(CXXFLAGS) -o $@ $<
+	 
+$(LIB_CPP_SOURCES:.cpp=.o): %.o: %.cpp
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CXX) -c $(CXXFLAGS) -o $@ $<
+	 
+$(SLIB_CPP_SOURCES:.cpp=.o): %.o: %.cpp
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CXX) -c $(CXXFLAGS) -o $@ $<
+	 
+$(EXE_CPP_SOURCES:.cpp=.o): %.o: %.cpp
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CXX) -c $(CXXFLAGS) -o $@ $<
+	 
+$(LIB_CXX_SOURCES:.cxx=.o): %.o: %.cxx
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CXX) -c $(CXXFLAGS) -o $@ $<
+	 
+$(SLIB_CXX_SOURCES:.cxx=.o): %.o: %.cxx
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CXX) -c $(CXXFLAGS) -o $@ $<
+	 
+$(EXE_CXX_SOURCES:.cxx=.o): %.o: %.cxx
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+#
+# Objective-C
+#	 
+
+$(LIB_M_SOURCES:.m=.o): %.o: %.m
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CC) -c $(CFLAGS) -o $@ $<
+
+$(SLIB_M_SOURCES:.m=.o): %.o: %.m
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CC) -c $(CFLAGS) -o $@ $<
+
+$(EXE_M_SOURCES:.m=.o): %.o: %.m
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CC) -c $(CFLAGS) -o $@ $<
+
+#
+# Objective-C++
+#	 
+
+$(LIB_MM_SOURCES:.mm=.o): %.o: %.mm
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+$(SLIB_MM_SOURCES:.mm=.o): %.o: %.mm
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+$(EXE_MM_SOURCES:.mm=.o): %.o: %.mm
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CXX) -c $(CXXFLAGS) -o $@ $<
+
