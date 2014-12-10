@@ -13,53 +13,27 @@
 # or otherwise) arising in any way out of the use of this software, 
 # even if advised of the possibility of such damage.
 #
-#   File: Makefile
+#   File: talas.pri
 #
 # Author: $author$
-#   Date: 11/22/2014
-#
-# Generic Gcc Makefile for talas libtalas Library
+#   Date: 12/7/2014
 ########################################################################
 
-#
-# user c++ flags
-#
-libtalas_USRCXXFLAGS += \
-${talas_USRCXXFLAGS} \
+QMAKE_CXXFLAGS += -std=c++11
 
-#
-# user defines
-#
-libtalas_USRDEFINES = \
-${talas_USRDEFINES} \
+########################################################################
+# xos
+XOS_BLD = ../$${XOS_PKG}/build/linux/QtCreator/Debug
+XOS_LIB = $${XOS_BLD}/lib
 
-#
-# user includes
-#
-libtalas_USRINCLUDES = \
-${talas_USRINCLUDES} \
-
-#
-# user libdirs
-#
-libtalas_USRLIBDIRS = \
-${talas_USRLIBDIRS} \
-
-#
-# C++ .cpp sources
-#
-libtalas_LIB_CPP_SOURCES = \
-${TALAS_SRC}/talas/crypto/hash/openssl/sha512.cpp \
-${TALAS_SRC}/talas/crypto/hash/openssl/sha256.cpp \
-${TALAS_SRC}/talas/crypto/hash/openssl/sha1.cpp \
-${TALAS_SRC}/talas/crypto/hash/openssl/md5.cpp \
-${TALAS_SRC}/talas/crypto/hash/mac.cpp \
-${TALAS_SRC}/talas/crypto/hash/base.cpp \
-
-#
-# libs
-#
-libtalas_LIBS = \
-${talas_LIBS} \
+########################################################################
+# talas
+talas_LIBS += \
+-L$${TALAS_LIB}/libtalas \
 -ltalas \
+-L$${XOS_LIB}/libxosnadir \
+-lxosnadir \
+-lpthread \
+-ldl \
+-lrt \
 

@@ -16,49 +16,48 @@
 #   File: Makefile
 #
 # Author: $author$
-#   Date: 11/22/2014
+#   Date: 12/9/2014
 #
-# MacOSX Gcc Makefile for talas talas Executable
+# Linux Gcc Makefile for talas libtalas Static Library
 ########################################################################
 PKG = ../../../../../..
 
 MAK = projects/Makefile/Gcc
-PRJ = projects/macosx/Makefile/Gcc
+PRJ = projects/linux/Makefile/Gcc
 SRC = src
 
 include $(PKG)/$(PRJ)/Makedefines
 include $(PKG)/$(MAK)/Makefile
 include $(PKG)/$(MAK)/lib/libtalas/Makefile
-include $(PKG)/$(MAK)/app/talas/Makefile
 
 #
 # target
 #
-EXETARGET = talas
+LIBTARGET = libtalas.$(LIBEXT)
 
 #
 # user defines
 #
 USRDEFINES = \
-${libtalas_USRDEFINES} \
+${libtalas_USRDEFINES}
 
 #
 # user includes
 #
 USRINCLUDES = \
-${libtalas_USRINCLUDES} \
+${libtalas_USRINCLUDES}
 
 #
 # user libdirs
 #
 USRLIBDIRS = \
-${libtalas_USRLIBDIRS} \
+${libtalas_USRLIBDIRS}
 
 #
 # user c++ flags
 #
 USRCXXFLAGS = \
-${libtalas_USRCXXFLAGS} \
+${libtalas_USRCXXFLAGS}
 
 #
 # user c flags
@@ -71,65 +70,56 @@ USRCFLAGS = \
 USRLDFLAGS = \
 
 #
-# Executable C sources
+# Static Library C sources
 #
-EXE_C_SOURCES = \
+LIB_C_SOURCES = \
 
 #
-# Executable C++ .cc sources
+# Static Library C++ .cc sources
 #
-EXE_CC_SOURCES = \
+LIB_CC_SOURCES = \
 
 #
-# Executable C++ .cxx sources
+# Static Library C++ .cxx sources
 #
-EXE_CXX_SOURCES = \
+LIB_CXX_SOURCES = \
 
 #
-# Executable C++ .cpp sources
+# Static Library C++ .cpp sources
 #
-EXE_CPP_SOURCES = \
-${talas_EXE_CPP_SOURCES} \
+LIB_CPP_SOURCES = \
+${libtalas_LIB_CPP_SOURCES}
 
 #
-# Executable Objective C .m sources
+# Static Library Objective C .m sources
 #
-EXE_M_SOURCES = \
+LIB_M_SOURCES = \
 
 #
-# Executable Objective C++ .mm sources
+# Static Library Objective C++ .mm sources
 #
-EXE_MM_SOURCES = \
+LIB_MM_SOURCES = \
 
 #
-# Executable libs
+# Static Library depends
 #
-#LIBS = \
-#-lsomelib
-#
-LIBS = \
-${libtalas_LIBS} \
-
-#
-# Executable depends
-#
-#EXEDEP = \
+#LIBDEP = \
 #$(PKG)/$(BLD)/libsomelib \
 #
-EXEDEP = \
+LIBDEP = \
 
 #
-# Executable depend dirs
+# Static Library depend dirs
 #
-#EXEDEP_DIRS = \
+#LIBDEP_DIRS = \
 #../libsomelib
 #
-EXEDEP_DIRS = \
+LIBDEP_DIRS = \
 
 include $(PKG)/$(PRJ)/Makerules
 
 #
-# Executable depend rules
+# Static Library depend rules
 #
 #$(PKG)/$(BLD)/libsomelib.a:
 #	@(echo Building libsomelib.a ...;\

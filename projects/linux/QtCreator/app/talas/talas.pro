@@ -13,53 +13,29 @@
 # or otherwise) arising in any way out of the use of this software, 
 # even if advised of the possibility of such damage.
 #
-#   File: Makefile
+#   File: talas.pro
 #
 # Author: $author$
-#   Date: 11/22/2014
-#
-# Generic Gcc Makefile for talas libtalas Library
+#   Date: 12/7/2014
 ########################################################################
+include(../../../../QtCreator/talas.pri)
+include(../../../../QtCreator/app/talas/talas.pri)
+include(../../talas.pri)
 
-#
-# user c++ flags
-#
-libtalas_USRCXXFLAGS += \
-${talas_USRCXXFLAGS} \
+TARGET = talas
 
-#
-# user defines
-#
-libtalas_USRDEFINES = \
-${talas_USRDEFINES} \
+INCLUDEPATH += \
+$${talas_INCLUDEPATH} \
 
-#
-# user includes
-#
-libtalas_USRINCLUDES = \
-${talas_USRINCLUDES} \
+DEFINES += \
+$${talas_DEFINES} \
 
-#
-# user libdirs
-#
-libtalas_USRLIBDIRS = \
-${talas_USRLIBDIRS} \
+HEADERS += \
+$${talas_HEADERS} \
 
-#
-# C++ .cpp sources
-#
-libtalas_LIB_CPP_SOURCES = \
-${TALAS_SRC}/talas/crypto/hash/openssl/sha512.cpp \
-${TALAS_SRC}/talas/crypto/hash/openssl/sha256.cpp \
-${TALAS_SRC}/talas/crypto/hash/openssl/sha1.cpp \
-${TALAS_SRC}/talas/crypto/hash/openssl/md5.cpp \
-${TALAS_SRC}/talas/crypto/hash/mac.cpp \
-${TALAS_SRC}/talas/crypto/hash/base.cpp \
+SOURCES += \
+$${talas_SOURCES} \
 
-#
-# libs
-#
-libtalas_LIBS = \
-${talas_LIBS} \
--ltalas \
+LIBS += \
+$${talas_LIBS} \
 

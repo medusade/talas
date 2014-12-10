@@ -57,6 +57,7 @@ ${libtalas_USRLIBDIRS}
 # user c++ flags
 #
 USRCXXFLAGS = \
+${libtalas_USRCXXFLAGS}
 
 #
 # user c flags

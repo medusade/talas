@@ -42,6 +42,9 @@ talas_USRINCLUDES += \
 -I${TALAS_SRC} \
 -I${XOS_SRC} \
 
+talas_USRCXXFLAGS += \
+-std=c++11
+
 talas_USRLIBDIRS += \
 -L${XOS_LIB} \
 

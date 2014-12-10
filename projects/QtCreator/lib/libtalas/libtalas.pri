@@ -26,6 +26,8 @@ libtalas_DEFINES += \
 $${talas_DEFINES} \
 
 libtalas_HEADERS += \
+$${TALAS_SRC}/talas/crypto/hash/openssl/sha512.hpp \
+$${TALAS_SRC}/talas/crypto/hash/sha512.hpp \
 $${TALAS_SRC}/talas/crypto/hash/openssl/sha256.hpp \
 $${TALAS_SRC}/talas/crypto/hash/sha256.hpp \
 $${TALAS_SRC}/talas/crypto/hash/openssl/sha1.hpp \
@@ -38,6 +40,7 @@ $${TALAS_SRC}/talas/crypto/base.hpp \
 $${TALAS_SRC}/talas/base/base.hpp \
 
 libtalas_SOURCES += \
+$${TALAS_SRC}/talas/crypto/hash/openssl/sha512.cpp \
 $${TALAS_SRC}/talas/crypto/hash/openssl/sha256.cpp \
 $${TALAS_SRC}/talas/crypto/hash/openssl/sha1.cpp \
 $${TALAS_SRC}/talas/crypto/hash/openssl/md5.cpp \

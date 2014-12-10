@@ -16,9 +16,9 @@
 #   File: Makedefines
 #
 # Author: $author$
-#   Date: 11/5/2014
+#   Date: 12/8/2014
 #
-# MacOSX Gcc Makedefines
+# Linux Gcc Makedefines
 ########################################################################
 ifndef BUILD_TYPE
 BUILD_TYPE = Debug
@@ -31,7 +31,7 @@ DBGFLAGS = -D_RELEASE
 endif
 
 ifndef BLD
-BLD = build/macosx
+BLD = build/linux
 endif
 
 ifndef INS
@@ -61,6 +61,7 @@ LIBDIRS	= \
 STDLIBS	= \
 -lpthread \
 -ldl \
+-lrt \
 
 DEFINES = \
 $(DBGFLAGS)
@@ -91,7 +92,7 @@ RANLIB = ranlib
 STRIP = strip
 LIBTOOL =
 LIBEXT = a
-SLIBEXT = dylib
+SLIBEXT = so
 
 #
 # Filesystem
