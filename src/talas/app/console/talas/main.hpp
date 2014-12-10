@@ -64,8 +64,10 @@ protected:
     typedef crypto::hash::implementation::md5 md5_t;
     typedef crypto::hash::implementation::sha1 sha1_t;
     typedef crypto::hash::implementation::sha256 sha256_t;
+    typedef crypto::hash::implementation::sha512 sha512_t;
     enum hash_algorithm_t {
         hash_algorithm_none,
+        hash_algorithm_sha512,
         hash_algorithm_sha256,
         hash_algorithm_sha1,
         hash_algorithm_md5
@@ -98,6 +100,11 @@ protected:
     ///////////////////////////////////////////////////////////////////////
     virtual int run_sha256(int argc, char_t** argv, char_t** env) {
         int err = run_hash(sha256_, argc, argv, env);
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_sha512(int argc, char_t** argv, char_t** env) {
+        int err = run_hash(sha512_, argc, argv, env);
         return err;
     }
     ///////////////////////////////////////////////////////////////////////
@@ -203,6 +210,9 @@ protected:
         case hash_algorithm_sha256:
             run_ = &Derives::run_sha256;
             break;
+        case hash_algorithm_sha512:
+            run_ = &Derives::run_sha512;
+            break;
         default:
             run_ = 0;
             break;
@@ -222,6 +232,7 @@ protected:
     md5_t md5_;
     sha1_t sha1_;
     sha256_t sha256_;
+    sha512_t sha512_;
     size_t block_size_;
     char block_[TALAS_APP_CONSOLE_TALAS_MAIN_BLOCKSIZE];
 };

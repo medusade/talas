@@ -51,8 +51,13 @@ protected:
                         || !(chars_t::compare(optarg, TALAS_APP_CONSOLE_TALAS_MAIN_HASH_OPTARG_SHA256_S))) {
                         set_hash_algorithm(hash_algorithm_sha256);
                     } else {
-                        err = on_invalid_option_arg
-                        (optval, optarg, optname, optind, argc, argv, env);
+                        if ((!(optarg[1]) && (TALAS_APP_CONSOLE_TALAS_MAIN_HASH_OPTARG_SHA512_C[0] == (optarg[0])))
+                            || !(chars_t::compare(optarg, TALAS_APP_CONSOLE_TALAS_MAIN_HASH_OPTARG_SHA512_S))) {
+                            set_hash_algorithm(hash_algorithm_sha512);
+                        } else {
+                            err = on_invalid_option_arg
+                            (optval, optarg, optname, optind, argc, argv, env);
+                        }
                     }
                 }
             }

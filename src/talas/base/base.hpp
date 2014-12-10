@@ -69,12 +69,16 @@ typedef xos::base::base base;
 /// string
 ///////////////////////////////////////////////////////////////////////
 typedef xos::base::string_implement string_implements;
+#if !defined(CPP_11)
+#error Requires C++11
+#else // !defined(CPP_11)
 template
 <typename TChar = char, typename TEnd = TChar, TEnd VEnd = 0,
  class TExtends = std::basic_string<TChar>, class TImplements = string_implements>
 
 using stringt = typename xos::base::stringt
 <TChar, TEnd, VEnd, TExtends, TImplements>;
+#endif // !defined(CPP_11)
 typedef xos::base::string string_t;
 typedef xos::base::tstring tstring_t;
 typedef xos::base::wstring wstring_t;
@@ -82,6 +86,9 @@ typedef xos::base::wstring wstring_t;
 ///////////////////////////////////////////////////////////////////////
 /// types
 ///////////////////////////////////////////////////////////////////////
+#if !defined(CPP_11)
+#error Requires C++11
+#else // !defined(CPP_11)
 template
 <class TWhat = char, class TEndWhat = TWhat, TEndWhat VEndWhat = 0,
  class TInt = int, class TUInt = unsigned, class TSize = size_t,
@@ -89,6 +96,7 @@ template
 
 using typest = typename xos::base::typest
 <TWhat, TEndWhat, VEndWhat, TInt, TUInt, TSize, TLength, VUndefinedLength>;
+#endif // !defined(CPP_11)
 typedef xos::base::chars_t chars_t;
 typedef xos::base::tchars_t tchars_t;
 typedef xos::base::wchars_t wchars_t;

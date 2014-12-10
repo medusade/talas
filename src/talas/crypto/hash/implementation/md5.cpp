@@ -18,7 +18,7 @@
 /// Author: $author$
 ///   Date: 11/19/2014
 ///////////////////////////////////////////////////////////////////////
-#include "talas/crypto/hash/openssl/md5.hpp"
+#include "talas/crypto/hash/implementation/md5.hpp"
 
 namespace talas {
 namespace crypto {

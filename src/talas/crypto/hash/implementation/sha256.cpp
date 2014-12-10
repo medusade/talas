@@ -18,7 +18,7 @@
 /// Author: $author$
 ///   Date: 11/19/2014
 ///////////////////////////////////////////////////////////////////////
-#include "talas/crypto/hash/openssl/sha256.hpp"
+#include "talas/crypto/hash/implementation/sha256.hpp"
 
 namespace talas {
 namespace crypto {

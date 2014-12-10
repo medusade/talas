@@ -13,17 +13,12 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: implementation.cpp
+///   File: sha512.cpp
 ///
 /// Author: $author$
-///   Date: 11/18/2014
+///   Date: 12/9/2014
 ///////////////////////////////////////////////////////////////////////
-#include "talas/crypto/hash/implementation/implementation.hpp"
-
-#include "talas/crypto/hash/openssl/md5.cpp"
-#include "talas/crypto/hash/openssl/sha1.cpp"
-#include "talas/crypto/hash/openssl/sha256.cpp"
-#include "talas/crypto/hash/openssl/sha512.cpp"
+#include "talas/crypto/hash/implementation/sha512.hpp"
 
 namespace talas {
 namespace crypto {

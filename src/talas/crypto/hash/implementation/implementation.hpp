@@ -25,6 +25,7 @@
 #include "talas/crypto/hash/openssl/md5.hpp"
 #include "talas/crypto/hash/openssl/sha1.hpp"
 #include "talas/crypto/hash/openssl/sha256.hpp"
+#include "talas/crypto/hash/openssl/sha512.hpp"
 
 namespace talas {
 namespace crypto {
