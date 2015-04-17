@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2014 $organization$
+/// Copyright (c) 1988-2015 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,27 +13,13 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: base.hpp
+///   File: types.cpp
 ///
 /// Author: $author$
-///   Date: 11/11/2014
+///   Date: 4/7/2015
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_BASE_BASE_HPP
-#define _TALAS_BASE_BASE_HPP
-
-#include "xos/base/base.hpp"
+#include "talas/base/types.hpp"
 
 namespace talas {
 
-typedef xos::base::implement_base implement_base;
-typedef xos::base::base base;
-
-} // namespace talas
-
-#include "talas/io/logger.hpp"
-#include "talas/io/write/file.hpp"
-#include "talas/io/read/file.hpp"
-#include "talas/base/string.hpp"
-#include "talas/base/types.hpp"
-
-#endif // _TALAS_BASE_BASE_HPP
+} // namespace talas 

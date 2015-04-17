@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2014 $organization$
+/// Copyright (c) 1988-2015 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,27 +13,38 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: base.hpp
+///   File: types.hpp
 ///
 /// Author: $author$
-///   Date: 11/11/2014
+///   Date: 4/7/2015
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_BASE_BASE_HPP
-#define _TALAS_BASE_BASE_HPP
+#ifndef _TALAS_BASE_TYPES_HPP
+#define _TALAS_BASE_TYPES_HPP
 
-#include "xos/base/base.hpp"
+#include "talas/base/base.hpp"
+#include "xos/base/types.hpp"
 
 namespace talas {
 
-typedef xos::base::implement_base implement_base;
-typedef xos::base::base base;
+///////////////////////////////////////////////////////////////////////
+///  Class: typest
+///////////////////////////////////////////////////////////////////////
+#if defined(USE_CPP_11)
+template
+<class TWhat = char, class TEndWhat = TWhat, TEndWhat VEndWhat = 0,
+ class TInt = int, class TUInt = unsigned, class TSize = size_t,
+ class TLength = ssize_t, TLength VUndefinedLength = -1>
+
+using typest = typename xos::base::typest
+<TWhat, TEndWhat, VEndWhat, TInt, TUInt, TSize, TLength, VUndefinedLength>;
+#else // defined(USE_CPP_11)
+#endif // defined(USE_CPP_11)
+
+typedef xos::base::chars_t chars_t;
+typedef xos::base::tchars_t tchars_t;
+typedef xos::base::wchars_t wchars_t;
+typedef xos::base::bytes_t bytes_t;
 
 } // namespace talas
 
-#include "talas/io/logger.hpp"
-#include "talas/io/write/file.hpp"
-#include "talas/io/read/file.hpp"
-#include "talas/base/string.hpp"
-#include "talas/base/types.hpp"
-
-#endif // _TALAS_BASE_BASE_HPP
+#endif // _TALAS_BASE_TYPES_HPP 
