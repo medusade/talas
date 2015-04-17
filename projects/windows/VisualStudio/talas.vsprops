@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<!--========================================================================-->
+<!-- Copyright (c) 1988-2015 $organization$                                 -->
+<!--                                                                        -->
+<!-- This software is provided by the author and contributors ``as is''     -->
+<!-- and any express or implied warranties, including, but not limited to,  -->
+<!-- the implied warranties of merchantability and fitness for a particular -->
+<!-- purpose are disclaimed. In no event shall the author or contributors   -->
+<!-- be liable for any direct, indirect, incidental, special, exemplary,    -->
+<!-- or consequential damages (including, but not limited to, procurement   -->
+<!-- of substitute goods or services; loss of use, data, or profits; or     -->
+<!-- business interruption) however caused and on any theory of liability,  -->
+<!-- whether in contract, strict liability, or tort (including negligence   -->
+<!-- or otherwise) arising in any way out of the use of this software,      -->
+<!-- even if advised of the possibility of such damage.                     -->
+<!--                                                                        -->
+<!--   File: talas.vsprops                                                  -->
+<!--                                                                        -->
+<!-- Author: $author$                                                       -->
+<!--   Date: 4/7/2015                                                       -->
+<!--========================================================================-->
+<VisualStudioPropertySheet
+    ProjectType="Visual C++"
+    Version="8.00"
+    Name="talas">
+
+    <!--===============================================-->
+
+    <UserMacro
+        Name="SOURCE_ROOT_DIR"
+        Value="../../../../../.."
+    />
+
+    <UserMacro
+        Name="SOURCE_BUILD_DIR"
+        Value="$(SOURCE_ROOT_DIR)"
+    />
+
+    <!--===============================================-->
+
+    <UserMacro
+        Name="TALAS_GROUP"
+        Value=""
+    />
+    <UserMacro
+        Name="TALAS_NAME"
+        Value="talas"
+    />
+    <UserMacro
+        Name="TALAS_VERSION"
+        Value=""
+    />
+    <UserMacro
+        Name="TALAS_DIR"
+        Value="$(TALAS_GROUP)$(TALAS_NAME)$(TALAS_VERSION)"
+    />
+    <UserMacro
+        Name="TALAS_SOURCE_DIR"
+        Value="$(SOURCE_ROOT_DIR)/$(TALAS_DIR)/src"
+    />
+    <UserMacro
+        Name="TALAS_BUILD_DIR"
+        Value="$(SOURCE_BUILD_DIR)/$(TALAS_DIR)/build"
+    />
+
+    <!--===============================================-->
+
+
+    <UserMacro
+        Name="TALAS_DEFINES"
+        Value="$(NADIR_DEFINES)"
+    />
+    <UserMacro
+        Name="TALAS_BUILD"
+        Value="$(TALAS_BUILD_DIR)/$(PlatformName)/$(VCVersion)/$(ConfigurationName)"
+    />
+    <UserMacro
+        Name="TALAS_OBJ"
+        Value="$(TALAS_BUILD)/obj/$(ProjectName)"
+    />
+    <UserMacro
+        Name="TALAS_LIB"
+        Value="$(TALAS_BUILD)/lib"
+    />
+    <UserMacro
+        Name="TALAS_BIN"
+        Value="$(TALAS_BUILD)/bin"
+    />
+
+    <UserMacro
+        Name="TALAS_INCLUDE_DIRS"
+        Value="$(TALAS_SOURCE_DIR);$(NADIR_INCLUDE_DIRS)"
+    />
+    <UserMacro
+        Name="TALAS_LIB_DIRS"
+        Value="$(TALAS_LIB);$(NADIR_LIB_DIRS)"
+    />
+    <UserMacro
+        Name="TALAS_LIBS"
+        Value="libtalas.lib $(NADIR_LIBS)"
+    />
+
+    <!--===============================================-->
+
+</VisualStudioPropertySheet>
