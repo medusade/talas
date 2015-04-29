@@ -30,3 +30,4 @@ talas_SOURCES += \
 $${TALAS_SRC}/talas/app/console/talas/main.cpp \
 $${TALAS_SRC}/talas/console/main_opt.cpp \
 $${TALAS_SRC}/talas/console/main_main.cpp \
+

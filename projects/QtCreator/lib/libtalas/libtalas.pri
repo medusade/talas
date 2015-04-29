@@ -26,6 +26,13 @@ libtalas_DEFINES += \
 $${talas_DEFINES} \
 
 libtalas_HEADERS += \
+$${TALAS_SRC}/thirdparty/google/curve25519/curve25519-donna.h \
+$${TALAS_SRC}/talas/crypto/ecc/curve25519/google/donna/public_key.hpp \
+$${TALAS_SRC}/talas/crypto/ecc/curve25519/public_key.hpp \
+$${TALAS_SRC}/talas/crypto/ecc/curve25519/private_key.hpp \
+$${TALAS_SRC}/talas/crypto/ecc/curve25519/key.hpp \
+$${TALAS_SRC}/talas/crypto/ecc/curve25519/base_point.hpp \
+$${TALAS_SRC}/talas/crypto/ecc/curve25519/array.hpp \
 $${TALAS_SRC}/talas/crypto/hash/openssl/sha512.hpp \
 $${TALAS_SRC}/talas/crypto/hash/sha512.hpp \
 $${TALAS_SRC}/talas/crypto/hash/openssl/sha256.hpp \
@@ -36,13 +43,24 @@ $${TALAS_SRC}/talas/crypto/hash/openssl/md5.hpp \
 $${TALAS_SRC}/talas/crypto/hash/md5.hpp \
 $${TALAS_SRC}/talas/crypto/hash/mac.hpp \
 $${TALAS_SRC}/talas/crypto/hash/base.hpp \
+$${TALAS_SRC}/talas/crypto/random/pseudo.hpp \
+$${TALAS_SRC}/talas/crypto/random/generator.hpp \
 $${TALAS_SRC}/talas/crypto/base.hpp \
 $${TALAS_SRC}/talas/base/base.hpp \
 
 libtalas_SOURCES += \
+$${TALAS_SRC}/thirdparty/google/curve25519/curve25519-donna.c \
+$${TALAS_SRC}/talas/crypto/ecc/curve25519/google/donna/public_key.cpp \
+$${TALAS_SRC}/talas/crypto/ecc/curve25519/private_key.cpp \
+$${TALAS_SRC}/talas/crypto/ecc/curve25519/key.cpp \
+$${TALAS_SRC}/talas/crypto/ecc/curve25519/base_point.cpp \
+$${TALAS_SRC}/talas/crypto/ecc/curve25519/array.cpp \
 $${TALAS_SRC}/talas/crypto/hash/openssl/sha512.cpp \
 $${TALAS_SRC}/talas/crypto/hash/openssl/sha256.cpp \
 $${TALAS_SRC}/talas/crypto/hash/openssl/sha1.cpp \
 $${TALAS_SRC}/talas/crypto/hash/openssl/md5.cpp \
 $${TALAS_SRC}/talas/crypto/hash/mac.cpp \
 $${TALAS_SRC}/talas/crypto/hash/base.cpp \
+$${TALAS_SRC}/talas/crypto/random/pseudo.cpp \
+$${TALAS_SRC}/talas/crypto/random/generator.cpp \
+
