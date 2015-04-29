@@ -22,8 +22,15 @@
 #define _TALAS_APP_CONSOLE_TALAS_MAIN_HPP
 
 #include "talas/crypto/hash/implementation/implementation.hpp"
-#include "talas/base/base.hpp"
-#include "talas/console/main.hpp"
+#include "talas/crypto/console/main.hpp"
+#include "talas/crypto/ecc/curve25519/google/donna/public_key.hpp"
+#include "talas/crypto/ecc/curve25519/shared_secret.hpp"
+#include "talas/crypto/ecc/curve25519/public_key.hpp"
+#include "talas/crypto/ecc/curve25519/private_key.hpp"
+#include "talas/crypto/ecc/curve25519/key.hpp"
+#include "talas/crypto/ecc/curve25519/base_point.hpp"
+#include "talas/crypto/random/pseudo.hpp"
+#include "thirdparty/gnu/glibc/stdlib/rand_r.h"
 #include "talas/app/console/talas/main_opt.hpp"
 
 #define TALAS_APP_CONSOLE_TALAS_MAIN_KB_BLOCKSIZE 64
@@ -34,21 +41,25 @@ namespace app {
 namespace console {
 namespace talas {
 
-typedef ::talas::console::main_implement main_implement;
-typedef ::talas::console::main main_extend;
+typedef crypto::console::main_implements main_implements;
+typedef crypto::console::main main_extends;
 ///////////////////////////////////////////////////////////////////////
 ///  Class: main
 ///////////////////////////////////////////////////////////////////////
-class _EXPORT_CLASS main: virtual public main_implement, public main_extend {
+class _EXPORT_CLASS main: virtual public main_implements, public main_extends {
 public:
-    typedef main_implement Implements;
-    typedef main_extend Extends;
+    typedef main_implements Implements;
+    typedef main_extends Extends;
     typedef main Derives;
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
     main()
     : run_(0),
+      get_random_generator_(0),
+      pseudo_random_seed_(0),
+      pseudo_random_(pseudo_random_seed_),
+      ecc_algorithm_(ecc_algorithm_none),
       hash_algorithm_(hash_algorithm_none),
       block_size_(TALAS_APP_CONSOLE_TALAS_MAIN_BLOCKSIZE) {
     }
@@ -72,6 +83,18 @@ protected:
         hash_algorithm_sha1,
         hash_algorithm_md5
     };
+    typedef crypto::ecc::curve25519::base_point curve25519_base_point_t;
+    typedef crypto::ecc::curve25519::private_key curve25519_secret_key_t;
+    typedef crypto::ecc::curve25519::google::donna::public_key curve25519_public_key_t;
+    typedef crypto::ecc::curve25519::shared_secret curve25519_shared_secret_t;
+    enum ecc_algorithm_t {
+        ecc_algorithm_none,
+        ecc_algorithm_25519
+    };
+    typedef unsigned pseudo_random_seed_t;
+    typedef crypto::random::pseudo pseudo_random_t;
+    typedef crypto::random::generator random_generator_t;
+    typedef random_generator_t& (Derives::*get_random_generator_t)();
 
 protected:
     ///////////////////////////////////////////////////////////////////////
@@ -84,6 +107,41 @@ protected:
             err = this->usage(argc, argv, env);
         }
         return err;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_ecc_25519(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        random_generator_t& r = get_random_generator();
+        curve25519_base_point_t bp;
+        curve25519_secret_key_t sk(r), sk2(r);
+        curve25519_public_key_t pk(sk, bp), pk2(sk2, bp);
+        curve25519_shared_secret_t s(sk, pk2), s2(sk2, pk);
+
+        outxln(sk.elements(), sk.size());
+        outxln(pk.elements(), pk.size());
+        outxln(s.elements(), s.size());
+        outln();
+
+        outxln(sk2.elements(), sk2.size());
+        outxln(pk2.elements(), pk2.size());
+        outxln(s2.elements(), s2.size());
+        return err;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual ecc_algorithm_t set_ecc_algorithm(ecc_algorithm_t to) {
+        switch (ecc_algorithm_ = to) {
+        case ecc_algorithm_25519:
+            run_ = &Derives::run_ecc_25519;
+            break;
+        default:
+            run_ = 0;
+            break;
+        }
+        return ecc_algorithm_;
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -222,12 +280,29 @@ protected:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
+    virtual random_generator_t& get_random_generator() {
+        if ((get_random_generator_)) {
+            return (this->*get_random_generator_)();
+        }
+        return get_pseudo_random();
+    }
+    virtual random_generator_t& get_pseudo_random() {
+        pseudo_random_.seed(pseudo_random_seed_);
+        return pseudo_random_;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
 #include "talas/app/console/talas/main_opt.cpp"
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
 protected:
     run_t run_;
+    get_random_generator_t get_random_generator_;
+    pseudo_random_seed_t pseudo_random_seed_;
+    pseudo_random_t pseudo_random_;
+    ecc_algorithm_t ecc_algorithm_;
     hash_algorithm_t hash_algorithm_;
     md5_t md5_;
     sha1_t sha1_;

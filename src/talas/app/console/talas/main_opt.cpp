@@ -33,6 +33,23 @@ protected:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
+    virtual int on_ecc_option
+    (int optval, const char_t* optarg,
+     const char_t* optname, int optind,
+     int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        if ((optarg) && (optarg[0])) {
+            if ((!(optarg[1]) && (TALAS_APP_CONSOLE_TALAS_MAIN_ECC_OPTARG_25519_C[0] == (optarg[0])))
+                || !(chars_t::compare(optarg, TALAS_APP_CONSOLE_TALAS_MAIN_ECC_OPTARG_25519_S))) {
+                set_ecc_algorithm(ecc_algorithm_25519);
+            } else {
+                err = on_invalid_option_arg
+                (optval, optarg, optname, optind, argc, argv, env);
+            }
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
     virtual int on_hash_option
     (int optval, const char* optarg,
      const char* optname, int optind,
@@ -129,6 +146,10 @@ protected:
      int argc, char**argv, char**env) {
         int err = 0;
         switch(optval) {
+        case TALAS_APP_CONSOLE_TALAS_MAIN_ECC_OPTVAL_C:
+            err = on_ecc_option
+            (optval, optarg, optname, optind, argc, argv, env);
+            break;
         case TALAS_APP_CONSOLE_TALAS_MAIN_HASH_OPTVAL_C:
             err = on_hash_option
             (optval, optarg, optname, optind, argc, argv, env);
@@ -172,6 +193,10 @@ protected:
     (const char*& optarg, const struct option* longopt) {
         const char* chars = "";
         switch(longopt->val) {
+        case TALAS_APP_CONSOLE_TALAS_MAIN_ECC_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_TALAS_MAIN_ECC_OPTARG;
+            chars = TALAS_APP_CONSOLE_TALAS_MAIN_ECC_OPTUSE;
+            break;
         case TALAS_APP_CONSOLE_TALAS_MAIN_HASH_OPTVAL_C:
             optarg = TALAS_APP_CONSOLE_TALAS_MAIN_HASH_OPTARG;
             chars = TALAS_APP_CONSOLE_TALAS_MAIN_HASH_OPTUSE;

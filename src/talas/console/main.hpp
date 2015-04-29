@@ -65,30 +65,34 @@
 namespace talas {
 namespace console {
 
-typedef xos::base::getopt::main_implement main_implement;
-typedef xos::base::getopt::main main_extend;
+typedef xos::base::getopt::main_implement main_implements;
+typedef xos::base::getopt::main main_extends;
 ///////////////////////////////////////////////////////////////////////
-///  Class: main
+///  Class: maint
 ///////////////////////////////////////////////////////////////////////
-class _EXPORT_CLASS main: virtual public main_implement, public main_extend {
+template
+<class TImplements = main_implements, class TExtends = main_extends>
+
+class _EXPORT_CLASS maint: virtual public TImplements, public TExtends {
 public:
-    typedef main_implement Implements;
-    typedef main_extend Extends;
+    typedef TImplements Implements;
+    typedef TExtends Extends;
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    main() {
+    maint() {
     }
-    virtual ~main() {
+    virtual ~maint() {
     }
 
+protected:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
     virtual int on_logging_levels_option
     (int optval, const char* optarg,
      const char* optname, int optind,
      int argc, char**argv, char**env) {
-        int err = on_logging_option
+        int err = this->on_logging_option
         (TALAS_MAIN_LOGGING_OPTVAL_C,
          optarg, optname, optind, argc, argv, env);
         return err;
@@ -98,7 +102,7 @@ public:
     (int optval, const char* optarg,
      const char* optname, int optind,
      int argc, char**argv, char**env) {
-        int err = usage(argc, argv, env);
+        int err = this->usage(argc, argv, env);
         return err;
     }
 
@@ -159,7 +163,9 @@ public:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
+protected:
 };
+typedef maint<> main;
 
 } // namespace console 
 } // namespace talas 
