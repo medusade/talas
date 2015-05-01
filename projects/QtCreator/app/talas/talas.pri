@@ -31,3 +31,16 @@ $${TALAS_SRC}/talas/app/console/talas/main.cpp \
 $${TALAS_SRC}/talas/console/main_opt.cpp \
 $${TALAS_SRC}/talas/console/main_main.cpp \
 
+talas_HEADERS += \
+$${TALAS_SRC}/talas/crypto/cipher/devine/aes.hpp \
+$${TALAS_SRC}/talas/crypto/cipher/aes.hpp \
+$${TALAS_SRC}/talas/crypto/cipher/base.hpp \
+$${TALAS_SRC}/talas/crypto/ecc/curve25519/msotoodeh/public_key.hpp \
+$${TALAS_SRC}/thirdparty/msotoodeh/curve25519/curve25519_mehdi.hxx \
+
+talas_SOURCES += \
+$${TALAS_SRC}/talas/crypto/cipher/devine/aes.cpp \
+$${TALAS_SRC}/talas/crypto/cipher/base.cpp \
+$${TALAS_SRC}/talas/crypto/ecc/curve25519/msotoodeh/public_key.cpp \
+$${TALAS_SRC}/thirdparty/msotoodeh/curve25519/curve25519_mehdi.cxx \
+
