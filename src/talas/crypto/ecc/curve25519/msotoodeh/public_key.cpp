@@ -13,39 +13,25 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: types.hpp
+///   File: public_key.cpp
 ///
 /// Author: $author$
-///   Date: 4/7/2015
+///   Date: 4/29/2015
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_BASE_TYPES_HPP
-#define _TALAS_BASE_TYPES_HPP
-
-#include "talas/base/base.hpp"
-#include "xos/base/types.hpp"
+#include "talas/crypto/ecc/curve25519/msotoodeh/public_key.hpp"
 
 namespace talas {
+namespace crypto {
+namespace ecc {
+namespace curve25519 {
+namespace msotoodeh {
 
 ///////////////////////////////////////////////////////////////////////
-///  Class: typest
+///  Class: public_keyt
 ///////////////////////////////////////////////////////////////////////
-#if defined(USE_CPP_11)
-template
-<class TWhat = char, class TEndWhat = TWhat, TEndWhat VEndWhat = 0,
- class TInt = int, class TUInt = unsigned, class TSize = size_t,
- class TLength = ssize_t, TLength VUndefinedLength = -1>
 
-using typest = typename xos::base::typest
-<TWhat, TEndWhat, VEndWhat, TInt, TUInt, TSize, TLength, VUndefinedLength>;
-#else // defined(USE_CPP_11)
-#endif // defined(USE_CPP_11)
-
-typedef xos::base::chars_t chars_t;
-typedef xos::base::tchars_t tchars_t;
-typedef xos::base::wchars_t wchars_t;
-typedef xos::base::bytes_t bytes_t;
-typedef xos::base::words_t words_t;
-
-} // namespace talas
-
-#endif // _TALAS_BASE_TYPES_HPP 
+} // namespace msotoodeh 
+} // namespace curve25519 
+} // namespace ecc 
+} // namespace crypto 
+} // namespace talas 
