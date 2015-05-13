@@ -145,7 +145,7 @@ typedef talas::base base_extends;
 ///  Class: baset
 ///////////////////////////////////////////////////////////////////////
 template
-<class TImplements = base_implements, class TExtends = base_extends>
+<class TImplements = implement_base, class TExtends = base_extends>
 
 class _EXPORT_CLASS baset: virtual public TImplements, public TExtends {
 public:

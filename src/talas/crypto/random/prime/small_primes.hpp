@@ -13,45 +13,28 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: generator.hpp
+///   File: small_primes.hpp
 ///
 /// Author: $author$
-///   Date: 4/27/2015
+///   Date: 5/2/2015
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_CRYPTO_RANDOM_GENERATOR_HPP
-#define _TALAS_CRYPTO_RANDOM_GENERATOR_HPP
+#ifndef _TALAS_CRYPTO_RANDOM_NUMBER_PRIME_SMALL_PRIMES_HPP
+#define _TALAS_CRYPTO_RANDOM_NUMBER_PRIME_SMALL_PRIMES_HPP
 
-#include "talas/crypto/random/reader.hpp"
 #include "talas/crypto/base.hpp"
+
+#define SMALL_PRIMES_SIZE 1028
 
 namespace talas {
 namespace crypto {
 namespace random {
+namespace prime {
 
-typedef reader generator_implements;
-///////////////////////////////////////////////////////////////////////
-///  Class: generatort
-///////////////////////////////////////////////////////////////////////
-template <class TImplements = generator_implements>
+extern const unsigned short g_small_primes[SMALL_PRIMES_SIZE];
 
-class _EXPORT_CLASS generatort: virtual public TImplements {
-public:
-    typedef TImplements Implements;
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    virtual ssize_t generate(void* out, size_t size) {
-        return 0;
-    }
-    virtual ssize_t read(byte_t* bytes, size_t size) {
-        return this->generate(bytes, size);
-    }
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-};
-typedef generatort<> generator;
-
+} // namespace prime
 } // namespace random 
 } // namespace crypto 
 } // namespace talas 
 
-#endif // _TALAS_CRYPTO_RANDOM_GENERATOR_HPP
+#endif // _TALAS_CRYPTO_RANDOM_NUMBER_PRIME_SMALL_PRIMES_HPP 

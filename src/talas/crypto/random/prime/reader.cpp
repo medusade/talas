@@ -13,45 +13,23 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: generator.hpp
+///   File: reader.cpp
 ///
 /// Author: $author$
-///   Date: 4/27/2015
+///   Date: 5/1/2015
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_CRYPTO_RANDOM_GENERATOR_HPP
-#define _TALAS_CRYPTO_RANDOM_GENERATOR_HPP
-
-#include "talas/crypto/random/reader.hpp"
-#include "talas/crypto/base.hpp"
+#include "talas/crypto/random/prime/reader.hpp"
 
 namespace talas {
 namespace crypto {
 namespace random {
+namespace number {
 
-typedef reader generator_implements;
 ///////////////////////////////////////////////////////////////////////
-///  Class: generatort
+///  Class: readert
 ///////////////////////////////////////////////////////////////////////
-template <class TImplements = generator_implements>
 
-class _EXPORT_CLASS generatort: virtual public TImplements {
-public:
-    typedef TImplements Implements;
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    virtual ssize_t generate(void* out, size_t size) {
-        return 0;
-    }
-    virtual ssize_t read(byte_t* bytes, size_t size) {
-        return this->generate(bytes, size);
-    }
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-};
-typedef generatort<> generator;
-
+} // namespace number
 } // namespace random 
 } // namespace crypto 
 } // namespace talas 
-
-#endif // _TALAS_CRYPTO_RANDOM_GENERATOR_HPP
