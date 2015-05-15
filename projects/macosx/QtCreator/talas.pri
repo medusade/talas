@@ -31,6 +31,14 @@ XOS_LIB = $${XOS_BLD}/lib
 talas_LIBS += \
 -L$${TALAS_LIB}/libtalas \
 -ltalas \
+-L$${TALAS_LIB}/libbn \
+-lbn \
+-L$${TALAS_LIB}/libmp \
+-lmp \
+-L$${TALAS_LIB}/libmpz \
+-lmpz \
+-L$${TALAS_LIB}/libmpn \
+-lmpn \
 -L$${XOS_LIB}/libxosnadir \
 -lxosnadir \
 -lpthread \

@@ -41,6 +41,8 @@ xos_DEFINES += \
 # talas
 talas_INCLUDEPATH += \
 $${TALAS_SRC} \
+$${TALAS_SRC}/thirdparty/openssl/bn \
+$${TALAS_SRC}/thirdparty/gnu/mp \
 $${xos_INCLUDEPATH} \
 
 talas_DEFINES += \
