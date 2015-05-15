@@ -103,6 +103,25 @@ protected:
      const char* optname, int optind,
      int argc, char**argv, char**env) {
         int err = 0;
+        if ((optarg) && (optarg[0])) {
+            if ((!(optarg[1]) && (TALAS_APP_CONSOLE_TALAS_MAIN_GENERATE_OPTARG_MILLER_RABIN_C[0] == (optarg[0])))
+                || !(chars_t::compare(optarg, TALAS_APP_CONSOLE_TALAS_MAIN_GENERATE_OPTARG_MILLER_RABIN_S))) {
+                set_generate(generate_miller_rabin);
+            } else {
+                if ((!(optarg[1]) && (TALAS_APP_CONSOLE_TALAS_MAIN_GENERATE_OPTARG_PRIME_C[0] == (optarg[0])))
+                    || !(chars_t::compare(optarg, TALAS_APP_CONSOLE_TALAS_MAIN_GENERATE_OPTARG_PRIME_S))) {
+                    set_generate(generate_prime);
+                } else {
+                    if ((!(optarg[1]) && (TALAS_APP_CONSOLE_TALAS_MAIN_GENERATE_OPTARG_RSA_C[0] == (optarg[0])))
+                        || !(chars_t::compare(optarg, TALAS_APP_CONSOLE_TALAS_MAIN_GENERATE_OPTARG_RSA_S))) {
+                        set_generate(generate_rsa);
+                    } else {
+                        err = on_invalid_option_arg
+                        (optval, optarg, optname, optind, argc, argv, env);
+                    }
+                }
+            }
+        }
         return err;
     }
     ///////////////////////////////////////////////////////////////////////
@@ -135,6 +154,62 @@ protected:
      const char* optname, int optind,
      int argc, char**argv, char**env) {
         int err = 0;
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    virtual int on_random_seed_option
+    (int optval, const char* optarg,
+     const char* optname, int optind,
+     int argc, char**argv, char**env) {
+        int err = 0;
+        unsigned value = 0;
+        if ((optarg) && (optarg[0])) {
+            if (0 <= (value = (chars_t::to_unsigned(optarg)))) {
+                set_random_seed(value);
+            } else {
+                err = on_invalid_option_arg
+                (optval, optarg, optname, optind, argc, argv, env);
+            }
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    virtual int on_number_option
+    (int optval, const char* optarg,
+     const char* optname, int optind,
+     int argc, char**argv, char**env) {
+        int err = 0;
+        if ((optarg) && (optarg[0])) {
+            if ((!(optarg[1]) && (TALAS_APP_CONSOLE_TALAS_MAIN_NUMBER_OPTARG_BN_C[0] == (optarg[0])))
+                || !(chars_t::compare(optarg, TALAS_APP_CONSOLE_TALAS_MAIN_NUMBER_OPTARG_BN_S))) {
+                set_number(number_bn);
+            } else {
+                if ((!(optarg[1]) && (TALAS_APP_CONSOLE_TALAS_MAIN_NUMBER_OPTARG_MP_C[0] == (optarg[0])))
+                    || !(chars_t::compare(optarg, TALAS_APP_CONSOLE_TALAS_MAIN_NUMBER_OPTARG_MP_S))) {
+                    set_number(number_mp);
+                } else {
+                    err = on_invalid_option_arg
+                    (optval, optarg, optname, optind, argc, argv, env);
+                }
+             }
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    virtual int on_bits_option
+    (int optval, const char_t* optarg,
+     const char_t* optname, int optind,
+     int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        unsigned value = 0;
+        if ((optarg) && (optarg[0])) {
+            if (0 < (value = (chars_t::to_unsigned(optarg)))) {
+                set_bits(value);
+            } else {
+                err = on_invalid_option_arg
+                (optval, optarg, optname, optind, argc, argv, env);
+            }
+        }
         return err;
     }
 
@@ -180,6 +255,18 @@ protected:
             break;
         case TALAS_APP_CONSOLE_TALAS_MAIN_RANDOM_OPTVAL_C:
             err = on_random_option
+            (optval, optarg, optname, optind, argc, argv, env);
+            break;
+        case TALAS_APP_CONSOLE_TALAS_MAIN_RANDOM_SEED_OPTVAL_C:
+            err = on_random_seed_option
+            (optval, optarg, optname, optind, argc, argv, env);
+            break;
+        case TALAS_APP_CONSOLE_TALAS_MAIN_NUMBER_OPTVAL_C:
+            err = on_number_option
+            (optval, optarg, optname, optind, argc, argv, env);
+            break;
+        case TALAS_APP_CONSOLE_TALAS_MAIN_BITS_OPTVAL_C:
+            err = on_bits_option
             (optval, optarg, optname, optind, argc, argv, env);
             break;
         default:
@@ -228,6 +315,18 @@ protected:
         case TALAS_APP_CONSOLE_TALAS_MAIN_RANDOM_OPTVAL_C:
             optarg = TALAS_APP_CONSOLE_TALAS_MAIN_RANDOM_OPTARG;
             chars = TALAS_APP_CONSOLE_TALAS_MAIN_RANDOM_OPTUSE;
+            break;
+        case TALAS_APP_CONSOLE_TALAS_MAIN_RANDOM_SEED_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_TALAS_MAIN_RANDOM_SEED_OPTARG;
+            chars = TALAS_APP_CONSOLE_TALAS_MAIN_RANDOM_SEED_OPTUSE;
+            break;
+        case TALAS_APP_CONSOLE_TALAS_MAIN_NUMBER_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_TALAS_MAIN_NUMBER_OPTARG;
+            chars = TALAS_APP_CONSOLE_TALAS_MAIN_NUMBER_OPTUSE;
+            break;
+        case TALAS_APP_CONSOLE_TALAS_MAIN_BITS_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_TALAS_MAIN_BITS_OPTARG;
+            chars = TALAS_APP_CONSOLE_TALAS_MAIN_BITS_OPTUSE;
             break;
         default:
             chars = Extends::option_usage(optarg, longopt);

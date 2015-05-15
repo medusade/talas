@@ -35,6 +35,9 @@ namespace rsa {
 namespace mp {
 
 typedef MP_INT mpint_t;
+typedef MP_INT BIGPRIME;
+typedef MP_INT BIGINT;
+
 typedef rsa::key_implements key_implements;
 typedef rsa::key key_extends;
 ///////////////////////////////////////////////////////////////////////

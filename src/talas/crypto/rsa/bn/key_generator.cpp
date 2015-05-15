@@ -1,4 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
+/// Copyright (c) 1995 Tatu Ylonen <ylo@cs.hut.fi>, Espoo, Finland
+/// All rights reserved
 /// Copyright (C) 1995-1997 Eric Young (eay@cryptsoft.com)
 /// All rights reserved.
 /// 
@@ -55,135 +57,27 @@
 /// copied and put under another distribution licence
 /// [including the GNU Public Licence.]
 ///
-///   File: key.hpp
+///   File: key_generator.cpp
 ///
 /// Author: $author$
-///   Date: 5/9/2015
+///   Date: 5/13/2015
+///
+/// Tatu Ylonen's RSA key generation function modified to be a C++
+/// class that uses Eric Young's big number library instead of gmp used
+/// in the original C version.
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_CRYPTO_RSA_BN_KEY_HPP
-#define _TALAS_CRYPTO_RSA_BN_KEY_HPP
-
-#include "talas/crypto/rsa/key.hpp"
-#include "bn_msb.h"
+#include "talas/crypto/rsa/bn/key_generator.hpp"
 
 namespace talas {
 namespace crypto {
 namespace rsa {
 namespace bn {
 
-typedef BIGNUM mpint_t;
-typedef BIGNUM BIGPRIME;
-typedef BIGNUM* BIGINT;
-
-typedef rsa::key_implements key_implements;
-typedef rsa::key key_extends;
 ///////////////////////////////////////////////////////////////////////
-///  Class: keyt
+///  Class: key_generator
 ///////////////////////////////////////////////////////////////////////
-template
-<class TImplements = key_implements, class TExtends = key_extends>
-
-class _EXPORT_CLASS keyt: virtual public TImplements,public TExtends {
-public:
-    typedef TImplements Implements;
-    typedef TExtends Extends;
-
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    keyt(): m_temp(0), m_ctx(0) {
-    }
-    virtual ~keyt() {
-    }
-
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    virtual bool create(size_t modbytes, size_t expbytes) {
-        if ((this->destroyed())) {
-            if ((Extends::create(modbytes, expbytes))) {
-                if ((m_temp = BN_new())) {
-                    if ((m_ctx = BN_CTX_new())) {
-                        return true;
-                        BN_CTX_free(m_ctx);
-                    }
-                    BN_free(m_temp);
-                }
-                Extends::destroy();
-            }
-        }
-        return false;
-    }
-    virtual bool create(size_t pbytes) {
-        if ((this->destroyed())) {
-            if ((Extends::create(pbytes))) {
-                if ((m_temp = BN_new())) {
-                    if ((m_ctx = BN_CTX_new())) {
-                        return true;
-                        BN_CTX_free(m_ctx);
-                    }
-                    BN_free(m_temp);
-                }
-                Extends::destroy();
-            }
-        }
-        return false;
-    }
-    virtual bool destroy() {
-        if ((this->is_created())) {
-            bool success = true;
-            if (!(BN_CTX_free(m_ctx))) {
-                success = false;
-            }
-            if (!(BN_free(m_temp))) {
-                success = false;
-            }
-            if (!(Extends::destroy())) {
-                success = false;
-            }
-            return success;
-        }
-        return false;
-    }
-
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    virtual BN_CTX*& ctx() const {
-        return (BN_CTX*&)m_ctx;
-    }
-    virtual BIGNUM*& temp() const {
-        return (BIGNUM*&)m_temp;
-    }
-
-protected:
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    virtual bool BN_CTX_free(BN_CTX*& a) {
-        if ((a)) {
-            ::BN_CTX_free(a);
-            a = 0;
-            return true;
-        }
-        return false;
-    }
-    virtual bool BN_free(BIGNUM*& a) {
-        if ((a)) {
-            ::BN_free(a);
-            a = 0;
-            return true;
-        }
-        return false;
-    }
-
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-protected:
-    BIGNUM *m_temp;
-    BN_CTX *m_ctx;
-};
-typedef keyt<> key;
 
 } // namespace bn 
 } // namespace rsa 
 } // namespace crypto 
 } // namespace talas 
-
-#endif // _TALAS_CRYPTO_RSA_BN_KEY_HPP 

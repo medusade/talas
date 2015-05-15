@@ -125,6 +125,7 @@ public:
             if ((m_q = BN_new())) {
             if ((m_ctx = BN_CTX_new())) {
                 BN_set_word(m_one,1);
+                this->set_is_created();
                 return true;
             BN_CTX_free(m_ctx); }
             BN_free(m_q); }

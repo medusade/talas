@@ -23,6 +23,20 @@
 
 #include "talas/crypto/hash/implementation/implementation.hpp"
 #include "talas/crypto/console/main.hpp"
+#include "talas/crypto/rsa/mp/key_generator.hpp"
+#include "talas/crypto/rsa/mp/private_key.hpp"
+#include "talas/crypto/rsa/mp/public_key.hpp"
+#include "talas/crypto/random/prime/mp/generator.hpp"
+#include "talas/crypto/random/prime/mp/miller_rabin.hpp"
+#include "talas/crypto/random/prime/mp/reader.hpp"
+#include "talas/crypto/random/prime/mp/number.hpp"
+#include "talas/crypto/rsa/bn/key_generator.hpp"
+#include "talas/crypto/rsa/bn/private_key.hpp"
+#include "talas/crypto/rsa/bn/public_key.hpp"
+#include "talas/crypto/random/prime/bn/generator.hpp"
+#include "talas/crypto/random/prime/bn/miller_rabin.hpp"
+#include "talas/crypto/random/prime/bn/reader.hpp"
+#include "talas/crypto/random/prime/bn/number.hpp"
 #include "talas/crypto/ecc/curve25519/msotoodeh/public_key.hpp"
 #include "talas/crypto/ecc/curve25519/google/donna/public_key.hpp"
 #include "talas/crypto/ecc/curve25519/shared_secret.hpp"
@@ -32,23 +46,38 @@
 #include "talas/crypto/ecc/curve25519/base_point.hpp"
 #include "talas/crypto/cipher/devine/aes.hpp"
 #include "talas/crypto/random/pseudo.hpp"
+#include "talas/crypto/byte_array.hpp"
 #include "thirdparty/gnu/glibc/stdlib/rand_r.h"
+#include "xos/base/array.hpp"
 #include "talas/app/console/talas/main_opt.hpp"
+#include "talas/app/console/talas/rsa_test_keys.cpp"
+#include "talas/app/console/talas/rsa_test_keys_pem.cpp"
+
+#define TALAS_APP_CONSOLE_TALAS_MAIN_PRIME_BITS 1024
+
+#define TALAS_APP_CONSOLE_TALAS_MAIN_RSA_MODULUS_BITS 2048
+#define TALAS_APP_CONSOLE_TALAS_MAIN_RSA_EXPONENT_BITS 24
+#define TALAS_APP_CONSOLE_TALAS_MAIN_RSA_EXPONENT 0x010001
 
 #define TALAS_APP_CONSOLE_TALAS_MAIN_KB_BLOCKSIZE 64
 #define TALAS_APP_CONSOLE_TALAS_MAIN_BLOCKSIZE (TALAS_APP_CONSOLE_TALAS_MAIN_KB_BLOCKSIZE*1024)
 
 namespace talas {
+typedef xos::base::byte_array byte_array;
 namespace app {
 namespace console {
 namespace talas {
 
+typedef crypto::random::prime::mp::reader_observer mp_reader_observer;
+typedef crypto::random::prime::bn::reader_observer bn_reader_observer;
 typedef crypto::console::main_implements main_implements;
 typedef crypto::console::main main_extends;
 ///////////////////////////////////////////////////////////////////////
 ///  Class: main
 ///////////////////////////////////////////////////////////////////////
-class _EXPORT_CLASS main: virtual public main_implements, public main_extends {
+class _EXPORT_CLASS main
+: virtual public mp_reader_observer, virtual public bn_reader_observer,
+  virtual public main_implements, public main_extends {
 public:
     typedef main_implements Implements;
     typedef main_extends Extends;
@@ -60,6 +89,15 @@ public:
     : run_(0),
       run_ecc_25519_(0),
       run_ecc_25519_exchange_(0),
+      run_generate_rsa_(0),
+      run_rsa_exchange_(0),
+      run_generate_prime_(0),
+      generate_(generate_none),
+      bitsof_(bitsof_none),
+      prime_bits_(TALAS_APP_CONSOLE_TALAS_MAIN_PRIME_BITS),
+      rsa_modulus_bits_(TALAS_APP_CONSOLE_TALAS_MAIN_RSA_MODULUS_BITS),
+      rsa_exponent_bits_(TALAS_APP_CONSOLE_TALAS_MAIN_RSA_EXPONENT_BITS),
+      rsa_exponent_(TALAS_APP_CONSOLE_TALAS_MAIN_RSA_EXPONENT),
       get_random_generator_(0),
       pseudo_random_seed_(0),
       pseudo_random_(pseudo_random_seed_),
@@ -115,17 +153,69 @@ protected:
         last_ecc_algorithm = (next_ecc_algorithm - 1)
     };
 
+    typedef crypto::rsa::private_key_implements rsa_private_key_t;
+    typedef crypto::rsa::public_key_implements rsa_public_key_t;
+
+    typedef crypto::rsa::bn::key_generator bn_rsa_key_generator_t;
+    typedef crypto::rsa::bn::private_key bn_rsa_private_key_t;
+    typedef crypto::rsa::bn::public_key bn_rsa_public_key_t;
+
+    typedef crypto::rsa::mp::key_generator mp_rsa_key_generator_t;
+    typedef crypto::rsa::mp::private_key mp_rsa_private_key_t;
+    typedef crypto::rsa::mp::public_key mp_rsa_public_key_t;
+
+    enum bitsof_t {
+        bitsof_none,
+        bitsof_prime,
+        bitsof_rsa,
+        next_bitsof,
+        first_bitsof = (bitsof_none + 1),
+        last_bitsof = (next_bitsof - 1)
+    };
+
+    enum generate_t {
+        generate_none,
+        generate_miller_rabin,
+        generate_prime,
+        generate_rsa,
+        next_generate,
+        first_generate = (generate_none + 1),
+        last_generate = (next_generate - 1)
+    };
+
+    enum number_t {
+        number_none,
+        number_bn,
+        number_mp,
+        next_number,
+        first_number = (number_none + 1),
+        last_number = (next_number - 1)
+    };
+
     typedef unsigned pseudo_random_seed_t;
     typedef crypto::random::pseudo pseudo_random_t;
     typedef crypto::random::generator random_generator_t;
     typedef random_generator_t& (Derives::*get_random_generator_t)();
 
     typedef int (Derives::*run_t)(int argc, char_t** argv, char_t** env);
+
     typedef int (Derives::*run_ecc_25519_exchange_t)
     (random_generator_t& r,
      const curve25519_secret_key_t& sk, const curve25519_secret_key_t& sk2,
      const curve25519_public_key_t& pk, const curve25519_public_key_t& pk2,
      const curve25519_shared_secret_t& s, const curve25519_shared_secret_t& s2,
+     int argc, char_t** argv, char_t** env);
+
+    typedef int (Derives::*run_generate_prime_t)
+    (unsigned bytes, byte_array& b, crypto::random::pseudo& ps,
+     int argc, char_t** argv, char_t** env);
+
+    typedef int (Derives::*run_generate_rsa_t)
+    (size_t modbytes, const byte_t* exponent, size_t expbytes, size_t pbytes,
+     crypto::random::reader& ps, int argc, char_t** argv, char_t** env);
+
+    typedef int (Derives::*run_rsa_exchange_t)
+    (rsa_public_key_t& pub, rsa_private_key_t& prv,
      int argc, char_t** argv, char_t** env);
 
 protected:
@@ -139,6 +229,429 @@ protected:
             err = this->usage(argc, argv, env);
         }
         return err;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_generate_rsa(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t modbytes = ((rsa_modulus_bits_ + 7) >> 3);
+        size_t expbytes = ((rsa_exponent_bits_ + 7) >> 3);
+        size_t pbytes = (modbytes >> 1);
+        unsigned seed = pseudo_random_seed_;
+        crypto::random::pseudo ps(seed);
+        crypto::byte_array exponent(rsa_exponent_, expbytes);
+        if ((run_generate_rsa_)) {
+            err = (this->*run_generate_rsa_)
+            (modbytes, exponent, expbytes, pbytes, ps, argc, argv, env);
+        } else {
+            err = this->run_bn_generate_rsa
+            (modbytes, exponent, expbytes, pbytes, ps, argc, argv, env);
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_mp_generate_rsa
+    (size_t modbytes, const byte_t* exponent, size_t expbytes, size_t pbytes,
+     crypto::random::reader& ps, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        mp_rsa_public_key_t pub(modbytes, expbytes);
+        mp_rsa_private_key_t prv(pbytes);
+        mp_rsa_key_generator_t kg(this);
+        if ((kg.generate(prv, pub, modbytes, exponent, expbytes, ps))) {
+            err = run_rsa_exchange(pub, prv, argc, argv, env);
+        } else {
+            errln("failed on generate()");
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_bn_generate_rsa
+    (size_t modbytes, const byte_t* exponent, size_t expbytes, size_t pbytes,
+     crypto::random::reader& ps, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        bn_rsa_public_key_t pub(modbytes, expbytes);
+        bn_rsa_private_key_t prv(pbytes);
+        bn_rsa_key_generator_t kg(this);
+        if ((kg.generate(prv, pub, modbytes, exponent, expbytes, ps))) {
+            err = run_rsa_exchange(pub, prv, argc, argv, env);
+        } else {
+            errln("failed on generate()");
+        }
+        return err;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_mp_rsa_test(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t modbytes = sizeof(rsa_public_modulus);
+        size_t expbytes = sizeof(rsa_public_exponent);
+        size_t pbytes = sizeof(rsa_private_p);
+        mp_rsa_public_key_t pub
+        (rsa_public_modulus, modbytes,
+         rsa_public_exponent, expbytes);
+        mp_rsa_private_key_t prv
+        (rsa_private_p, rsa_private_q,
+         rsa_private_dmp1, rsa_private_dmq1,
+         rsa_private_iqmp, pbytes);
+        err = run_rsa_exchange(pub, prv, argc, argv, env);
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_bn_rsa_test(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t modbytes = sizeof(rsa_public_modulus);
+        size_t expbytes = sizeof(rsa_public_exponent);
+        size_t pbytes = sizeof(rsa_private_p);
+        bn_rsa_public_key_t pub
+        (rsa_public_modulus, modbytes,
+         rsa_public_exponent, expbytes);
+        bn_rsa_private_key_t prv
+        (rsa_private_p, rsa_private_q,
+         rsa_private_dmp1, rsa_private_dmq1,
+         rsa_private_iqmp, pbytes);
+        err = run_rsa_exchange(pub, prv, argc, argv, env);
+        return err;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_rsa_exchange
+    (rsa_public_key_t& pub, rsa_private_key_t& prv,
+     int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if ((run_rsa_exchange_)) {
+            err = (this->*run_rsa_exchange_)
+            (pub, prv, argc, argv, env);
+        } else {
+            err = this->run_rsa_test_exchange
+            (pub, prv, argc, argv, env);
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_rsa_generate_exchange
+    (rsa_public_key_t& pub, rsa_private_key_t& prv,
+     int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t modbytes = pub.modbytes();
+        byte_array
+            plain(modbytes),
+            encipher(modbytes),
+            decipher(modbytes);
+        byte_t *inb, *outb;
+        if ((plain.set(0x12, modbytes))) {
+            if ((inb = plain.elements()) && (outb = encipher.elements())) {
+                if (modbytes == (pub(outb, modbytes, inb, modbytes))) {
+                    if ((inb = encipher.elements()) && (outb = decipher.elements())) {
+                        if (modbytes == (prv(outb, modbytes, inb, modbytes))) {
+                            if ((inb = plain.elements())) {
+                                if ((bytes_t::compare(outb, inb, modbytes))) {
+                                    errln("failed plain->public->private != plain");
+                                    errxln(outb, modbytes);
+                                    errxln(inb, modbytes);
+                                    err = 1;
+                                } else {
+                                    if ((outb = encipher.elements())) {
+                                        if (modbytes == (prv(outb, modbytes, inb, modbytes))) {
+                                            if ((inb = encipher.elements()) && (outb = decipher.elements())) {
+                                                if (modbytes == (pub(outb, modbytes, inb, modbytes))) {
+                                                    if ((inb = plain.elements())) {
+                                                        if ((bytes_t::compare(outb, inb, modbytes))) {
+                                                            errln("failed plain->private->public != plain");
+                                                            errxln(outb, modbytes);
+                                                            errxln(inb, modbytes);
+                                                            err = 1;
+                                                        } else {
+                                                            err = this->run_rsa_exchange_output
+                                                            (pub, prv, argc, argv, env);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_rsa_test_exchange
+    (rsa_public_key_t& pub, rsa_private_key_t& prv,
+     int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t modbytes = pub.modbytes();
+        byte_array
+            plain(modbytes),
+            encipher(modbytes),
+            decipher(modbytes);
+        byte_t *inb, *outb;
+        if ((plain.set(0x12, modbytes))) {
+            if ((inb = plain.elements()) && (outb = encipher.elements())) {
+                outln("plain");
+                outxln(inb, modbytes);
+                if (modbytes == (pub(outb, modbytes, inb, modbytes))) {
+                    outln("public");
+                    outxln(outb, modbytes);
+                    if ((inb = encipher.elements()) && (outb = decipher.elements())) {
+                        if (modbytes == (prv(outb, modbytes, inb, modbytes))) {
+                            outln("private");
+                            outxln(outb, modbytes);
+                            if ((inb = plain.elements())) {
+                                if ((bytes_t::compare(outb, inb, modbytes))) {
+                                    this->err("failed ");
+                                    errx(outb, modbytes);
+                                    this->err(" != ");
+                                    errxln(inb, modbytes);
+                                    err = 1;
+                                } else {
+                                    if ((outb = encipher.elements())) {
+                                        if (modbytes == (prv(outb, modbytes, inb, modbytes))) {
+                                            outln("private");
+                                            outxln(outb, modbytes);
+                                            if ((inb = encipher.elements()) && (outb = decipher.elements())) {
+                                                if (modbytes == (pub(outb, modbytes, inb, modbytes))) {
+                                                    outln("public");
+                                                    outxln(outb, modbytes);
+                                                    if ((inb = plain.elements())) {
+                                                        if ((bytes_t::compare(outb, inb, modbytes))) {
+                                                            this->err("failed ");
+                                                            errx(outb, modbytes);
+                                                            this->err(" != ");
+                                                            errxln(inb, modbytes);
+                                                            err = 1;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_rsa_exchange_output
+    (rsa_public_key_t& pub, rsa_private_key_t& prv,
+     int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t modbytes = pub.modbytes();
+        size_t expbytes = pub.expbytes();
+        size_t pbytes = prv.pbytes();
+        byte_array b(modbytes);
+        if (expbytes == (pub.get_exponent_msb(b, modbytes))) {
+            out("rsa-exponent: 0x"); outxln(b, expbytes);
+        }
+        if (modbytes == (pub.get_modulus_msb(b, modbytes))) {
+            out(" rsa-modulus: 0x"); outxln(b, modbytes);
+        }
+        if (pbytes == (prv.get_p_msb(b, pbytes))) {
+            out("       rsa-p: 0x"); outxln(b, pbytes);
+        }
+        if (pbytes == (prv.get_q_msb(b, pbytes))) {
+            out("       rsa-q: 0x"); outxln(b, pbytes);
+        }
+        if (pbytes == (prv.get_dmp1_msb(b, pbytes))) {
+            out("    rsa-dmp1: 0x"); outxln(b, pbytes);
+        }
+        if (pbytes == (prv.get_dmq1_msb(b, pbytes))) {
+            out("    rsa-dmq1: 0x"); outxln(b, pbytes);
+        }
+        if (pbytes == (prv.get_iqmp_msb(b, pbytes))) {
+            out("    rsa-iqmp: 0x"); outxln(b, pbytes);
+        }
+        return err;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_generate_prime(int argc, char_t** argv, char_t** env) {
+        int err = 1;
+        unsigned seed = pseudo_random_seed_;
+        unsigned bits = prime_bits_;
+        unsigned bytes = ((bits + 7) >> 3);
+        byte_array b(bytes);
+        crypto::random::pseudo ps(seed);
+        if ((run_generate_prime_)) {
+            err = (this->*run_generate_prime_)(bytes, b, ps, argc, argv, env);
+        }
+        return err;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_generate_mp_prime
+    (unsigned bytes, byte_array& b, crypto::random::pseudo& ps,
+     int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        crypto::random::prime::mp::number n(0);
+        crypto::random::prime::mp::generator g(this);
+        if ((g.create())) {
+            g.generate(n, bytes, ps);
+            g.destroy();
+            if (bytes == (n.to_msb(b, bytes))) {
+                outxln(b, bytes);
+            }
+        }
+        return err;
+    }
+    virtual int run_miller_rabin_mp_prime
+    (unsigned bytes, byte_array& b, crypto::random::pseudo& ps,
+     int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        crypto::random::prime::mp::number n(0);
+        crypto::random::prime::mp::reader r(this);
+        crypto::random::prime::mp::miller_rabin mr(this);
+        if ((mr.create())) {
+            do {
+                if (bytes != (r.read_msb(n, bytes, ps))) {
+                    break;
+                }
+            } while (!(mr.probably_prime(n, bytes, ps)));
+            mr.destroy();
+            if (bytes == (n.to_msb(b, bytes))) {
+                outxln(b, bytes);
+            }
+        }
+        return err;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_generate_bn_prime
+    (unsigned bytes, byte_array& b, crypto::random::pseudo& ps,
+     int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        crypto::random::prime::bn::number n(0);
+        crypto::random::prime::bn::generator g(this);
+        if ((g.create())) {
+            g.generate(n, bytes, ps);
+            g.destroy();
+            if (bytes == (n.to_msb(b, bytes))) {
+                outxln(b, bytes);
+            }
+        }
+        return err;
+    }
+    virtual int run_miller_rabin_bn_prime
+    (unsigned bytes, byte_array& b, crypto::random::pseudo& ps,
+     int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        crypto::random::prime::bn::number n(0);
+        crypto::random::prime::bn::reader r(this);
+        crypto::random::prime::bn::miller_rabin mr(this);
+        if ((mr.create())) {
+            do {
+                if (bytes != (r.read_msb(n, bytes, ps))) {
+                    break;
+                }
+            } while (!(mr.probably_prime(n, bytes, ps)));
+            mr.destroy();
+            if (bytes == (n.to_msb(b, bytes))) {
+                outxln(b, bytes);
+            }
+        }
+        return err;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual ssize_t on_read(crypto::random::prime::mp::BIGPRIME* n, size_t bytes) {
+        err(".", 1);
+        return bytes;
+    }
+    virtual ssize_t on_read(crypto::random::prime::bn::BIGPRIME* n, size_t bytes) {
+        err(".", 1);
+        return bytes;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual run_t set_generate(generate_t to) {
+        switch (generate_ = to) {
+        case generate_miller_rabin:
+            run_ = &Derives::run_generate_prime;
+            run_generate_prime_ = &Derives::run_miller_rabin_bn_prime;
+            bitsof_ = bitsof_prime;
+            break;
+        case generate_prime:
+            run_ = &Derives::run_generate_prime;
+            run_generate_prime_ = &Derives::run_generate_bn_prime;
+            bitsof_ = bitsof_prime;
+            break;
+        case generate_rsa:
+            run_ = &Derives::run_generate_rsa;
+            run_generate_rsa_ = &Derives::run_bn_generate_rsa;
+            run_rsa_exchange_ = &Derives::run_rsa_generate_exchange;
+            bitsof_ = bitsof_rsa;
+            break;
+        default:
+            run_ = 0;
+            break;
+        }
+        return run_;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual number_t set_number(number_t to) {
+        number_t number = number_none;
+        switch(generate_) {
+        case generate_miller_rabin:
+            switch(to) {
+            case number_bn:
+                run_generate_prime_ = &Derives::run_miller_rabin_bn_prime;
+                number = to;
+                break;
+            case number_mp:
+                run_generate_prime_ = &Derives::run_miller_rabin_mp_prime;
+                number = to;
+                break;
+            }
+            break;
+        case generate_prime:
+            switch(to) {
+            case number_bn:
+                run_generate_prime_ = &Derives::run_generate_bn_prime;
+                number = to;
+                break;
+            case number_mp:
+                run_generate_prime_ = &Derives::run_generate_mp_prime;
+                number = to;
+                break;
+            }
+            break;
+        case generate_rsa:
+            switch(to) {
+            case number_bn:
+                run_generate_rsa_ = &Derives::run_bn_generate_rsa;
+                number = to;
+                break;
+            case number_mp:
+                run_generate_rsa_ = &Derives::run_mp_generate_rsa;
+                number = to;
+                break;
+            }
+            break;
+        }
+        return number;
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -201,14 +714,14 @@ protected:
      int argc, char_t** argv, char_t** env) {
         int err = 0;
 
-        out("private-key1: "); outxln(sk.elements(), sk.size());
-        out(" public-key1: "); outxln(pk.elements(), pk.size());
-        out("     secret1: "); outxln(s.elements(), s.size());
+        out("private-key1: 0x"); outxln(sk.elements(), sk.size());
+        out(" public-key1: 0x"); outxln(pk.elements(), pk.size());
+        out("     secret1: 0x"); outxln(s.elements(), s.size());
         outln();
 
-        out("private-key2: "); outxln(sk2.elements(), sk2.size());
-        out(" public-key2: "); outxln(pk2.elements(), pk2.size());
-        out("     secret2: "); outxln(s2.elements(), s2.size());
+        out("private-key2: 0x"); outxln(sk2.elements(), sk2.size());
+        out(" public-key2: 0x"); outxln(pk2.elements(), pk2.size());
+        out("     secret2: 0x"); outxln(s2.elements(), s2.size());
         outln();
 
         if ((bytes_t::compare(s, s2, s.length()))) {
@@ -437,6 +950,30 @@ protected:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
+    virtual bitsof_t set_bits(unsigned to) {
+        switch (bitsof_) {
+        case bitsof_prime:
+            prime_bits_ = to;
+            break;
+        case bitsof_rsa:
+            rsa_modulus_bits_ = to;
+            break;
+        default:
+            return bitsof_none;
+        }
+        return bitsof_;
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual unsigned set_random_seed(unsigned to) {
+        pseudo_random_seed_ = to;
+        return pseudo_random_seed_;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
 #include "talas/app/console/talas/main_opt.cpp"
 
     ///////////////////////////////////////////////////////////////////////
@@ -444,6 +981,13 @@ protected:
 protected:
     run_t run_, run_ecc_25519_;
     run_ecc_25519_exchange_t run_ecc_25519_exchange_;
+    run_generate_rsa_t run_generate_rsa_;
+    run_rsa_exchange_t run_rsa_exchange_;
+    run_generate_prime_t run_generate_prime_;
+    generate_t generate_;
+    bitsof_t bitsof_;
+    unsigned prime_bits_, rsa_modulus_bits_, rsa_exponent_bits_;
+    uint32_t rsa_exponent_;
     get_random_generator_t get_random_generator_;
     pseudo_random_seed_t pseudo_random_seed_;
     pseudo_random_t pseudo_random_;

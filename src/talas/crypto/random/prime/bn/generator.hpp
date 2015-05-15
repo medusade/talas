@@ -252,7 +252,7 @@ public:
 #if !defined(_RSA_NO_MILLER_RABIN_TEST)
                 /* Perform the Miller Rabin primality test.
                  */
-                if (!(m_miller_rabin.ProbablyPrime
+                if (!(m_miller_rabin.probably_prime
                     (prime, bytes, m_miller_rabin_reps, random))) {
                     /* Failed the Miller Rabin probable primality test.
                      */

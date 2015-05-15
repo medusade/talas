@@ -200,6 +200,49 @@ public:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
+    virtual ssize_t get_p_msb
+    (byte_t* p, size_t pbytes) const {
+        if ((p) && (pbytes >= m_pbytes) && (m_pbytes)) {
+            mpz_get_msb(p,pbytes,&m_p);
+            return m_pbytes;
+        }
+        return 0;
+    }
+    virtual ssize_t get_q_msb
+    (byte_t* p, size_t pbytes) const {
+        if ((p) && (pbytes >= m_pbytes) && (m_pbytes)) {
+            mpz_get_msb(p,pbytes,&m_q);
+            return m_pbytes;
+        }
+        return 0;
+    }
+    virtual ssize_t get_dmp1_msb
+    (byte_t* p, size_t pbytes) const {
+        if ((p) && (pbytes >= m_pbytes) && (m_pbytes)) {
+            mpz_get_msb(p,pbytes,&m_dmp1);
+            return m_pbytes;
+        }
+        return 0;
+    }
+    virtual ssize_t get_dmq1_msb
+    (byte_t* p, size_t pbytes) const {
+        if ((p) && (pbytes >= m_pbytes) && (m_pbytes)) {
+            mpz_get_msb(p,pbytes,&m_dmq1);
+            return m_pbytes;
+        }
+        return 0;
+    }
+    virtual ssize_t get_iqmp_msb
+    (byte_t* p, size_t pbytes) const {
+        if ((p) && (pbytes >= m_pbytes) && (m_pbytes)) {
+            mpz_get_msb(p,pbytes,&m_iqmp);
+            return m_pbytes;
+        }
+        return 0;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
     virtual bool set
     (const mpint_t *p, const mpint_t *q,
      const mpint_t *dmp1, const mpint_t *dmq1,
@@ -288,6 +331,24 @@ public:
             }
         }
         return 0;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual BIGINT& p() const {
+        return (BIGINT&)m_p;
+    }
+    virtual BIGINT& q() const {
+        return (BIGINT&)m_q;
+    }
+    virtual BIGINT& dmp1() const {
+        return (BIGINT&)m_dmp1;
+    }
+    virtual BIGINT& dmq1() const {
+        return (BIGINT&)m_dmq1;
+    }
+    virtual BIGINT& iqmp() const {
+        return (BIGINT&)m_iqmp;
     }
 
     ///////////////////////////////////////////////////////////////////////

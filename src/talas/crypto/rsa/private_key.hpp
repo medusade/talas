@@ -62,6 +62,29 @@ public:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
+    virtual ssize_t get_p_msb
+    (byte_t* p, size_t pbytes) const {
+        return 0;
+    }
+    virtual ssize_t get_q_msb
+    (byte_t* p, size_t pbytes) const {
+        return 0;
+    }
+    virtual ssize_t get_dmp1_msb
+    (byte_t* p, size_t pbytes) const {
+        return 0;
+    }
+    virtual ssize_t get_dmq1_msb
+    (byte_t* p, size_t pbytes) const {
+        return 0;
+    }
+    virtual ssize_t get_iqmp_msb
+    (byte_t* p, size_t pbytes) const {
+        return 0;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
     virtual bool CreateMSB
     (const BYTE *p, const BYTE *q,
      const BYTE *dmp1, const BYTE *dmq1,
