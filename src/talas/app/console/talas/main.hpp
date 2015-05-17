@@ -45,6 +45,7 @@
 #include "talas/crypto/ecc/curve25519/key.hpp"
 #include "talas/crypto/ecc/curve25519/base_point.hpp"
 #include "talas/crypto/cipher/devine/aes.hpp"
+#include "talas/crypto/cipher/openssl/des.hpp"
 #include "talas/crypto/random/pseudo.hpp"
 #include "talas/crypto/byte_array.hpp"
 #include "thirdparty/gnu/glibc/stdlib/rand_r.h"
@@ -103,6 +104,7 @@ public:
       pseudo_random_(pseudo_random_seed_),
       ecc_algorithm_(ecc_algorithm_none),
       hash_algorithm_(hash_algorithm_none),
+      cipher_algorithm_(cipher_algorithm_none),
       block_size_(TALAS_APP_CONSOLE_TALAS_MAIN_BLOCKSIZE) {
     }
     virtual ~main() {
@@ -131,9 +133,11 @@ protected:
 
     typedef crypto::cipher::base cipher_t;
     typedef crypto::cipher::devine::aes aes_t;
+    typedef crypto::cipher::openssl::des3 des3_t;
     enum cipher_algorithm_t {
         cipher_algorithm_none,
         cipher_algorithm_aes,
+        cipher_algorithm_des3,
         next_cipher_algorithm,
         first_cipher_algorithm = (cipher_algorithm_none + 1),
         last_cipher_algorithm = (next_cipher_algorithm - 1)
@@ -178,6 +182,7 @@ protected:
         generate_miller_rabin,
         generate_prime,
         generate_rsa,
+        generate_ecc,
         next_generate,
         first_generate = (generate_none + 1),
         last_generate = (next_generate - 1)
@@ -602,6 +607,12 @@ protected:
             run_rsa_exchange_ = &Derives::run_rsa_generate_exchange;
             bitsof_ = bitsof_rsa;
             break;
+        case generate_ecc:
+            run_ = &Derives::run_ecc_25519;
+            run_ecc_25519_ = 0;
+            run_ecc_25519_exchange_ = 0;
+            bitsof_ = bitsof_none;
+            break;
         default:
             run_ = 0;
             break;
@@ -734,11 +745,18 @@ protected:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
     virtual ecc_algorithm_t set_ecc_algorithm(ecc_algorithm_t to) {
-        switch (ecc_algorithm_ = to) {
-        case ecc_algorithm_25519:
-            run_ecc_25519_ = 0;
-            run_ecc_25519_exchange_ = 0;
-            run_ = &Derives::run_ecc_25519;
+        switch (generate_) {
+        case generate_ecc:
+            switch (ecc_algorithm_ = to) {
+            case ecc_algorithm_25519:
+                run_ = &Derives::run_ecc_25519;
+                run_ecc_25519_ = 0;
+                run_ecc_25519_exchange_ = 0;
+                break;
+            default:
+                run_ = 0;
+                break;
+            }
             break;
         default:
             run_ = 0;
@@ -770,14 +788,15 @@ protected:
         ssize_t length = 0;
         int err = 0;
 
-        out("   plain-text: "); outxln(plain_text, sizeof(plain_text));
+        outln("aes");
+        out("   plain-text: 0x"); outxln(plain_text, sizeof(plain_text));
 
         if ((encipher_text)) {
             aes_t cbc(cbc_key, sizeof(cbc_key), cbc_iv, sizeof(cbc_iv));
 
             if (0 < (length = cbc.encrypt
                 (encipher_text, sizeof(encipher_text), plain_text, sizeof(plain_text)))) {
-                out("  cipher-text: "); outxln(encipher_text, length);
+                out("  cipher-text: 0x"); outxln(encipher_text, length);
             } else {
                 errln("failed on encrypt()");
                 return 1;
@@ -788,7 +807,7 @@ protected:
 
             if (sizeof(plain_text) <= (length = cbc.decrypt
                 (decipher_text, sizeof(decipher_text), encipher_text, length))) {
-                out("decipher-text: "); outxln(decipher_text, length);
+                out("decipher-text: 0x"); outxln(decipher_text, length);
                 if ((bytes_t::compare(decipher_text, plain_text, sizeof(plain_text)))) {
                     errln("decipher_text != plain_text");
                     return 1;
@@ -798,7 +817,90 @@ protected:
                 return 1;
             }
         }
+        outln();
         return err;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_des3_test(int argc, char_t** argv, char_t** env) {
+        static unsigned char cbc_key [8*3]={
+            0x01,0x23,0x45,0x67,0x89,0xab,0xcd,0xef,
+            0xf1,0xe0,0xd3,0xc2,0xb5,0xa4,0x97,0x86,
+            0xfe,0xdc,0xba,0x98,0x76,0x54,0x32,0x10
+        };
+        static unsigned char cbc_iv [8]={
+            0xfe,0xdc,0xba,0x98,0x76,0x54,0x32,0x10
+        };
+        static unsigned char plain_text[32]={
+            0x37,0x36,0x35,0x34,0x33,0x32,0x31,0x20,
+            0x4E,0x6F,0x77,0x20,0x69,0x73,0x20,0x74,
+            0x68,0x65,0x20,0x74,0x69,0x6D,0x65,0x20,
+            0x66,0x6F,0x72,0x20,0x00,0x00,0x00,0x00
+        };
+        static unsigned char cipher_text[32]={
+            0x3F,0xE3,0x01,0xC9,0x62,0xAC,0x01,0xD0,
+            0x22,0x13,0x76,0x3C,0x1C,0xBD,0x4C,0xDC,
+            0x79,0x96,0x57,0xC0,0x64,0xEC,0xF5,0xD4,
+            0x1C,0x67,0x38,0x12,0xCF,0xDE,0x96,0x75
+        };
+        byte_t encipher_text[32] = {0};
+        byte_t decipher_text[32] = {0};
+        ssize_t length = 0;
+        int err = 0;
+
+        outln("des3");
+        out("   plain-text: 0x"); outxln(plain_text, sizeof(plain_text));
+
+        if ((encipher_text)) {
+            des3_t cbc(cbc_key, sizeof(cbc_key), cbc_iv, sizeof(cbc_iv));
+
+            if (0 < (length = cbc.encrypt
+                (encipher_text, sizeof(encipher_text), plain_text, sizeof(plain_text)))) {
+                out("  cipher-text: 0x"); outxln(encipher_text, length);
+                if ((bytes_t::compare(encipher_text, cipher_text, sizeof(cipher_text)))) {
+                    errln("encipher_text != cipher_text");
+                    return 1;
+                }
+            } else {
+                errln("failed on encrypt()");
+                return 1;
+            }
+        }
+        if ((decipher_text) && (length)) {
+            des3_t cbc(cbc_key, sizeof(cbc_key), cbc_iv, sizeof(cbc_iv));
+
+            if (sizeof(plain_text) <= (length = cbc.decrypt
+                (decipher_text, sizeof(decipher_text), encipher_text, length))) {
+                out("decipher-text: 0x"); outxln(decipher_text, length);
+                if ((bytes_t::compare(decipher_text, plain_text, sizeof(plain_text)))) {
+                    errln("decipher_text != plain_text");
+                    return 1;
+                }
+            } else {
+                errln("failed on decrypt()");
+                return 1;
+            }
+        }
+        outln();
+        return err;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual cipher_algorithm_t set_cipher_algorithm(cipher_algorithm_t to) {
+        switch (cipher_algorithm_ = to) {
+        case cipher_algorithm_aes:
+            run_ = &Derives::run_aes_test;
+            break;
+        case cipher_algorithm_des3:
+            run_ = &Derives::run_des3_test;
+            break;
+        default:
+            run_ = 0;
+            break;
+        }
+        return cipher_algorithm_;
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -993,6 +1095,9 @@ protected:
     pseudo_random_t pseudo_random_;
     ecc_algorithm_t ecc_algorithm_;
     hash_algorithm_t hash_algorithm_;
+    cipher_algorithm_t cipher_algorithm_;
+    aes_t aes_;
+    des3_t des3_;
     md5_t md5_;
     sha1_t sha1_;
     sha256_t sha256_;

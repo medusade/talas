@@ -50,6 +50,28 @@ protected:
         return err;
     }
     ///////////////////////////////////////////////////////////////////////
+    virtual int on_cipher_option
+    (int optval, const char* optarg,
+     const char* optname, int optind,
+     int argc, char**argv, char**env) {
+        int err = 0;
+        if ((optarg) && (optarg[0])) {
+            if ((!(optarg[1]) && (TALAS_APP_CONSOLE_TALAS_MAIN_CIPHER_OPTARG_AES_C[0] == (optarg[0])))
+                || !(chars_t::compare(optarg, TALAS_APP_CONSOLE_TALAS_MAIN_CIPHER_OPTARG_AES_S))) {
+                set_cipher_algorithm(cipher_algorithm_aes);
+            } else {
+                if ((!(optarg[1]) && (TALAS_APP_CONSOLE_TALAS_MAIN_CIPHER_OPTARG_DES3_C[0] == (optarg[0])))
+                    || !(chars_t::compare(optarg, TALAS_APP_CONSOLE_TALAS_MAIN_CIPHER_OPTARG_DES3_S))) {
+                    set_cipher_algorithm(cipher_algorithm_des3);
+                } else {
+                    err = on_invalid_option_arg
+                    (optval, optarg, optname, optind, argc, argv, env);
+                }
+            }
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
     virtual int on_hash_option
     (int optval, const char* optarg,
      const char* optname, int optind,
@@ -116,8 +138,13 @@ protected:
                         || !(chars_t::compare(optarg, TALAS_APP_CONSOLE_TALAS_MAIN_GENERATE_OPTARG_RSA_S))) {
                         set_generate(generate_rsa);
                     } else {
-                        err = on_invalid_option_arg
-                        (optval, optarg, optname, optind, argc, argv, env);
+                        if ((!(optarg[1]) && (TALAS_APP_CONSOLE_TALAS_MAIN_GENERATE_OPTARG_ECC_25519_C[0] == (optarg[0])))
+                            || !(chars_t::compare(optarg, TALAS_APP_CONSOLE_TALAS_MAIN_GENERATE_OPTARG_ECC_25519_S))) {
+                            set_generate(generate_ecc);
+                        } else {
+                            err = on_invalid_option_arg
+                            (optval, optarg, optname, optind, argc, argv, env);
+                        }
                     }
                 }
             }
@@ -225,6 +252,10 @@ protected:
             err = on_ecc_option
             (optval, optarg, optname, optind, argc, argv, env);
             break;
+        case TALAS_APP_CONSOLE_TALAS_MAIN_CIPHER_OPTVAL_C:
+            err = on_cipher_option
+            (optval, optarg, optname, optind, argc, argv, env);
+            break;
         case TALAS_APP_CONSOLE_TALAS_MAIN_HASH_OPTVAL_C:
             err = on_hash_option
             (optval, optarg, optname, optind, argc, argv, env);
@@ -283,6 +314,10 @@ protected:
         case TALAS_APP_CONSOLE_TALAS_MAIN_ECC_OPTVAL_C:
             optarg = TALAS_APP_CONSOLE_TALAS_MAIN_ECC_OPTARG;
             chars = TALAS_APP_CONSOLE_TALAS_MAIN_ECC_OPTUSE;
+            break;
+        case TALAS_APP_CONSOLE_TALAS_MAIN_CIPHER_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_TALAS_MAIN_CIPHER_OPTARG;
+            chars = TALAS_APP_CONSOLE_TALAS_MAIN_CIPHER_OPTUSE;
             break;
         case TALAS_APP_CONSOLE_TALAS_MAIN_HASH_OPTVAL_C:
             optarg = TALAS_APP_CONSOLE_TALAS_MAIN_HASH_OPTARG;
