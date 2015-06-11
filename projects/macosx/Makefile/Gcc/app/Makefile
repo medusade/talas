@@ -16,11 +16,11 @@
 #   File: Makefile
 #
 # Author: $author$
-#   Date: 11/22/2014
+#   Date: 5/24/2015
 #
-# MacOSX Gcc Makefile for talas
+# MacOSX Gcc Makefile for talas applications
 ########################################################################
-PKG = ../../../..
+PKG = ../../../../..
 
 PRJ = projects/macosx/Makefile/Gcc
 SRC = src
@@ -34,7 +34,7 @@ include $(PKG)/$(PRJ)/Makedefines
 #$(PKG)/$(PRJ)/somedir \
 #
 SRC_DIRS = \
-$(PKG)/$(PRJ)/lib \
-$(PKG)/$(PRJ)/app \
+$(PKG)/$(PRJ)/app/talas \
 
 include $(PKG)/$(PRJ)/Makedirs
+

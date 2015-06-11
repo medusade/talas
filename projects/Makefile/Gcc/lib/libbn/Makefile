@@ -13,35 +13,74 @@
 # or otherwise) arising in any way out of the use of this software, 
 # even if advised of the possibility of such damage.
 #
-#   File: talas.pri
+#   File: Makefile
 #
 # Author: $author$
-#   Date: 12/7/2014
+#   Date: 5/23/2015
+#
+# Generic Gcc Makefile for talas libbn Library
 ########################################################################
 
-QMAKE_CXXFLAGS += -std=c++0x
+#
+# user c++ flags
+#
+libbn_USRCXXFLAGS += \
+${talas_USRCXXFLAGS} \
 
-########################################################################
-# xos
-XOS_BLD = ../$${XOS_PKG}/build/linux/QtCreator/Debug
-XOS_LIB = $${XOS_BLD}/lib
+#
+# user defines
+#
+libbn_USRDEFINES = \
+${talas_USRDEFINES} \
 
-########################################################################
-# talas
-talas_LIBS += \
--L$${TALAS_LIB}/libtalas \
--ltalas \
--L$${TALAS_LIB}/libbn \
--lbn \
--L$${TALAS_LIB}/libmpz \
--lmpz \
--L$${TALAS_LIB}/libmpn \
--lmpn \
--L$${TALAS_LIB}/libmp \
--lmp \
--L$${XOS_LIB}/libxosnadir \
--lxosnadir \
--lpthread \
--ldl \
--lrt \
+#
+# user includes
+#
+libbn_USRINCLUDES = \
+${talas_USRINCLUDES} \
+
+#
+# user libdirs
+#
+libbn_USRLIBDIRS = \
+${talas_USRLIBDIRS} \
+
+#
+# C .c sources
+#
+libbn_LIB_C_SOURCES = \
+${bn_SRC}/bn_add.c \
+${bn_SRC}/bn_blind.c \
+${bn_SRC}/bn_div.c \
+${bn_SRC}/bn_exp.c \
+${bn_SRC}/bn_gcd.c \
+${bn_SRC}/bn_lib.c \
+${bn_SRC}/bn_mod.c \
+${bn_SRC}/bn_mont.c \
+${bn_SRC}/bn_mpi.c \
+${bn_SRC}/bn_msb.c \
+${bn_SRC}/bn_mul.c \
+${bn_SRC}/bn_mulw.c \
+${bn_SRC}/bn_prime.c \
+${bn_SRC}/bn_randm.c \
+${bn_SRC}/bn_recp.c \
+${bn_SRC}/bn_shift.c \
+${bn_SRC}/bn_sqr.c \
+${bn_SRC}/bn_sub.c \
+${bn_SRC}/bn_word.c \
+
+#
+# C++ .cxx sources
+#
+libbn_LIB_CXX_SOURCES = \
+
+#
+# C++ .cpp sources
+#
+libbn_LIB_CPP_SOURCES += \
+
+#
+# libs
+#
+libbn_LIBS = \
 

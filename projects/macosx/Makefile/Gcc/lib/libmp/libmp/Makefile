@@ -16,48 +16,48 @@
 #   File: Makefile
 #
 # Author: $author$
-#   Date: 12/9/2014
+#   Date: 5/24/2014
 #
-# Linux Gcc Makefile for talas libtalas Static Library
+# MacOSX Gcc Makefile for talas libmp Static Library
 ########################################################################
-PKG = ../../../../../..
+PKG = ../../../../../../..
 
 MAK = projects/Makefile/Gcc
-PRJ = projects/linux/Makefile/Gcc
+PRJ = projects/macosx/Makefile/Gcc
 SRC = src
 
 include $(PKG)/$(PRJ)/Makedefines
 include $(PKG)/$(MAK)/Makefile
-include $(PKG)/$(MAK)/lib/libtalas/Makefile
+include $(PKG)/$(MAK)/lib/libmp/Makefile.libmp
 
 #
 # target
 #
-LIBTARGET = libtalas.$(LIBEXT)
+LIBTARGET = libmp.$(LIBEXT)
 
 #
 # user defines
 #
 USRDEFINES = \
-${libtalas_USRDEFINES}
+${libmp_USRDEFINES}
 
 #
 # user includes
 #
 USRINCLUDES = \
-${libtalas_USRINCLUDES}
+${libmp_USRINCLUDES}
 
 #
 # user libdirs
 #
 USRLIBDIRS = \
-${libtalas_USRLIBDIRS}
+${libmp_USRLIBDIRS}
 
 #
 # user c++ flags
 #
 USRCXXFLAGS = \
-${libtalas_USRCXXFLAGS}
+${libmp_USRCXXFLAGS}
 
 #
 # user c flags
@@ -73,25 +73,25 @@ USRLDFLAGS = \
 # Static Library C sources
 #
 LIB_C_SOURCES = \
-${libtalas_LIB_C_SOURCES}
+${libmp_LIB_C_SOURCES}
 
 #
 # Static Library C++ .cc sources
 #
 LIB_CC_SOURCES = \
-${libtalas_LIB_CC_SOURCES}
+${libmp_LIB_CC_SOURCES}
 
 #
 # Static Library C++ .cxx sources
 #
 LIB_CXX_SOURCES = \
-${libtalas_LIB_CXX_SOURCES}
+${libmp_LIB_CXX_SOURCES}
 
 #
 # Static Library C++ .cpp sources
 #
 LIB_CPP_SOURCES = \
-${libtalas_LIB_CPP_SOURCES}
+${libmp_LIB_CPP_SOURCES}
 
 #
 # Static Library Objective C .m sources

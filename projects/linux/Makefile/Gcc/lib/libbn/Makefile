@@ -16,9 +16,9 @@
 #   File: Makefile
 #
 # Author: $author$
-#   Date: 12/9/2014
+#   Date: 5/23/2014
 #
-# Linux Gcc Makefile for talas libtalas Static Library
+# Linux Gcc Makefile for talas libbn Static Library
 ########################################################################
 PKG = ../../../../../..
 
@@ -28,36 +28,36 @@ SRC = src
 
 include $(PKG)/$(PRJ)/Makedefines
 include $(PKG)/$(MAK)/Makefile
-include $(PKG)/$(MAK)/lib/libtalas/Makefile
+include $(PKG)/$(MAK)/lib/libbn/Makefile
 
 #
 # target
 #
-LIBTARGET = libtalas.$(LIBEXT)
+LIBTARGET = libbn.$(LIBEXT)
 
 #
 # user defines
 #
 USRDEFINES = \
-${libtalas_USRDEFINES}
+${libbn_USRDEFINES}
 
 #
 # user includes
 #
 USRINCLUDES = \
-${libtalas_USRINCLUDES}
+${libbn_USRINCLUDES}
 
 #
 # user libdirs
 #
 USRLIBDIRS = \
-${libtalas_USRLIBDIRS}
+${libbn_USRLIBDIRS}
 
 #
 # user c++ flags
 #
 USRCXXFLAGS = \
-${libtalas_USRCXXFLAGS}
+${libbn_USRCXXFLAGS}
 
 #
 # user c flags
@@ -73,25 +73,25 @@ USRLDFLAGS = \
 # Static Library C sources
 #
 LIB_C_SOURCES = \
-${libtalas_LIB_C_SOURCES}
+${libbn_LIB_C_SOURCES}
 
 #
 # Static Library C++ .cc sources
 #
 LIB_CC_SOURCES = \
-${libtalas_LIB_CC_SOURCES}
+${libbn_LIB_CC_SOURCES}
 
 #
 # Static Library C++ .cxx sources
 #
 LIB_CXX_SOURCES = \
-${libtalas_LIB_CXX_SOURCES}
+${libbn_LIB_CXX_SOURCES}
 
 #
 # Static Library C++ .cpp sources
 #
 LIB_CPP_SOURCES = \
-${libtalas_LIB_CPP_SOURCES}
+${libbn_LIB_CPP_SOURCES}
 
 #
 # Static Library Objective C .m sources

@@ -73,16 +73,19 @@ USRLDFLAGS = \
 # Static Library C sources
 #
 LIB_C_SOURCES = \
+${libtalas_LIB_C_SOURCES}
 
 #
 # Static Library C++ .cc sources
 #
 LIB_CC_SOURCES = \
+${libtalas_LIB_CC_SOURCES}
 
 #
 # Static Library C++ .cxx sources
 #
 LIB_CXX_SOURCES = \
+${libtalas_LIB_CXX_SOURCES}
 
 #
 # Static Library C++ .cpp sources

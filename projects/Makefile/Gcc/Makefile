@@ -35,18 +35,43 @@ XOS_LIB = ${XOS_BLD}/lib
 XOS_BIN = ${XOS_BLD}/bin
 
 ########################################################################
+# bn
+bn_PKG = ${TALAS_PKG}
+bn_BLD = ${TALAS_BLD}
+bn_PRJ = ${bn_PKG}
+bn_BIN = ${bn_BLD}/bin
+bn_LIB = ${bn_BLD}/lib
+bn_SRC = ${bn_PKG}/src/thirdparty/openssl/bn
+
+########################################################################
+# mp
+mp_PKG = ${TALAS_PKG}
+mp_BLD = ${TALAS_BLD}
+mp_PRJ = ${mp_PKG}
+mp_BIN = ${mp_BLD}/bin
+mp_LIB = ${mp_BLD}/lib
+mp_SRC = ${mp_PKG}/src/thirdparty/gnu/mp
+
+########################################################################
 # talas
 talas_USRDEFINES += \
 
 talas_USRINCLUDES += \
 -I${TALAS_SRC} \
+-I${TALAS_SRC}/thirdparty/openssl/bn \
+-I${TALAS_SRC}/thirdparty/gnu/mp \
 -I${XOS_SRC} \
 
 talas_USRCXXFLAGS += \
--std=c++11
+-std=c++0x
 
 talas_USRLIBDIRS += \
 -L${XOS_LIB} \
 
 talas_LIBS += \
 -lxosnadir \
+-lbn \
+-lmpz \
+-lmpn \
+-lmp \
+

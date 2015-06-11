@@ -46,9 +46,45 @@ libtalas_USRLIBDIRS = \
 ${talas_USRLIBDIRS} \
 
 #
+# C .c sources
+#
+libtalas_LIB_C_SOURCES = \
+${TALAS_SRC}/thirdparty/google/curve25519/curve25519-donna.c \
+
+#
+# C++ .cxx sources
+#
+libtalas_LIB_CXX_SOURCES = \
+${TALAS_SRC}/thirdparty/msotoodeh/curve25519/curve25519_mehdi.cxx \
+
+#
 # C++ .cpp sources
 #
-libtalas_LIB_CPP_SOURCES = \
+libtalas_LIB_CPP_SOURCES += \
+${TALAS_SRC}/talas/crypto/ecc/curve25519/google/donna/public_key.cpp \
+${TALAS_SRC}/talas/crypto/ecc/curve25519/private_key.cpp \
+${TALAS_SRC}/talas/crypto/ecc/curve25519/key.cpp \
+${TALAS_SRC}/talas/crypto/ecc/curve25519/base_point.cpp \
+${TALAS_SRC}/talas/crypto/ecc/curve25519/array.cpp \
+
+libtalas_LIB_CPP_SOURCES += \
+${TALAS_SRC}/talas/crypto/rsa/mp/key_generator.cpp \
+${TALAS_SRC}/talas/crypto/rsa/mp/private_key.cpp \
+${TALAS_SRC}/talas/crypto/rsa/mp/public_key.cpp \
+${TALAS_SRC}/talas/crypto/rsa/mp/key.cpp \
+
+libtalas_LIB_CPP_SOURCES += \
+${TALAS_SRC}/talas/crypto/random/prime/mp/generator.cpp \
+${TALAS_SRC}/talas/crypto/random/prime/mp/miller_rabin.cpp \
+${TALAS_SRC}/talas/crypto/random/prime/mp/reader.cpp \
+${TALAS_SRC}/talas/crypto/random/prime/mp/number.cpp \
+${TALAS_SRC}/talas/crypto/random/prime/small_primes.cpp \
+
+libtalas_LIB_CPP_SOURCES += \
+${TALAS_SRC}/talas/crypto/cipher/devine/aes.cpp \
+${TALAS_SRC}/talas/crypto/cipher/openssl/des.cpp \
+
+libtalas_LIB_CPP_SOURCES += \
 ${TALAS_SRC}/talas/crypto/hash/openssl/sha512.cpp \
 ${TALAS_SRC}/talas/crypto/hash/openssl/sha256.cpp \
 ${TALAS_SRC}/talas/crypto/hash/openssl/sha1.cpp \

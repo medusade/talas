@@ -13,35 +13,64 @@
 # or otherwise) arising in any way out of the use of this software, 
 # even if advised of the possibility of such damage.
 #
-#   File: talas.pri
+#   File: Makefile.libmp
 #
 # Author: $author$
-#   Date: 12/7/2014
+#   Date: 5/24/2015
+#
+# Generic Gcc Makefile for talas libmp Library
 ########################################################################
 
-QMAKE_CXXFLAGS += -std=c++0x
+#
+# user c++ flags
+#
+libmp_USRCXXFLAGS += \
+${talas_USRCXXFLAGS} \
 
-########################################################################
-# xos
-XOS_BLD = ../$${XOS_PKG}/build/linux/QtCreator/Debug
-XOS_LIB = $${XOS_BLD}/lib
+#
+# user defines
+#
+libmp_USRDEFINES = \
+${talas_USRDEFINES} \
+-D_NO_INLINES \
 
-########################################################################
-# talas
-talas_LIBS += \
--L$${TALAS_LIB}/libtalas \
--ltalas \
--L$${TALAS_LIB}/libbn \
--lbn \
--L$${TALAS_LIB}/libmpz \
--lmpz \
--L$${TALAS_LIB}/libmpn \
--lmpn \
--L$${TALAS_LIB}/libmp \
--lmp \
--L$${XOS_LIB}/libxosnadir \
--lxosnadir \
--lpthread \
--ldl \
--lrt \
+#
+# user includes
+#
+libmp_USRINCLUDES = \
+${talas_USRINCLUDES} \
+
+#
+# user libdirs
+#
+libmp_USRLIBDIRS = \
+${talas_USRLIBDIRS} \
+
+#
+# C .c sources
+#
+libmp_LIB_C_SOURCES = \
+${mp_SRC}/extract-double.c \
+${mp_SRC}/insert-double.c \
+${mp_SRC}/memory.c \
+${mp_SRC}/mp_bpl.c \
+${mp_SRC}/mp_clz_tab.c \
+${mp_SRC}/mp_set_fns.c \
+${mp_SRC}/stack-alloc.c \
+${mp_SRC}/version.c \
+
+#
+# C++ .cxx sources
+#
+libmp_LIB_CXX_SOURCES = \
+
+#
+# C++ .cpp sources
+#
+libmp_LIB_CPP_SOURCES += \
+
+#
+# libs
+#
+libmp_LIBS = \
 
