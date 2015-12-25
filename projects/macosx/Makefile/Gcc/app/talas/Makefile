@@ -26,6 +26,7 @@ MAK = projects/Makefile/Gcc
 PRJ = projects/macosx/Makefile/Gcc
 SRC = src
 
+include $(PKG)/$(MAK)/Makedefines
 include $(PKG)/$(PRJ)/Makedefines
 include $(PKG)/$(MAK)/Makefile
 include $(PKG)/$(MAK)/lib/libtalas/Makefile

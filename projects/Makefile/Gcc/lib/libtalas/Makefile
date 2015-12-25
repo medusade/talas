@@ -96,6 +96,6 @@ ${TALAS_SRC}/talas/crypto/hash/base.cpp \
 # libs
 #
 libtalas_LIBS = \
-${talas_LIBS} \
 -ltalas \
+${talas_LIBS} \
 
