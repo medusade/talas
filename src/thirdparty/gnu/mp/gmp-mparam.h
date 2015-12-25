@@ -39,4 +39,10 @@ MA 02111-1307, USA. */
 #define BITS_PER_INT 32
 #define BITS_PER_SHORTINT 16
 #define BITS_PER_CHAR 8
+#if !defined(NO_ASM)
+#if defined(__GNUC__)
+#define NO_ASM
+#endif /* defined(__GNUC__) */
+#endif /* !defined(NO_ASM) */
 #endif /* defined(__64_BIT_MACINE__) */
+
