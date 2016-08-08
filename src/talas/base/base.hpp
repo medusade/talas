@@ -33,6 +33,7 @@ typedef xos::base::base base;
 #include "talas/io/logger.hpp"
 #include "talas/io/write/file.hpp"
 #include "talas/io/read/file.hpp"
+#include "talas/base/array.hpp"
 #include "talas/base/string.hpp"
 #include "talas/base/types.hpp"
 

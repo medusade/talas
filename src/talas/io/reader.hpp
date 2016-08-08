@@ -27,9 +27,11 @@
 namespace talas {
 namespace io {
 
+typedef xos::io::reader reader;
+typedef xos::io::char_reader char_reader;
 typedef xos::io::byte_reader byte_reader;
 
-} // namespace io 
+} // namespace io
 } // namespace talas 
 
 #endif // _TALAS_IO_READER_HPP 

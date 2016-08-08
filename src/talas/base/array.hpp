@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2015 $organization$
+/// Copyright (c) 1988-2016 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,37 +13,41 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: string.hpp
+///   File: array.hpp
 ///
 /// Author: $author$
-///   Date: 4/7/2015
+///   Date: 1/1/2016
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_BASE_STRING_HPP
-#define _TALAS_BASE_STRING_HPP
+#ifndef _TALAS_BASE_ARRAY_HPP
+#define _TALAS_BASE_ARRAY_HPP
 
 #include "talas/base/base.hpp"
-#include "xos/base/string.hpp"
+#include "xos/base/array.hpp"
+
+#define TALAS_ARRAY_DEFAULT_SIZE XOS_ARRAY_DEFAULT_SIZE
 
 namespace talas {
 
-///////////////////////////////////////////////////////////////////////
-///  Class: string
-///////////////////////////////////////////////////////////////////////
+typedef implement_base array_implements;
+typedef base array_extends;
 #if defined(USE_CPP_11)
 template
-<typename TChar = char, typename TEnd = TChar, TEnd VEnd = 0,
- class TExtends = std::basic_string<TChar>,
- class TImplements = xos::base::string_implement>
+<typename TWhat = char,
+ typename TSize = size_t, TSize VSize = TALAS_ARRAY_DEFAULT_SIZE,
+ class TExtends = array_extends, class TImplements = array_implements>
 
-using stringt = typename xos::base::stringt
-<TChar, TEnd, VEnd, TExtends, TImplements>;
+using arrayt = typename xos::base::arrayt
+<TWhat, TSize, VSize, TExtends, TImplements>;
 #else // defined(USE_CPP_11)
 #endif // defined(USE_CPP_11)
 
-typedef xos::base::string string_t, char_string_t;
-typedef xos::base::tstring tstring_t, tchar_string_t;
-typedef xos::base::wstring wstring_t, wchar_string_t;
+typedef xos::base::char_array char_array_t;
+typedef xos::base::tchar_array tchar_array_t;
+typedef xos::base::wchar_array wchar_array_t;
+
+typedef xos::base::byte_array byte_array_t;
+typedef xos::base::word_array word_array_t;
 
 } // namespace talas
 
-#endif // _TALAS_BASE_STRING_HPP 
+#endif // _TALAS_BASE_ARRAY_HPP 

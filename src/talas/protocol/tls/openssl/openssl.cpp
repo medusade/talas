@@ -13,37 +13,19 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: string.hpp
+///   File: openssl.cpp
 ///
 /// Author: $author$
-///   Date: 4/7/2015
+///   Date: 12/27/2015
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_BASE_STRING_HPP
-#define _TALAS_BASE_STRING_HPP
-
-#include "talas/base/base.hpp"
-#include "xos/base/string.hpp"
+#include "talas/protocol/tls/openssl/openssl.hpp"
 
 namespace talas {
+namespace protocol {
+namespace tls {
+namespace openssl {
 
-///////////////////////////////////////////////////////////////////////
-///  Class: string
-///////////////////////////////////////////////////////////////////////
-#if defined(USE_CPP_11)
-template
-<typename TChar = char, typename TEnd = TChar, TEnd VEnd = 0,
- class TExtends = std::basic_string<TChar>,
- class TImplements = xos::base::string_implement>
-
-using stringt = typename xos::base::stringt
-<TChar, TEnd, VEnd, TExtends, TImplements>;
-#else // defined(USE_CPP_11)
-#endif // defined(USE_CPP_11)
-
-typedef xos::base::string string_t, char_string_t;
-typedef xos::base::tstring tstring_t, tchar_string_t;
-typedef xos::base::wstring wstring_t, wchar_string_t;
-
-} // namespace talas
-
-#endif // _TALAS_BASE_STRING_HPP 
+} // namespace openssl 
+} // namespace tls 
+} // namespace protocol 
+} // namespace talas 
