@@ -21,6 +21,8 @@
 
 libtalas_INCLUDEPATH += \
 $${talas_INCLUDEPATH} \
+$${talas_bn_INCLUDEPATH} \
+$${talas_mp_INCLUDEPATH} \
 
 libtalas_DEFINES += \
 $${talas_DEFINES} \

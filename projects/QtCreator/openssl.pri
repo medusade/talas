@@ -13,42 +13,21 @@
 # or otherwise) arising in any way out of the use of this software,
 # even if advised of the possibility of such damage.
 #
-#   File: libbn.pri
+#   File: openssl.pri
 #
 # Author: $author$
-#   Date: 4/23/2015
+#   Date: 12/25/2015
 ########################################################################
 
-libbn_INCLUDEPATH += \
-$${bn_INCLUDEPATH} \
+QMAKE_CXXFLAGS += -I${HOME}/build/openssl/include
+QMAKE_LFLAGS += -L${HOME}/build/openssl/lib
 
-libbn_DEFINES += \
-$${bn_DEFINES} \
+########################################################################
+# openssl
+openssl_INCLUDEPATH += \
 
-libbn_HEADERS += \
+openssl_DEFINES += \
 
-libbn_SOURCES += \
-$${bn_SRC}/bn_add.c \
-$${bn_SRC}/bn_blind.c \
-$${bn_SRC}/bn_div.c \
-$${bn_SRC}/bn_exp.c \
-$${bn_SRC}/bn_gcd.c \
-$${bn_SRC}/bn_lib.c \
-$${bn_SRC}/bn_mod.c \
-$${bn_SRC}/bn_mont.c \
-$${bn_SRC}/bn_mpi.c \
-$${bn_SRC}/bn_msb.c \
-$${bn_SRC}/bn_mul.c \
-$${bn_SRC}/bn_mulw.c \
-$${bn_SRC}/bn_prime.c \
-$${bn_SRC}/bn_randm.c \
-$${bn_SRC}/bn_recp.c \
-$${bn_SRC}/bn_shift.c \
-$${bn_SRC}/bn_sqr.c \
-$${bn_SRC}/bn_sub.c \
-$${bn_SRC}/bn_word.c \
-
-libbn_LIBS += \
--L$${NADIR_LIB}/libbn \
--lbn \
-
+openssl_LIBS += \
+-lssl \
+-lcrypto \

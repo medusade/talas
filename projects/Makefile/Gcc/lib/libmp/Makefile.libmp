@@ -39,6 +39,7 @@ ${talas_USRDEFINES} \
 #
 libmp_USRINCLUDES = \
 ${talas_USRINCLUDES} \
+${talas_mp_USRINCLUDES} \
 
 #
 # user libdirs

@@ -27,12 +27,12 @@ TALAS_LIB = ${TALAS_BLD}/lib
 TALAS_BIN = ${TALAS_BLD}/bin
 
 ########################################################################
-# xos
-XOS_PKG = ${TALAS_PKG}/../nadir
-XOS_SRC = ${XOS_PKG}/src
-XOS_BLD = ${XOS_PKG}/${BLD}/${BUILD_TYPE}
-XOS_LIB = ${XOS_BLD}/lib
-XOS_BIN = ${XOS_BLD}/bin
+# nadir
+NADIR_PKG = ${TALAS_PKG}/../nadir
+NADIR_SRC = ${NADIR_PKG}/src
+NADIR_BLD = ${NADIR_PKG}/${BLD}/${BUILD_TYPE}
+NADIR_LIB = ${NADIR_BLD}/lib
+NADIR_BIN = ${NADIR_BLD}/bin
 
 ########################################################################
 # bn
@@ -43,6 +43,12 @@ bn_BIN = ${bn_BLD}/bin
 bn_LIB = ${bn_BLD}/lib
 bn_SRC = ${bn_PKG}/src/thirdparty/openssl/bn
 
+talas_bn_USRINCLUDES += \
+-I${TALAS_SRC}/thirdparty/openssl/bn \
+
+talas_bn_LIBS += \
+-lbn \
+
 ########################################################################
 # mp
 mp_PKG = ${TALAS_PKG}
@@ -52,26 +58,39 @@ mp_BIN = ${mp_BLD}/bin
 mp_LIB = ${mp_BLD}/lib
 mp_SRC = ${mp_PKG}/src/thirdparty/gnu/mp
 
+talas_mp_USRINCLUDES += \
+-I${TALAS_SRC}/thirdparty/gnu/mp \
+
+talas_mp_LIBS += \
+-lmpz \
+-lmpn \
+-lmp \
+
+########################################################################
+# openssl
+openssl_USRINCLUDES += \
+-I${HOME}/build/openssl/include \
+
+openssl_USRLIBDIRS += \
+-L${HOME}/build/openssl/lib \
+
+openssl_LIBS += \
+-lssl \
+-lcrypto \
+
 ########################################################################
 # talas
 talas_USRDEFINES += \
 
 talas_USRINCLUDES += \
 -I${TALAS_SRC} \
--I${TALAS_SRC}/thirdparty/openssl/bn \
--I${TALAS_SRC}/thirdparty/gnu/mp \
--I${XOS_SRC} \
+-I${NADIR_SRC} \
 
 talas_USRCXXFLAGS += \
 -std=c++0x
 
 talas_USRLIBDIRS += \
--L${XOS_LIB} \
+-L${NADIR_LIB} \
 
 talas_LIBS += \
 -lxosnadir \
--lbn \
--lmpz \
--lmpn \
--lmp \
-

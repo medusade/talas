@@ -48,6 +48,8 @@ ${libtalas_USRDEFINES} \
 #
 USRINCLUDES = \
 ${libtalas_USRINCLUDES} \
+${talas_bn_USRINCLUDES} \
+${talas_mp_USRINCLUDES} \
 
 #
 # user libdirs
@@ -110,6 +112,8 @@ EXE_MM_SOURCES = \
 #
 LIBS = \
 ${libtalas_LIBS} \
+${talas_bn_LIBS} \
+${talas_mp_LIBS} \
 
 #
 # Executable depends

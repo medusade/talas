@@ -1,5 +1,5 @@
 ########################################################################
-# Copyright (c) 1988-2014 $organization$
+# Copyright (c) 1988-2015 $organization$
 #
 # This software is provided by the author and contributors ``as is'' 
 # and any express or implied warranties, including, but not limited to, 
@@ -13,43 +13,36 @@
 # or otherwise) arising in any way out of the use of this software, 
 # even if advised of the possibility of such damage.
 #
-#   File: talas.pri
+#   File: openssl.pri
 #
 # Author: $author$
-#   Date: 12/7/2014
+#   Date: 12/25/2015
 ########################################################################
 
-QMAKE_CXXFLAGS += -std=c++0x
+########################################################################
+talas_openssl_HEADERS += \
+$${TALAS_SRC}/talas/protocol/tls/openssl/bio_rw.hpp \
+$${TALAS_SRC}/talas/protocol/tls/openssl/openssl.hpp \
+
+talas_openssl_SOURCES += \
+$${TALAS_SRC}/talas/protocol/tls/openssl/bio_rw.cpp \
+$${TALAS_SRC}/talas/protocol/tls/openssl/openssl.cpp \
 
 ########################################################################
-# nadir
-NADIR_BLD = ../$${NADIR_PKG}/build/linux/QtCreator/Debug
-NADIR_LIB = $${NADIR_BLD}/lib
+talas_openssl_HEADERS += \
+$${TALAS_SRC}/talas/app/console/openssl/main.hpp \
+$${TALAS_SRC}/talas/console/main.hpp \
+$${TALAS_SRC}/talas/console/main_opt.hpp \
+$${TALAS_SRC}/talas/console/main_main.hpp \
+$${TALAS_SRC}/talas/base/base.hpp \
+
+talas_openssl_SOURCES += \
+$${TALAS_SRC}/talas/app/console/openssl/main.cpp \
+$${TALAS_SRC}/talas/console/main_opt.cpp \
+$${TALAS_SRC}/talas/console/main_main.cpp \
 
 ########################################################################
-# talas
-talas_LIBS += \
--L$${TALAS_LIB}/libtalas \
--ltalas \
--L$${NADIR_LIB}/libxosnadir \
--lxosnadir \
--lpthread \
--ldl \
--lrt \
+_talas_openssl_HEADERS += \
+$${TALAS_SRC}/talas/app/console/openssl/main_opt.hpp \
 
-########################################################################
-# talas_bn
-talas_bn_LIBS += \
--L$${TALAS_LIB}/libbn \
--lbn \
-
-########################################################################
-# talas_mp
-talas_mp_LIBS += \
--L$${TALAS_LIB}/libmpz \
--lmpz \
--L$${TALAS_LIB}/libmpn \
--lmpn \
--L$${TALAS_LIB}/libmp \
--lmp \
-
+_talas_openssl_SOURCES += \

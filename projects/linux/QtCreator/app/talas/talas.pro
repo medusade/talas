@@ -26,6 +26,8 @@ TARGET = talas
 
 INCLUDEPATH += \
 $${talas_INCLUDEPATH} \
+$${talas_bn_INCLUDEPATH} \
+$${talas_mp_INCLUDEPATH} \
 
 DEFINES += \
 $${talas_DEFINES} \
@@ -38,4 +40,6 @@ $${talas_SOURCES} \
 
 LIBS += \
 $${talas_LIBS} \
+$${talas_bn_LIBS} \
+$${talas_mp_LIBS} \
 

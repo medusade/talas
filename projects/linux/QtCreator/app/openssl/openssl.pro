@@ -1,5 +1,5 @@
 ########################################################################
-# Copyright (c) 1988-2014 $organization$
+# Copyright (c) 1988-2015 $organization$
 #
 # This software is provided by the author and contributors ``as is'' 
 # and any express or implied warranties, including, but not limited to, 
@@ -13,43 +13,33 @@
 # or otherwise) arising in any way out of the use of this software, 
 # even if advised of the possibility of such damage.
 #
-#   File: talas.pri
+#   File: openssl.pro
 #
 # Author: $author$
-#   Date: 12/7/2014
+#   Date: 12/25/2015
 ########################################################################
+include(../../../../QtCreator/talas.pri)
+include(../../talas.pri)
+include(../../../../QtCreator/openssl.pri)
+include(../../openssl.pri)
+include(../../../../QtCreator/app/openssl/openssl.pri)
 
-QMAKE_CXXFLAGS += -std=c++0x
+TARGET = talas-openssl
 
-########################################################################
-# nadir
-NADIR_BLD = ../$${NADIR_PKG}/build/linux/QtCreator/Debug
-NADIR_LIB = $${NADIR_BLD}/lib
+INCLUDEPATH += \
+$${talas_INCLUDEPATH} \
+$${openssl_INCLUDEPATH} \
 
-########################################################################
-# talas
-talas_LIBS += \
--L$${TALAS_LIB}/libtalas \
--ltalas \
--L$${NADIR_LIB}/libxosnadir \
--lxosnadir \
--lpthread \
--ldl \
--lrt \
+DEFINES += \
+$${talas_DEFINES} \
+$${openssl_DEFINES} \
 
-########################################################################
-# talas_bn
-talas_bn_LIBS += \
--L$${TALAS_LIB}/libbn \
--lbn \
+HEADERS += \
+$${talas_openssl_HEADERS} \
 
-########################################################################
-# talas_mp
-talas_mp_LIBS += \
--L$${TALAS_LIB}/libmpz \
--lmpz \
--L$${TALAS_LIB}/libmpn \
--lmpn \
--L$${TALAS_LIB}/libmp \
--lmp \
+SOURCES += \
+$${talas_openssl_SOURCES} \
 
+LIBS += \
+$${openssl_LIBS} \
+$${talas_LIBS} \

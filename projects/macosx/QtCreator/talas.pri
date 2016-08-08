@@ -19,27 +19,55 @@
 #   Date: 11/18/2014
 ########################################################################
 
-QMAKE_CXXFLAGS += -std=c++11
+#QMAKE_CXXFLAGS += -std=c++11
+
+TALAS_OS = macosx
 
 ########################################################################
-# xos
-XOS_BLD = ../$${XOS_PKG}/build/macosx/QtCreator/Debug
-XOS_LIB = $${XOS_BLD}/lib
+# nadir
+NADIR_BLD = ../$${NADIR_PKG}/build/$${TALAS_OS}/QtCreator/$${TALAS_CONFIG}
+NADIR_LIB = $${NADIR_BLD}/lib
+
+nadir_LIBS += \
+-L$${NADIR_LIB}/libxosnadir \
+-lxosnadir \
+
+########################################################################
+# coral
+CORAL_BLD = ../$${CORAL_PKG}/build/$${TALAS_OS}/QtCreator/$${TALAS_CONFIG}
+CORAL_LIB = $${CORAL_BLD}/lib
+
+nadir_LIBS += \
+-L$${CORAL_LIB}/libcoral \
+-lcoral \
+
+########################################################################
+# os
+os_LIBS += \
+-lpthread \
+-ldl \
 
 ########################################################################
 # talas
 talas_LIBS += \
 -L$${TALAS_LIB}/libtalas \
 -ltalas \
+$${nadir_LIBS} \
+$${os_LIBS} \
+
+########################################################################
+# talas_bn
+talas_bn_LIBS += \
 -L$${TALAS_LIB}/libbn \
 -lbn \
+
+########################################################################
+# talas_mp
+talas_mp_LIBS += \
 -L$${TALAS_LIB}/libmp \
 -lmp \
 -L$${TALAS_LIB}/libmpz \
 -lmpz \
 -L$${TALAS_LIB}/libmpn \
 -lmpn \
--L$${XOS_LIB}/libxosnadir \
--lxosnadir \
--lpthread \
--ldl \
+

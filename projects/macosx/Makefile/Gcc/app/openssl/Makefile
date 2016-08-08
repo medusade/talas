@@ -1,5 +1,5 @@
 ########################################################################
-# Copyright (c) 1988-2014 $organization$
+# Copyright (c) 1988-2016 $organization$
 #
 # This software is provided by the author and contributors ``as is'' 
 # and any express or implied warranties, including, but not limited to, 
@@ -16,26 +16,26 @@
 #   File: Makefile
 #
 # Author: $author$
-#   Date: 12/9/2014
+#   Date: 1/3/2016
 #
-# Linux Gcc Makefile for talas talas Executable
+# MacOSX Gcc Makefile for talas openssl Executable
 ########################################################################
 PKG = ../../../../../..
 
 MAK = projects/Makefile/Gcc
-PRJ = projects/linux/Makefile/Gcc
+PRJ = projects/macosx/Makefile/Gcc
 SRC = src
 
 include $(PKG)/$(MAK)/Makedefines
 include $(PKG)/$(PRJ)/Makedefines
 include $(PKG)/$(MAK)/Makefile
 include $(PKG)/$(MAK)/lib/libtalas/Makefile
-include $(PKG)/$(MAK)/app/talas/Makefile
+include $(PKG)/$(MAK)/app/openssl/Makefile
 
 #
 # target
 #
-EXETARGET = talas
+EXETARGET = talas-openssl
 
 #
 # user defines
@@ -48,14 +48,14 @@ ${libtalas_USRDEFINES} \
 #
 USRINCLUDES = \
 ${libtalas_USRINCLUDES} \
-${talas_bn_USRINCLUDES} \
-${talas_mp_USRINCLUDES} \
+${openssl_USRINCLUDES} \
 
 #
 # user libdirs
 #
 USRLIBDIRS = \
 ${libtalas_USRLIBDIRS} \
+${openssl_USRLIBDIRS} \
 
 #
 # user c++ flags
@@ -92,7 +92,7 @@ EXE_CXX_SOURCES = \
 # Executable C++ .cpp sources
 #
 EXE_CPP_SOURCES = \
-${talas_EXE_CPP_SOURCES} \
+${openssl_EXE_CPP_SOURCES} \
 
 #
 # Executable Objective C .m sources
@@ -111,9 +111,8 @@ EXE_MM_SOURCES = \
 #-lsomelib
 #
 LIBS = \
+${openssl_LIBS} \
 ${libtalas_LIBS} \
-${talas_bn_LIBS} \
-${talas_mp_LIBS} \
 
 #
 # Executable depends
@@ -142,6 +141,3 @@ include $(PKG)/$(PRJ)/Makerules
 #	  ((make) || (exit 1));\
 #	  popd)
 #
-
-        
-

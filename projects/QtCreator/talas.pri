@@ -18,7 +18,6 @@
 # Author: $author$
 #   Date: 11/18/2014
 ########################################################################
-
 TALAS_PKG = ../../../../..
 TALAS_BLD = ../..
 TALAS_PRJ = $${TALAS_PKG}
@@ -26,24 +25,49 @@ TALAS_BIN = $${TALAS_BLD}/bin
 TALAS_LIB = $${TALAS_BLD}/lib
 TALAS_SRC = $${TALAS_PKG}/src
 
+CONFIG(debug, debug|release) {
+TALAS_CONFIG = Debug
+} else {
+TALAS_CONFIG = Release
+}
+
 ########################################################################
-# xos
-XOS_PKG = $${TALAS_PKG}/../nadir
-XOS_PRJ = $${XOS_PKG}
-XOS_SRC = $${XOS_PKG}/src
+# nadir
+NADIR_PKG = $${TALAS_PKG}/../nadir
+NADIR_PRJ = $${NADIR_PKG}
+NADIR_SRC = $${NADIR_PKG}/src
 
-xos_INCLUDEPATH += \
-$${XOS_SRC} \
+nadir_INCLUDEPATH += \
+$${NADIR_SRC} \
 
-xos_DEFINES += \
+nadir_DEFINES += \
+
+########################################################################
+# coral
+CORAL_PKG = $${TALAS_PKG}/../coral
+CORAL_PRJ = $${CORAL_PKG}
+CORAL_SRC = $${CORAL_PKG}/src
+
+coral_INCLUDEPATH += \
+$${CORAL_SRC} \
+
+coral_DEFINES += \
 
 ########################################################################
 # talas
 talas_INCLUDEPATH += \
 $${TALAS_SRC} \
+$${nadir_INCLUDEPATH} \
+
+########################################################################
+# talas_bn
+talas_bn_INCLUDEPATH += \
 $${TALAS_SRC}/thirdparty/openssl/bn \
+
+########################################################################
+# talas_mp
+talas_mp_INCLUDEPATH += \
 $${TALAS_SRC}/thirdparty/gnu/mp \
-$${xos_INCLUDEPATH} \
 
 talas_DEFINES += \
-$${xos_DEFINES} \
+$${nadir_DEFINES} \

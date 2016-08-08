@@ -1,5 +1,5 @@
 ########################################################################
-# Copyright (c) 1988-2014 $organization$
+# Copyright (c) 1988-2016 $organization$
 #
 # This software is provided by the author and contributors ``as is'' 
 # and any express or implied warranties, including, but not limited to, 
@@ -13,43 +13,23 @@
 # or otherwise) arising in any way out of the use of this software, 
 # even if advised of the possibility of such damage.
 #
-#   File: talas.pri
+#   File: Makefile
 #
 # Author: $author$
-#   Date: 12/7/2014
+#   Date: 1/2/2016
+#
+# Generic Gcc Makefile for talas openssl Executable
 ########################################################################
 
-QMAKE_CXXFLAGS += -std=c++0x
+#
+# Executable C++ .cpp sources
+#
+openssl_EXE_CPP_SOURCES += \
+${TALAS_SRC}/talas/protocol/tls/openssl/bio_rw.cpp \
+${TALAS_SRC}/talas/protocol/tls/openssl/openssl.cpp \
 
-########################################################################
-# nadir
-NADIR_BLD = ../$${NADIR_PKG}/build/linux/QtCreator/Debug
-NADIR_LIB = $${NADIR_BLD}/lib
-
-########################################################################
-# talas
-talas_LIBS += \
--L$${TALAS_LIB}/libtalas \
--ltalas \
--L$${NADIR_LIB}/libxosnadir \
--lxosnadir \
--lpthread \
--ldl \
--lrt \
-
-########################################################################
-# talas_bn
-talas_bn_LIBS += \
--L$${TALAS_LIB}/libbn \
--lbn \
-
-########################################################################
-# talas_mp
-talas_mp_LIBS += \
--L$${TALAS_LIB}/libmpz \
--lmpz \
--L$${TALAS_LIB}/libmpn \
--lmpn \
--L$${TALAS_LIB}/libmp \
--lmp \
+openssl_EXE_CPP_SOURCES += \
+${TALAS_SRC}/talas/app/console/openssl/main.cpp \
+${TALAS_SRC}/talas/console/main_opt.cpp \
+${TALAS_SRC}/talas/console/main_main.cpp \
 

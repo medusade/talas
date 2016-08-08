@@ -38,12 +38,12 @@ $${mp_SRC}/stack-alloc.c \
 $${mp_SRC}/version.c \
 
 libmp_LIBS += \
--L$${XOS_LIB}/libmpz \
+-L$${NADIR_LIB}/libmpz \
 -lmpz \
--L$${XOS_LIB}/libmpn \
+-L$${NADIR_LIB}/libmpn \
 -lmpn \
 
 unused = \
--L$${XOS_LIB}/libmp \
+-L$${NADIR_LIB}/libmp \
 -lmp \
 

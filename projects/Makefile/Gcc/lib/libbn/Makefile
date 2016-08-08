@@ -38,6 +38,7 @@ ${talas_USRDEFINES} \
 #
 libbn_USRINCLUDES = \
 ${talas_USRINCLUDES} \
+${talas_bn_USRINCLUDES} \
 
 #
 # user libdirs
