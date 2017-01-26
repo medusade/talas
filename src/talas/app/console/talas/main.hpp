@@ -245,7 +245,8 @@ protected:
         size_t pbytes = (modbytes >> 1);
         unsigned seed = pseudo_random_seed_;
         crypto::random::pseudo ps(seed);
-        crypto::byte_array exponent(rsa_exponent_, expbytes);
+        crypto::byte_array _exponent(rsa_exponent_, expbytes);
+		byte_t* exponent = _exponent.elements();
         if ((run_generate_rsa_)) {
             err = (this->*run_generate_rsa_)
             (modbytes, exponent, expbytes, pbytes, ps, argc, argv, env);
@@ -460,7 +461,8 @@ protected:
         size_t modbytes = pub.modbytes();
         size_t expbytes = pub.expbytes();
         size_t pbytes = prv.pbytes();
-        byte_array b(modbytes);
+        byte_array _b(modbytes);
+		byte_t* b = _b.elements();
         if (expbytes == (pub.get_exponent_msb(b, modbytes))) {
             out("rsa-exponent: 0x"); outxln(b, expbytes);
         }
@@ -503,9 +505,10 @@ protected:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
     virtual int run_generate_mp_prime
-    (unsigned bytes, byte_array& b, crypto::random::pseudo& ps,
+    (unsigned bytes, byte_array& _b, crypto::random::pseudo& ps,
      int argc, char_t** argv, char_t** env) {
         int err = 0;
+		byte_t* b = _b.elements();
         crypto::random::prime::mp::number n(0);
         crypto::random::prime::mp::generator g(this);
         if ((g.create())) {
@@ -518,9 +521,10 @@ protected:
         return err;
     }
     virtual int run_miller_rabin_mp_prime
-    (unsigned bytes, byte_array& b, crypto::random::pseudo& ps,
+    (unsigned bytes, byte_array& _b, crypto::random::pseudo& ps,
      int argc, char_t** argv, char_t** env) {
         int err = 0;
+		byte_t* b = _b.elements();
         crypto::random::prime::mp::number n(0);
         crypto::random::prime::mp::reader r(this);
         crypto::random::prime::mp::miller_rabin mr(this);
@@ -541,9 +545,10 @@ protected:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
     virtual int run_generate_bn_prime
-    (unsigned bytes, byte_array& b, crypto::random::pseudo& ps,
+    (unsigned bytes, byte_array& _b, crypto::random::pseudo& ps,
      int argc, char_t** argv, char_t** env) {
         int err = 0;
+		byte_t* b = _b.elements();
         crypto::random::prime::bn::number n(0);
         crypto::random::prime::bn::generator g(this);
         if ((g.create())) {
@@ -556,9 +561,10 @@ protected:
         return err;
     }
     virtual int run_miller_rabin_bn_prime
-    (unsigned bytes, byte_array& b, crypto::random::pseudo& ps,
+    (unsigned bytes, byte_array& _b, crypto::random::pseudo& ps,
      int argc, char_t** argv, char_t** env) {
         int err = 0;
+		byte_t* b = _b.elements();
         crypto::random::prime::bn::number n(0);
         crypto::random::prime::bn::reader r(this);
         crypto::random::prime::bn::miller_rabin mr(this);
@@ -735,7 +741,7 @@ protected:
         out("     secret2: 0x"); outxln(s2.elements(), s2.size());
         outln();
 
-        if ((bytes_t::compare(s, s2, s.length()))) {
+        if ((bytes_t::compare(s.elements(), s2.elements(), s.length()))) {
             errln("failed secret1 != secret2");
             return 1;
         }

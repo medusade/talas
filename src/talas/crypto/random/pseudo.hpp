@@ -24,6 +24,10 @@
 #include "talas/crypto/random/generator.hpp"
 #include "talas/io/logger.hpp"
 
+#if defined(WINDOWS)
+#include "rand_r.h"
+#endif // defined(WINDOWS)
+
 namespace talas {
 namespace crypto {
 namespace random {
@@ -65,7 +69,7 @@ public:
                         time_t t = time(&t);
                         m_seed = (unsigned)(t);
                         TALAS_LOG_TRACE("seed = " << m_seed);
-                    }
+					}
                     m_rand = (unsigned)rand_r(&m_seed);
                     m_avail = sizeof(m_rand);
                     TALAS_LOG_TRACE("rand = " << m_rand);
