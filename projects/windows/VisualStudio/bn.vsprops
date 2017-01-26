@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <!--========================================================================-->
-<!-- Copyright (c) 1988-2015 $organization$                                 -->
+<!-- Copyright (c) 1988-2017 $organization$                             -->
 <!--                                                                        -->
 <!-- This software is provided by the author and contributors ``as is''     -->
 <!-- and any express or implied warranties, including, but not limited to,  -->
@@ -14,33 +14,89 @@
 <!-- or otherwise) arising in any way out of the use of this software,      -->
 <!-- even if advised of the possibility of such damage.                     -->
 <!--                                                                        -->
-<!--   File: talas-vcversion.vsprops                                        -->
+<!--   File: bn.vsprops                                            -->
 <!--                                                                        -->
 <!-- Author: $author$                                                       -->
-<!--   Date: 4/7/2015                                                       -->
+<!--   Date: 1/24/2017                                                       -->
 <!--========================================================================-->
 <VisualStudioPropertySheet
     ProjectType="Visual C++"
     Version="8.00"
-    Name="talas-vcversion">
+    Name="bn">
+
+    <!--===============================================-->
+
+    <UserMacro
+        Name="BN_GROUP"
+        Value="talas/src/thirdparty/openssl/"
+    />
+    <UserMacro
+        Name="BN_NAME"
+        Value="bn"
+    />
+    <UserMacro
+        Name="BN_VERSION"
+        Value=""
+    />
+    <UserMacro
+        Name="BN_DIR"
+        Value="$(BN_GROUP)$(BN_NAME)$(BN_VERSION)"
+    />
+    <UserMacro
+        Name="BN_SOURCE_DIR"
+        Value="$(SOURCE_ROOT_DIR)/$(BN_DIR)"
+    />
+    <UserMacro
+        Name="BN_BUILD_DIR"
+        Value="$(SOURCE_BUILD_DIR)/talas/build"
+    />
+
+    <!--===============================================-->
+
+    <UserMacro
+        Name="BN_BUILD"
+        Value="$(BN_BUILD_DIR)/$(PlatformName)/$(VCVersion)/$(ConfigurationName)"
+    />
+    <UserMacro
+        Name="BN_OBJ"
+        Value="$(BN_BUILD)/obj/$(ProjectName)"
+    />
+    <UserMacro
+        Name="BN_LIB"
+        Value="$(BN_BUILD)/lib"
+    />
+    <UserMacro
+        Name="BN_BIN"
+        Value="$(BN_BUILD)/bin"
+    />
 
   <!--===============================================-->
 
     <UserMacro
-      Name="SOURCE_ROOT_DIR"
-      Value="../../../../../.."
+      Name="XOSBN_DEFINES"
+      Value=""
+    />
+  <UserMacro
+      Name="BN_DEFINES"
+      Value="$(XOSBN_DEFINES)"
+    />
+
+  <UserMacro
+        Name="BN_INCLUDE_DIRS"
+        Value="$(BN_SOURCE_DIR)"
+    />
+    <UserMacro
+        Name="BN_LIB_DIRS"
+        Value="$(BN_LIB)"
     />
 
     <UserMacro
-      Name="SOURCE_BUILD_DIR"
-      Value="$(SOURCE_ROOT_DIR)"
+      Name="XOSBN_LIBS"
+      Value="libbn.lib"
     />
-
-  <!--===============================================-->
-
-    <UserMacro
-        Name="VCVersion"
-        Value="vc9"
+  <UserMacro
+      Name="BN_LIBS"
+      Value="$(XOSBN_LIBS)"
     />
 
   <!--===============================================-->

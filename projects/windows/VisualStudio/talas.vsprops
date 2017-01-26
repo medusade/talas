@@ -27,18 +27,6 @@
     <!--===============================================-->
 
     <UserMacro
-        Name="SOURCE_ROOT_DIR"
-        Value="../../../../../.."
-    />
-
-    <UserMacro
-        Name="SOURCE_BUILD_DIR"
-        Value="$(SOURCE_ROOT_DIR)"
-    />
-
-    <!--===============================================-->
-
-    <UserMacro
         Name="TALAS_GROUP"
         Value=""
     />
@@ -65,12 +53,16 @@
 
     <!--===============================================-->
 
-
     <UserMacro
         Name="TALAS_DEFINES"
         Value="$(NADIR_DEFINES)"
     />
     <UserMacro
+      Name="XOSTALAS_DEFINES"
+      Value="$(XOSNADIR_DEFINES)"
+    />
+
+     <UserMacro
         Name="TALAS_BUILD"
         Value="$(TALAS_BUILD_DIR)/$(PlatformName)/$(VCVersion)/$(ConfigurationName)"
     />
@@ -88,18 +80,27 @@
     />
 
     <UserMacro
+      Name="CURVE25519_INCLUDE_DIRS"
+      Value="$(TALAS_SOURCE_DIR)/thirdparty/msotoodeh/curve25519;$(TALAS_SOURCE_DIR)/thirdparty/google/curve25519"
+    />
+    <UserMacro
         Name="TALAS_INCLUDE_DIRS"
-        Value="$(TALAS_SOURCE_DIR);$(NADIR_INCLUDE_DIRS)"
+        Value="$(TALAS_SOURCE_DIR);$(CURVE25519_INCLUDE_DIRS);$(BN_INCLUDE_DIRS);$(MP_INCLUDE_DIRS);$(NADIR_INCLUDE_DIRS)"
     />
     <UserMacro
         Name="TALAS_LIB_DIRS"
-        Value="$(TALAS_LIB);$(NADIR_LIB_DIRS)"
-    />
-    <UserMacro
-        Name="TALAS_LIBS"
-        Value="libtalas.lib $(NADIR_LIBS)"
+        Value="$(TALAS_LIB);$(BN_LIB_DIRS);$(MP_LIB_DIRS);$(NADIR_LIB_DIRS)"
     />
 
-    <!--===============================================-->
+    <UserMacro
+        Name="TALAS_LIBS"
+        Value="libtalas.lib $(BN_LIBS) $(MP_LIBS) $(NADIR_LIBS)"
+    />
+    <UserMacro
+        Name="XOSTALAS_LIBS"
+        Value="libtalas.lib $(BN_LIBS) $(MP_LIBS) $(XOSNADIR_LIBS)"
+    />
+
+  <!--===============================================-->
 
 </VisualStudioPropertySheet>

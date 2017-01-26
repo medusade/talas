@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <!--========================================================================-->
-<!-- Copyright (c) 1988-2015 $organization$                                 -->
+<!-- Copyright (c) 1988-2017 $organization$                             -->
 <!--                                                                        -->
 <!-- This software is provided by the author and contributors ``as is''     -->
 <!-- and any express or implied warranties, including, but not limited to,  -->
@@ -14,33 +14,89 @@
 <!-- or otherwise) arising in any way out of the use of this software,      -->
 <!-- even if advised of the possibility of such damage.                     -->
 <!--                                                                        -->
-<!--   File: talas-vcversion.vsprops                                        -->
+<!--   File: mp.vsprops                                            -->
 <!--                                                                        -->
 <!-- Author: $author$                                                       -->
-<!--   Date: 4/7/2015                                                       -->
+<!--   Date: 1/24/2017                                                       -->
 <!--========================================================================-->
 <VisualStudioPropertySheet
     ProjectType="Visual C++"
     Version="8.00"
-    Name="talas-vcversion">
+    Name="mp">
+
+    <!--===============================================-->
+
+    <UserMacro
+        Name="MP_GROUP"
+        Value="talas/src/thirdparty/gnu/"
+    />
+    <UserMacro
+        Name="MP_NAME"
+        Value="mp"
+    />
+    <UserMacro
+        Name="MP_VERSION"
+        Value=""
+    />
+    <UserMacro
+        Name="MP_DIR"
+        Value="$(MP_GROUP)$(MP_NAME)$(MP_VERSION)"
+    />
+    <UserMacro
+        Name="MP_SOURCE_DIR"
+        Value="$(SOURCE_ROOT_DIR)/$(MP_DIR)"
+    />
+    <UserMacro
+        Name="MP_BUILD_DIR"
+        Value="$(SOURCE_BUILD_DIR)/talas/build"
+    />
+
+    <!--===============================================-->
+
+    <UserMacro
+        Name="MP_BUILD"
+        Value="$(MP_BUILD_DIR)/$(PlatformName)/$(VCVersion)/$(ConfigurationName)"
+    />
+    <UserMacro
+        Name="MP_OBJ"
+        Value="$(MP_BUILD)/obj/$(ProjectName)"
+    />
+    <UserMacro
+        Name="MP_LIB"
+        Value="$(MP_BUILD)/lib"
+    />
+    <UserMacro
+        Name="MP_BIN"
+        Value="$(MP_BUILD)/bin"
+    />
 
   <!--===============================================-->
 
     <UserMacro
-      Name="SOURCE_ROOT_DIR"
-      Value="../../../../../.."
+      Name="XOSMP_DEFINES"
+      Value="_WINDOWS;__STDC__;inline="
+    />
+  <UserMacro
+      Name="MP_DEFINES"
+      Value="$(XOSMP_DEFINES)"
+    />
+
+  <UserMacro
+        Name="MP_INCLUDE_DIRS"
+        Value="$(MP_SOURCE_DIR)"
+    />
+    <UserMacro
+        Name="MP_LIB_DIRS"
+        Value="$(MP_LIB)"
     />
 
     <UserMacro
-      Name="SOURCE_BUILD_DIR"
-      Value="$(SOURCE_ROOT_DIR)"
+      Name="XOSMP_LIBS"
+      Value="libmpn.lib libmpz.lib libmp.lib"
     />
-
-  <!--===============================================-->
-
-    <UserMacro
-        Name="VCVersion"
-        Value="vc9"
+  <UserMacro
+      Name="MP_LIBS"
+      Value="$(XOSMP_LIBS)"
     />
 
   <!--===============================================-->

@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="9.00"
+	Name="libmpz"
+	ProjectGUID="{C276443A-EA8F-4C88-BA83-2B664B37AD1D}"
+	RootNamespace="libmpz"
+	Keyword="Win32Proj"
+	TargetFrameworkVersion="196613"
+	>
+	<Platforms>
+		<Platform
+			Name="Win32"
+		/>
+		<Platform
+			Name="x64"
+		/>
+	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="$(MP_LIB)"
+			IntermediateDirectory="$(MP_OBJ)"
+			ConfigurationType="4"
+			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\mp.vsprops"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="$(MP_INCLUDE_DIRS)"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;$(MP_DEFINES)"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="4"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="$(MP_LIB)"
+			IntermediateDirectory="$(MP_OBJ)"
+			ConfigurationType="4"
+			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\mp.vsprops"
+			CharacterSet="1"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="$(MP_INCLUDE_DIRS)"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;$(MP_DEFINES)"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug|x64"
+			OutputDirectory="$(MP_LIB)"
+			IntermediateDirectory="$(MP_OBJ)"
+			ConfigurationType="4"
+			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\mp.vsprops"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="$(MP_INCLUDE_DIRS)"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;$(MP_DEFINES)"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|x64"
+			OutputDirectory="$(MP_LIB)"
+			IntermediateDirectory="$(MP_OBJ)"
+			ConfigurationType="4"
+			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\mp.vsprops"
+			CharacterSet="1"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TargetEnvironment="3"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="$(MP_INCLUDE_DIRS)"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;$(MP_DEFINES)"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\abs.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\add.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\add_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\and.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\array_init.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\cdiv_q.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\cdiv_q_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\cdiv_qr.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\cdiv_qr_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\cdiv_r.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\cdiv_r_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\cdiv_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\clear.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\clrbit.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\cmp.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\cmp_si.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\cmp_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\com.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\divexact.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\fac_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\fdiv_q.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\fdiv_q_2exp.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\fdiv_q_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\fdiv_qr.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\fdiv_qr_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\fdiv_r.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\fdiv_r_2exp.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\fdiv_r_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\fdiv_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\gcd.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\gcd_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\gcdext.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\get_d.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\get_si.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\get_str.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\get_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\getbit.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\getlimbn.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\hamdist.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\init.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\inp_raw.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\inp_str.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\invert.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\ior.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\iset.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\iset_d.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\iset_si.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\iset_str.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\iset_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\jacobi.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\legendre.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\mod.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\mod_inverse.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz_msb.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\mul.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\mul_2exp.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\mul_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\neg.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\out_raw.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\out_str.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\perfsqr.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\popcount.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\pow_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\powm.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\powm_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\pprime_p.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\random.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\random2.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\realloc.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\scan0.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\scan1.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\set.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\set_d.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\set_f.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\set_q.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\set_si.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\set_str.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\set_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\setbit.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\size.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\sizeinbase.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\sqrt.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\sqrtrem.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\sub.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\sub_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\tdiv_q.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\tdiv_q_2exp.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\tdiv_q_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\tdiv_qr.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\tdiv_qr_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\tdiv_r.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\tdiv_r_2exp.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\tdiv_r_ui.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpz\ui_pow_ui.c"/>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
+			>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

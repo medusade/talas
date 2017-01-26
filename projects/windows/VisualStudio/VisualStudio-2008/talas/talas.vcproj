@@ -24,7 +24,7 @@
 			OutputDirectory="$(TALAS_BIN)"
 			IntermediateDirectory="$(TALAS_OBJ)"
 			ConfigurationType="1"
-			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\talas.vsprops;..\..\talas-nadir.vsprops"
+			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\talas.vsprops;..\..\talas-nadir.vsprops;..\..\bn.vsprops;..\..\mp.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -46,7 +46,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="$(TALAS_INCLUDE_DIRS)"
-				PreprocessorDefinitions="$(TALAS_DEFINES);WIN32;_DEBUG;_CONSOLE"
+				PreprocessorDefinitions="$(XOSTALAS_DEFINES);WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -65,7 +65,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="$(TALAS_LIBS)"
+				AdditionalDependencies="$(XOSTALAS_LIBS)"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="$(TALAS_LIB_DIRS)"
 				GenerateDebugInformation="true"
@@ -99,7 +99,7 @@
 			OutputDirectory="$(TALAS_BIN)"
 			IntermediateDirectory="$(TALAS_OBJ)"
 			ConfigurationType="1"
-			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\talas.vsprops;..\..\talas-nadir.vsprops"
+			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\talas.vsprops;..\..\talas-nadir.vsprops;..\..\bn.vsprops;..\..\mp.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -122,7 +122,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="$(TALAS_INCLUDE_DIRS)"
-				PreprocessorDefinitions="$(TALAS_DEFINES);WIN32;_DEBUG;_CONSOLE"
+				PreprocessorDefinitions="$(XOSTALAS_DEFINES);WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -141,7 +141,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="$(TALAS_LIBS)"
+				AdditionalDependencies="$(XOSTALAS_LIBS)"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="$(TALAS_LIB_DIRS)"
 				GenerateDebugInformation="true"
@@ -175,7 +175,7 @@
 			OutputDirectory="$(TALAS_BIN)"
 			IntermediateDirectory="$(TALAS_OBJ)"
 			ConfigurationType="1"
-			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\talas.vsprops;..\..\talas-nadir.vsprops"
+			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\talas.vsprops;..\..\talas-nadir.vsprops;..\..\bn.vsprops;..\..\mp.vsprops"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -199,7 +199,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="$(TALAS_INCLUDE_DIRS)"
-				PreprocessorDefinitions="$(TALAS_DEFINES);WIN32;NDEBUG;_CONSOLE"
+				PreprocessorDefinitions="$(XOSTALAS_DEFINES);WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -217,7 +217,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="$(TALAS_LIBS)"
+				AdditionalDependencies="$(XOSTALAS_LIBS)"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="$(TALAS_LIB_DIRS)"
 				GenerateDebugInformation="true"
@@ -253,7 +253,7 @@
 			OutputDirectory="$(TALAS_BIN)"
 			IntermediateDirectory="$(TALAS_OBJ)"
 			ConfigurationType="1"
-			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\talas.vsprops;..\..\talas-nadir.vsprops"
+			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\talas.vsprops;..\..\talas-nadir.vsprops;..\..\bn.vsprops;..\..\mp.vsprops"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -278,7 +278,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="$(TALAS_INCLUDE_DIRS)"
-				PreprocessorDefinitions="$(TALAS_DEFINES);WIN32;NDEBUG;_CONSOLE"
+				PreprocessorDefinitions="$(XOSTALAS_DEFINES);WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -296,7 +296,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="$(TALAS_LIBS)"
+				AdditionalDependencies="$(XOSTALAS_LIBS)"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="$(TALAS_LIB_DIRS)"
 				GenerateDebugInformation="true"

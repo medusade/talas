@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="libtalas"
-	ProjectGUID="{10162E35-04C9-4F79-8DA7-8D7D365F7C11}"
-	RootNamespace="libtalas"
+	Name="libmpn"
+	ProjectGUID="{45989CDC-88E8-4244-846D-EA07E417A494}"
+	RootNamespace="libmpn"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -21,10 +21,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(TALAS_LIB)"
-			IntermediateDirectory="$(TALAS_OBJ)"
+			OutputDirectory="$(MP_LIB)"
+			IntermediateDirectory="$(MP_OBJ)"
 			ConfigurationType="4"
-			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\talas.vsprops;..\..\talas-nadir.vsprops;..\..\bn.vsprops;..\..\mp.vsprops"
+			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\mp.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -45,8 +45,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(TALAS_INCLUDE_DIRS)"
-				PreprocessorDefinitions="$(XOSTALAS_DEFINES);WIN32;_DEBUG;_LIB"
+				AdditionalIncludeDirectories="$(MP_INCLUDE_DIRS)"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;$(MP_DEFINES)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -83,11 +83,75 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Debug|x64"
-			OutputDirectory="$(TALAS_LIB)"
-			IntermediateDirectory="$(TALAS_OBJ)"
+			Name="Release|Win32"
+			OutputDirectory="$(MP_LIB)"
+			IntermediateDirectory="$(MP_OBJ)"
 			ConfigurationType="4"
-			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\talas.vsprops;..\..\talas-nadir.vsprops;..\..\bn.vsprops;..\..\mp.vsprops"
+			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\mp.vsprops"
+			CharacterSet="1"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="$(MP_INCLUDE_DIRS)"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;$(MP_DEFINES)"
+				RuntimeLibrary="0"
+				EnableFunctionLevelLinking="true"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLibrarianTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Debug|x64"
+			OutputDirectory="$(MP_LIB)"
+			IntermediateDirectory="$(MP_OBJ)"
+			ConfigurationType="4"
+			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\mp.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -109,8 +173,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="$(TALAS_INCLUDE_DIRS)"
-				PreprocessorDefinitions="$(XOSTALAS_DEFINES);WIN32;_DEBUG;_LIB"
+				AdditionalIncludeDirectories="$(MP_INCLUDE_DIRS)"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;$(MP_DEFINES)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -147,75 +211,11 @@
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory="$(TALAS_LIB)"
-			IntermediateDirectory="$(TALAS_OBJ)"
-			ConfigurationType="4"
-			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\talas.vsprops;..\..\talas-nadir.vsprops;..\..\bn.vsprops;..\..\mp.vsprops"
-			CharacterSet="1"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="2"
-				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="$(TALAS_INCLUDE_DIRS)"
-				PreprocessorDefinitions="$(XOSTALAS_DEFINES);WIN32;NDEBUG;_LIB"
-				RuntimeLibrary="0"
-				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="0"
-				WarningLevel="3"
-				DebugInformationFormat="3"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLibrarianTool"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(TALAS_LIB)"
-			IntermediateDirectory="$(TALAS_OBJ)"
+			OutputDirectory="$(MP_LIB)"
+			IntermediateDirectory="$(MP_OBJ)"
 			ConfigurationType="4"
-			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\talas.vsprops;..\..\talas-nadir.vsprops;..\..\bn.vsprops;..\..\mp.vsprops"
+			InheritedPropertySheets="..\talas-vcversion.vsprops;..\..\mp.vsprops"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -239,8 +239,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="$(TALAS_INCLUDE_DIRS)"
-				PreprocessorDefinitions="$(XOSTALAS_DEFINES);WIN32;NDEBUG;_LIB"
+				AdditionalIncludeDirectories="$(MP_INCLUDE_DIRS)"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;$(MP_DEFINES)"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -284,66 +284,38 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-			<Filter
-				Name="ecc"
-				>
-				<File
-					RelativePath="..\..\..\..\..\src\thirdparty\google\curve25519\curve25519-donna.c"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\src\thirdparty\msotoodeh\curve25519\curve25519_mehdi.cxx"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="cipher"
-				>
-				<File
-					RelativePath="..\..\..\..\..\src\talas\crypto\cipher\devine\aes.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\src\talas\crypto\cipher\openssl\des.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="hash"
-				>
-				<File
-					RelativePath="..\..\..\..\..\src\talas\crypto\hash\openssl\md5.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\src\talas\crypto\hash\openssl\sha1.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\src\talas\crypto\hash\openssl\sha256.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\..\..\..\src\talas\crypto\hash\openssl\sha512.cpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="random"
-				>
-				<File
-					RelativePath="..\..\..\..\..\src\talas\crypto\random\pseudo.cpp"
-					>
-				</File>
-				<Filter
-					Name="prime"
-					>
-					<File
-						RelativePath="..\..\..\..\..\src\talas\crypto\random\prime\small_primes.cpp"
-						>
-					</File>
-				</Filter>
-			</Filter>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\add_n.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\addmul_1.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\bdivmod.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\cmp.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\divmod_1.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\divrem.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\divrem_1.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\dump.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\gcd.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\gcd_1.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\gcdext.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\get_str.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\hamdist.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\inlines.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\lshift.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\mod_1.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\mp_bases.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\mul.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\mul_1.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\mul_n.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\perfsqr.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\popcount.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\pre_mod_1.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\random2.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\rshift.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\scan0.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\scan1.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\set_str.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\sqrtrem.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\sub_n.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\submul_1.c"/>
+			<File RelativePath="..\..\..\..\..\src\thirdparty\gnu\mp\mpn\generic\udiv_w_sdiv.c"/>
 		</Filter>
 		<Filter
 			Name="Header Files"
