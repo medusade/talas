@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2015 $organization$
+/// Copyright (c) 1988-2017 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,42 +13,24 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: string.hpp
+///   File: main.cpp
 ///
 /// Author: $author$
-///   Date: 4/7/2015
+///   Date: 2/3/2017
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_BASE_STRING_HPP
-#define _TALAS_BASE_STRING_HPP
-
-#include "talas/base/base.hpp"
-#include "xos/base/string.hpp"
-#include "xos/base/to_string.hpp"
+#include "talas/app/console/libressl/main.hpp"
 
 namespace talas {
+namespace app {
+namespace console {
+namespace libressl {
 
 ///////////////////////////////////////////////////////////////////////
-///  Class: string
+///  Class: main
 ///////////////////////////////////////////////////////////////////////
-#if defined(USE_CPP_11)
-template
-<typename TChar = char, typename TEnd = TChar, TEnd VEnd = 0,
- class TExtends = std::basic_string<TChar>,
- class TImplements = xos::base::string_implement>
+static main the_main;
 
-using stringt = typename xos::base::stringt
-<TChar, TEnd, VEnd, TExtends, TImplements>;
-#else // defined(USE_CPP_11)
-#endif // defined(USE_CPP_11)
-
-typedef xos::base::string string_t, char_string_t;
-typedef xos::base::tstring tstring_t, tchar_string_t;
-typedef xos::base::wstring wstring_t, wchar_string_t;
-
-typedef xos::base::pointer_to_string pointer_to_string;
-typedef xos::base::bool_to_string bool_to_string;
-typedef xos::base::char_to_string char_to_string;
-
-} // namespace talas
-
-#endif // _TALAS_BASE_STRING_HPP 
+} // namespace libressl 
+} // namespace console 
+} // namespace app 
+} // namespace talas 
