@@ -103,8 +103,25 @@ public:
         return 0;
     }
     virtual long BIO_ctrl(BIO *bio, int cmd, long arg1, void *arg2) {
+        long ret = 1;
         TALAS_LOG_MESSAGE_DEBUG("...BIO_ctrl(..., int cmd = " << cmd << ", ...)");
-        return 0;
+        switch (cmd) {
+        case BIO_CTRL_GET_CLOSE:
+            ret = ((long)bio->shutdown);
+            break;
+        case BIO_CTRL_SET_CLOSE:
+            bio->shutdown = ((int)arg1);
+            break;
+        case BIO_CTRL_DUP:
+        case BIO_CTRL_FLUSH:
+            break;
+        case BIO_CTRL_INFO:
+        case BIO_CTRL_GET:
+        case BIO_CTRL_SET:
+        default:
+            ret = ::BIO_ctrl(bio->next_bio, cmd, arg1, arg2);
+        }
+        return ret;
     }
     virtual int BIO_new(BIO *bio) {
         bio->init = 1;

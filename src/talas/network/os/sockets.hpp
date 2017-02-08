@@ -30,6 +30,10 @@
 #include "xos/network/ip/v4/tcp/transport.hpp"
 #include "xos/network/ip/v4/udp/transport.hpp"
 #include "xos/network/ip/v4/endpoint.hpp"
+#include "xos/io/socket/tcp/reader.hpp"
+#include "xos/io/socket/tcp/writer.hpp"
+#include "xos/io/socket/udp/reader.hpp"
+#include "xos/io/socket/udp/writer.hpp"
 
 namespace talas {
 namespace network {
@@ -66,6 +70,20 @@ typedef xos::network::os::socket socket;
 } // namespace os
 
 } // namespace network 
+
+namespace io {
+namespace socket {
+namespace tcp {
+typedef xos::io::socket::tcp::reader reader;
+typedef xos::io::socket::tcp::writer writer;
+} // namespace tcp
+namespace udp {
+typedef xos::io::socket::udp::reader reader;
+typedef xos::io::socket::udp::writer writer;
+} // namespace udp
+} // namespace socket
+} // namespace io
+
 } // namespace talas 
 
 #endif // _TALAS_NETWORK_OS_SOCKETS_HPP 

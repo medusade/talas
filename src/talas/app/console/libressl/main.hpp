@@ -59,6 +59,13 @@ public:
 protected:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
+    class _EXPORT_CLASS socket: public network::os::socket {
+    public:
+        socket(Derives& _main): main(_main) {}
+        Derives& main;
+    };
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
     virtual int run(int argc, char** argv, char** env) {
         int err = 0;
 
@@ -69,6 +76,8 @@ protected:
             } else {
                 err = run_client(argc, argv, env);
             }
+            TALAS_LOG_DEBUG("tls_cleanup()...");
+            tls_cleanup();
         } else {
             TALAS_LOG_ERROR("...failed err = " << err << " on tls_init()");
         }
@@ -130,11 +139,11 @@ protected:
         if ((network::os::sockets::startup())) {
             network::ip::v4::endpoint ep(host_chars, port);
             network::ip::v4::tcp::transport tp;
-            network::os::socket s;
+            socket s(*this);
 
             if ((s.open(tp))) {
                 if ((s.connect(ep))) {
-                    success = connect_socket(s, tls);
+                    success = connect_socket_cbs(s, tls);
                 }
                 s.close();
             }
@@ -143,7 +152,34 @@ protected:
         return success;
     }
     ///////////////////////////////////////////////////////////////////////
-    virtual bool connect_socket(network::os::socket& s, struct tls* tls) {
+    virtual bool connect_socket_cbs(socket& s, struct tls* tls) {
+        bool success = false;
+        const char *host_chars = host_.chars();
+        tls_read_cb read_cb = network_os_socket_read_cb;
+        tls_write_cb write_cb = network_os_socket_write_cb;
+        void *cb_arg = &s;
+        int err = 0;
+
+        TALAS_LOG_DEBUG("tls_connect_cbs(tls, read_cb, write_cb, cb_arg, host_chars = \"" << host_chars << "\")...");
+        if (!(err = tls_connect_cbs(tls, read_cb, write_cb, cb_arg, host_chars))) {
+
+            TALAS_LOG_DEBUG("tls_handshake(tls)...");
+            if (!(err = tls_handshake(tls))) {
+                success = make_request(tls);
+            } else {
+                TALAS_LOG_ERROR("...failed err = " << err << " \"" << tls_error(tls) << "\" on tls_handshake(tls)");
+            }
+            TALAS_LOG_DEBUG("tls_close(tls)...");
+            if ((err = tls_close(tls))) {
+                TALAS_LOG_ERROR("...failed err = " << err << " tls_close(tls)");
+            }
+        } else {
+            TALAS_LOG_ERROR("...failed err = " << err << " tls_connect_cbs(tls, read_cb, write_cb, cb_arg, host_chars = \"" << host_chars << "\")");
+        }
+        return success;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    virtual bool connect_socket(socket& s, struct tls* tls) {
         bool success = false;
         int err = 0;
         const char *host_chars = host_.chars(), *port_chars = port_.chars();
@@ -280,14 +316,14 @@ protected:
         if ((network::os::sockets::startup())) {
             network::ip::v4::endpoint ep(port);
             network::ip::v4::tcp::transport tp;
-            network::os::socket ss;
+            socket ss(*this);
 
             if ((ss.open(tp))) {
                 if ((ss.listen(ep))) {
-                    network::os::socket s;
+                    socket s(*this);
                     for (bool done = false; !done;) {
                     if ((ss.accept(s, ep))) {
-                        if (!(accept_socket(s, tls))) {
+                        if (!(accept_socket_cbs(s, tls))) {
                             done = true;
                         }
                         s.close();
@@ -303,7 +339,32 @@ protected:
         return success;
     }
     ///////////////////////////////////////////////////////////////////////
-    virtual bool accept_socket(network::os::socket& s, struct tls* tls) {
+    virtual bool accept_socket_cbs(socket& s, struct tls* tls) {
+        bool success = false;
+        tls_read_cb read_cb = network_os_socket_read_cb;
+        tls_write_cb write_cb = network_os_socket_write_cb;
+        void *cb_arg = &s;
+        struct tls *tlc = 0;
+        int err = 0;
+
+        TALAS_LOG_DEBUG("tls_accept_cbs()...");
+        if ((success = !(err = tls_accept_cbs(tls, &tlc, read_cb, write_cb, cb_arg)))) {
+            success = process_request(tlc);
+
+            TALAS_LOG_DEBUG("tls_close(tlc)...");
+            if (!(success = !(err = tls_close(tlc)))) {
+                TALAS_LOG_ERROR("...failed err = " << err << " \"" << tls_error(tlc) << "\" on tls_close()");
+            }
+            TALAS_LOG_DEBUG("tls_free(tlc)...");
+            tls_free(tlc);
+            tlc = 0;
+        } else {
+            TALAS_LOG_ERROR("...failed err = " << err << " \"" << tls_error(tls) << "\" on tls_accept_cbs()");
+        }
+        return success;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    virtual bool accept_socket(socket& s, struct tls* tls) {
         bool success = false;
         int err = 0;
         network::os::socket::attached_t sock = s.attached_to();
@@ -357,6 +418,45 @@ protected:
             }
         }
         return response_chars;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    static ssize_t network_os_socket_read_cb
+    (struct tls *_ctx, void *_buf, size_t _buflen, void *_cb_arg) {
+        socket *s = ((socket*)_cb_arg);
+        ssize_t count = -1;
+        if ((_ctx) && (_buf) && (s)) {
+            if ((_buflen)) {
+                if (0 < (count = s->recv(_buf, _buflen, 0))) {
+                    s->main.outln();
+                    s->main.out("<---[");
+                    s->main.outx(_buf, count);
+                    s->main.outln("]");
+                }
+            } else {
+                count = 0;
+            }
+        }
+        return count;
+    }
+    static ssize_t network_os_socket_write_cb
+    (struct tls *_ctx, const void *_buf, size_t _buflen, void *_cb_arg) {
+        socket *s= ((socket*)_cb_arg);
+        ssize_t count = -1;
+        if ((_ctx) && (_buf) && (s)) {
+            if ((_buflen)) {
+                if (0 < (count = s->send(_buf, _buflen, 0))) {
+                    s->main.outln();
+                    s->main.out("--->[");
+                    s->main.outx(_buf, count);
+                    s->main.outln("]");
+                }
+            } else {
+                count = 0;
+            }
+        }
+        return count;
     }
 
 #include "talas/app/console/libressl/main_opt.cpp"

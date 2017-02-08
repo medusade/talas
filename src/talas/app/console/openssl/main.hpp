@@ -21,9 +21,10 @@
 #ifndef _TALAS_APP_CONSOLE_OPENSSL_MAIN_HPP
 #define _TALAS_APP_CONSOLE_OPENSSL_MAIN_HPP
 
-#include "talas/crypto/console/main.hpp"
+#include "talas/app/console/openssl/main_opt.hpp"
 #include "talas/protocol/tls/openssl/bio_rw.hpp"
 #include "talas/protocol/tls/openssl/openssl.hpp"
+#include "talas/network/os/sockets.hpp"
 
 #define TALAS_APP_CONSOLE_OPENSSL_VERIFY_CLIENT false
 
@@ -33,107 +34,13 @@
 
 #define TALAS_APP_CONSOLE_OPENSSL_HOST "localhost"
 #define TALAS_APP_CONSOLE_OPENSSL_PORT 443
-#define TALAS_APP_CONSOLE_OPENSSL_KEY "./creds/localhost.key.pem"
+#define TALAS_APP_CONSOLE_OPENSSL_KEY "localhost.key.pem"
 #define TALAS_APP_CONSOLE_OPENSSL_KEY_TYPE SSL_FILETYPE_PEM
-#define TALAS_APP_CONSOLE_OPENSSL_CERT "./creds/localhost.cert.pem"
+#define TALAS_APP_CONSOLE_OPENSSL_CERT "localhost.cert.pem"
 #define TALAS_APP_CONSOLE_OPENSSL_CERT_TYPE SSL_FILETYPE_PEM
-#define TALAS_APP_CONSOLE_OPENSSL_TRUST "./creds/localhost.cert.pem"
-#define TALAS_APP_CONSOLE_OPENSSL_CERTS "./creds/certs"
+#define TALAS_APP_CONSOLE_OPENSSL_TRUST "localhost.cert.pem"
+#define TALAS_APP_CONSOLE_OPENSSL_CERTS "/certs"
 #define TALAS_APP_CONSOLE_OPENSSL_REQUEST "GET / HTTP/1.0\r\n\r\n"
-
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPT "client"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTARG_RESULT 0
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTARG ""
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTUSE "Run as client"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTVAL_S "c"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTVAL_C 'c'
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTION \
-   {TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPT, \
-    TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTARG_REQUIRED, \
-    TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTARG_RESULT, \
-    TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTVAL_C}, \
-
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPT "server"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTARG_RESULT 0
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTARG ""
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTUSE "Run as server"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTVAL_S "s"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTVAL_C 's'
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTION \
-   {TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPT, \
-    TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTARG_REQUIRED, \
-    TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTARG_RESULT, \
-    TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTVAL_C}, \
-
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPT "verify-client"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTARG_RESULT 0
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTARG ""
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTUSE "Verify client"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTVAL_S "v"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTVAL_C 'v'
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTION \
-   {TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPT, \
-    TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTARG_REQUIRED, \
-    TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTARG_RESULT, \
-    TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTVAL_C}, \
-
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPT "port"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_REQUIRED
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTARG_RESULT 0
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTARG "<number>"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTUSE "Port number"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTVAL_S "p:"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTVAL_C 'p'
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTION \
-   {TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPT, \
-    TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTARG_REQUIRED, \
-    TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTARG_RESULT, \
-    TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTVAL_C}, \
-
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPT "connection-type"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_REQUIRED
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_RESULT 0
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_RW_C "r"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_RW_S "read-write"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_SSL_C "s"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_SSL_S "ssl"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG "{" \
-    "(" TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_RW_C ")" \
-        TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_RW_S \
-    " | (" TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_SSL_C ")" \
-        TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_SSL_S \
-    "}"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTUSE ""
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTVAL_S "n:"
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTVAL_C 'n'
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTION \
-   {TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPT, \
-    TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_REQUIRED, \
-    TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_RESULT, \
-    TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTVAL_C}, \
-
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_OPTIONS_CHARS \
-   TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTVAL_S \
-   TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTVAL_S \
-   TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTVAL_S \
-   TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTVAL_S \
-   TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTVAL_S \
-   TALAS_CONSOLE_MAIN_OPTIONS_CHARS
-
-#define TALAS_APP_CONSOLE_OPENSSL_MAIN_OPTIONS_OPTIONS \
-   TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTION \
-   TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTION \
-   TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTION \
-   TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTION \
-   TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTION \
-   TALAS_CONSOLE_MAIN_OPTIONS_OPTIONS
 
 namespace talas {
 namespace app {
@@ -463,15 +370,35 @@ protected:
     }
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    virtual int run_rw_connection(int argc, char** argv, char** env) {
+    virtual int _run_rw_connection(int argc, char** argv, char** env) {
         int err = 0;
-        FILE *in_file = std_in(),
-             *out_file = std_out();
+        FILE *in_file = std_in(), *out_file = std_out();
         io::read::file rfile(in_file);
         io::write::file wfile(out_file);
-        io::reader* rd = &rfile;
-        io::writer* wr = &wfile;
-        protocol::tls::openssl::BIO_RW rw(rd, wr);
+        err = run_rw_connection_rw(rfile, wfile, argc, argv, env);
+        return err;
+    }
+    virtual int run_rw_connection(int argc, char** argv, char** env) {
+        int err = 1;
+        network::ip::v4::endpoint ep(host, port);
+        network::ip::v4::tcp::transport tp;
+        network::os::socket s;
+        io::socket::tcp::reader rsock(s);
+        io::socket::tcp::writer wsock(s);
+        if ((s.open(tp))) {
+            if ((s.connect(ep))) {
+                err = run_rw_connection_rw(rsock, wsock, argc, argv, env);
+            }
+            s.close();
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_rw_connection_rw
+    (io::reader& rd, io::writer& wr, int argc, char** argv, char** env) {
+        int err = 0;
+        protocol::tls::openssl::BIO_RW rw(&rd, &wr);
         BIO *rw_bio = 0, *conn_bio = 0, *ssl_bio = 0;
 
         TALAS_LOG_MESSAGE_DEBUG("BIO_new_connect(host = \"" << host << "\")...");
@@ -487,12 +414,14 @@ protected:
 
                 if ((conn_bio = BIO_push(rw_bio, bio))) {
                     bio = conn_bio;
+
                     TALAS_LOG_MESSAGE_DEBUG("BIO_new_ssl(ctx, TRUE)...");
                     if ((ssl_bio = BIO_new_ssl(ctx, TRUE))) {
                         TALAS_LOG_MESSAGE_DEBUG("...BIO_new_ssl(ctx, TRUE)");
 
                         if ((conn_bio = BIO_push(ssl_bio, bio))) {
                             bio = conn_bio;
+
                             TALAS_LOG_MESSAGE_DEBUG("BIO_get_ssl(bio, &ssl)...");
                             BIO_get_ssl(bio, &ssl);
                             if ((ssl)) {
@@ -715,81 +644,7 @@ protected:
         return err;
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    virtual int on_option
-    (int optval, const char_t* optarg,
-     const char_t* optname, int optind,
-     int argc, char_t**argv, char_t**env) {
-        int err = 0;
-        switch(optval) {
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTVAL_C:
-            err = on_client_option
-            (optval, optarg, optname, optind, argc, argv, env);
-            break;
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTVAL_C:
-            err = on_server_option
-            (optval, optarg, optname, optind, argc, argv, env);
-            break;
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTVAL_C:
-            err = on_verify_client_option
-            (optval, optarg, optname, optind, argc, argv, env);
-            break;
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTVAL_C:
-            err = on_port_option
-            (optval, optarg, optname, optind, argc, argv, env);
-            break;
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTVAL_C:
-            err = on_connection_type_option
-            (optval, optarg, optname, optind, argc, argv, env);
-            break;
-        default:
-            err = Extends::on_option
-            (optval, optarg, optname, optind, argc, argv, env);
-        }
-        return err;
-    }
-    ///////////////////////////////////////////////////////////////////////
-    virtual const char_t* option_usage
-    (const char_t*& optarg, const struct option* longopt) {
-        const char_t* chars = "";
-        switch(longopt->val) {
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTVAL_C:
-            optarg = TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTARG;
-            chars = TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTUSE;
-            break;
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTVAL_C:
-            optarg = TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTARG;
-            chars = TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTUSE;
-            break;
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTVAL_C:
-            optarg = TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTARG;
-            chars = TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTUSE;
-            break;
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTVAL_C:
-            optarg = TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTARG;
-            chars = TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTUSE;
-            break;
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTVAL_C:
-            optarg = TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG;
-            chars = TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTUSE;
-            break;
-        default:
-            chars = Extends::option_usage(optarg, longopt);
-        }
-        return chars;
-    }
-    ///////////////////////////////////////////////////////////////////////
-    virtual const char_t* options(const struct option*& longopts) {
-        int err = 0;
-        static const char_t* chars = TALAS_APP_CONSOLE_OPENSSL_MAIN_OPTIONS_CHARS;
-        static struct option optstruct[]= {
-            TALAS_APP_CONSOLE_OPENSSL_MAIN_OPTIONS_OPTIONS
-            {0, 0, 0, 0}};
-        longopts = optstruct;
-        return chars;
-    }
-
+#include "talas/app/console/openssl/main_opt.cpp"
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
 };

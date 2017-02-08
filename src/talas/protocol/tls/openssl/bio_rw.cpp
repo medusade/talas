@@ -66,7 +66,9 @@ int BIO_rw_free(BIO *bio) {
 }
 
 static BIO_METHOD BIO_rw_methods = {
-    BIO_TYPE_SOURCE_SINK, "talas read/write",
+    //BIO_TYPE_SOURCE_SINK,
+    BIO_TYPE_MEM,
+    "talas read/write",
     BIO_rw_write,
     BIO_rw_read,
     BIO_rw_puts,
