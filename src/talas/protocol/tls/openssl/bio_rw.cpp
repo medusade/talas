@@ -54,15 +54,16 @@ long BIO_rw_ctrl(BIO *bio, int cmd, long arg1, void *arg2) {
     return -1;
 }
 int BIO_rw_new(BIO *bio) {
+    TALAS_LOG_MESSAGE_DEBUG("...BIO_rw_new(BIO *bio)");
     bio->ptr = 0;
+    bio->init = 0;
     return 1;
 }
 int BIO_rw_free(BIO *bio) {
-    BIO_RW* rw = 0;
-    if ((bio) && (rw = ((BIO_RW*)(bio->ptr)))) {
-        return rw->BIO_free(bio);
-    }
-    return -1;
+    TALAS_LOG_MESSAGE_DEBUG("...BIO_rw_free(BIO *bio)");
+    bio->ptr = 0;
+    bio->init = 0;
+    return 1;
 }
 
 static BIO_METHOD BIO_rw_methods = {
@@ -86,11 +87,9 @@ BIO* BIO_new_rw(BIO_RW* rw) {
     if ((rw)) {
         BIO* bio = 0;
         if ((bio = BIO_new(BIO_rw()))) {
-            if (1 == (rw->BIO_new(bio))) {
-                bio->ptr = rw;
-                return bio;
-            }
-            BIO_free_all(bio);
+            bio->ptr = rw;
+            bio->init = 1;
+            return bio;
         }
     }
     return 0;

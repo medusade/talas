@@ -66,6 +66,10 @@ public:
             err = on_connection_type_option
             (optval, optarg, optname, optind, argc, argv, env);
             break;
+        case TALAS_APP_CONSOLE_OPENSSL_MAIN_ONE_OPTVAL_C:
+            err = on_one_option
+            (optval, optarg, optname, optind, argc, argv, env);
+            break;
         default:
             err = Extends::on_option
             (optval, optarg, optname, optind, argc, argv, env);
@@ -96,6 +100,10 @@ public:
         case TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTVAL_C:
             optarg = TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG;
             chars = TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTUSE;
+            break;
+        case TALAS_APP_CONSOLE_OPENSSL_MAIN_ONE_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_OPENSSL_MAIN_ONE_OPTARG;
+            chars = TALAS_APP_CONSOLE_OPENSSL_MAIN_ONE_OPTUSE;
             break;
         default:
             chars = Extends::option_usage(optarg, longopt);

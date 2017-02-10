@@ -65,6 +65,7 @@ public:
         verify_client = TALAS_APP_CONSOLE_OPENSSL_VERIFY_CLIENT;
         accept_host = TALAS_APP_CONSOLE_OPENSSL_ACCEPT_HOST;
         accept_port = TALAS_APP_CONSOLE_OPENSSL_ACCEPT_PORT;
+        accept_once = false;
         host = TALAS_APP_CONSOLE_OPENSSL_HOST;
         port = TALAS_APP_CONSOLE_OPENSSL_PORT;
         key = TALAS_APP_CONSOLE_OPENSSL_KEY;
@@ -79,13 +80,16 @@ public:
         accept_response = TALAS_APP_CONSOLE_OPENSSL_ACCEPT_RESPONSE;
         accept_response_len = chars_t::count(accept_response);
         accept_request = 0;
-        count = 0; verify = 0;
+        amount = 0; count = 0; verify = 0;
         error = 0; error_string = 0;
         meth = 0; ctx = 0; ssl = 0;
+        ssl_bio = 0;
         bio = 0;
         run_ = 0;
         run_connection_ = 0;
         run_accept_connection_ = 0;
+        read_data_ = 0;
+        write_data_ = 0;
     }
     virtual ~main() {
     }
@@ -94,23 +98,27 @@ protected:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
     typedef int (Derives::*run_t)(int argc, char** argv, char** env);
+    typedef int (Derives::*read_data_t)(void *buf, int len);
+    typedef int (Derives::*write_data_t)(const void *buf, int len);
 
 protected:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
     run_t run_, run_connection_, run_accept_connection_;
+    read_data_t read_data_;
+    write_data_t write_data_;
     bool verify_client;
-    char* accept_host; int accept_port;
+    char* accept_host; int accept_port; bool accept_once;
     char* host; int port;
     char* key; int key_type;
     char* cert; int cert_type;
     char* trust; char* certs;
     char* request; int request_len; char response;
     char* accept_response; int accept_response_len; char accept_request;
-    int count; long verify;
+    int amount, count; long verify;
     unsigned long error; char* error_string;
     SSL_METHOD* meth; SSL_CTX* ctx; SSL* ssl;
-    BIO* bio;
+    BIO *ssl_bio, *bio;
 
 protected:
     ///////////////////////////////////////////////////////////////////////
@@ -166,7 +174,7 @@ protected:
                                     SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);
                                     SSL_CTX_set_verify_depth(ctx, 1);
                                 }
-                                err = run_accept_connection(argc, argv, env);
+                                err = run_accept_connections(argc, argv, env);
                             } else {
                                 error_string = ERR_error_string(error = ERR_get_error(), NULL);
                                 TALAS_LOG_MESSAGE_DEBUG
@@ -200,6 +208,37 @@ protected:
     }
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
+    virtual int run_accept_connections(int argc, char** argv, char** env) {
+        int err = 0;
+
+        TALAS_LOG_MESSAGE_DEBUG("ssl = SSL_new(ctx)...");
+        if ((ssl = SSL_new(ctx))) {
+            TALAS_LOG_MESSAGE_DEBUG("...ssl = SSL_new(ctx))");
+
+            TALAS_LOG_MESSAGE_DEBUG("ssl_bio = BIO_new_ssl(ctx, FALSE)...");
+            if ((ssl_bio = BIO_new_ssl(ctx, FALSE))) {
+                TALAS_LOG_MESSAGE_DEBUG("...ssl_bio = BIO_new_ssl(ctx, FALSE)");
+
+                err = run_accept_connection(argc, argv, env);
+
+                if ((ssl_bio)) {
+                    TALAS_LOG_MESSAGE_DEBUG("...BIO_free_all(ssl_bio)");
+                    BIO_free_all(ssl_bio);
+                    ssl_bio = 0;
+                }
+            } else {
+            }
+            if ((ssl)) {
+                TALAS_LOG_MESSAGE_DEBUG("...SSL_free(ssl)");
+                SSL_free(ssl);
+                ssl = 0;
+            }
+        } else {
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
     virtual int run_accept_connection(int argc, char** argv, char** env) {
         int err = 0;
         if ((run_accept_connection_)) {
@@ -211,51 +250,109 @@ protected:
     }
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    virtual int run_ssl_accept_connection(int argc, char** argv, char** env) {
+    virtual int _run_rw_accept_connection(int argc, char** argv, char** env) {
         int err = 0;
-        BIO *ssl_bio = 0;
-        protocol::tls::openssl::port port(accept_host, accept_port);
+        FILE *in_file = std_in(), *out_file = std_out();
+        io::read::file rfile(in_file);
+        io::write::file wfile(out_file);
+        err = run_rw_accept_connection_rw(rfile, wfile, argc, argv, env);
+        return err;
+    }
+    virtual int run_rw_accept_connection(int argc, char** argv, char** env) {
+        int err = 0;
+        network::ip::v4::endpoint ep(accept_port);
+        network::ip::v4::tcp::transport tp;
+        network::os::socket ss;
 
-        TALAS_LOG_MESSAGE_DEBUG("ssl = SSL_new(ctx)...");
-        if ((ssl = SSL_new(ctx))) {
-            TALAS_LOG_MESSAGE_DEBUG("...ssl = SSL_new(ctx))");
-
-            TALAS_LOG_MESSAGE_DEBUG("ssl_bio = BIO_new_ssl(ctx, FALSE)...");
-            if ((ssl_bio = BIO_new_ssl(ctx, FALSE))) {
-                TALAS_LOG_MESSAGE_DEBUG("...ssl_bio = BIO_new_ssl(ctx, FALSE)");
-
-                TALAS_LOG_MESSAGE_DEBUG("bio = BIO_new_accept(port)...");
-                if ((bio = BIO_new_accept(port))) {
-                    TALAS_LOG_MESSAGE_DEBUG("...bio = BIO_new_accept(port)");
-
-                    TALAS_LOG_MESSAGE_DEBUG("...BIO_set_accept_bios(bio, ssl_bio)");
-                    BIO_set_accept_bios(bio, ssl_bio);
-                    ssl_bio = 0;
-
-                    err = run_accept(argc, argv, env);
-
-                    if ((bio)) {
-                        TALAS_LOG_MESSAGE_DEBUG("...BIO_free_all(bio)");
-                        BIO_free_all(bio);
+        if ((ss.open(tp))) {
+            if ((ss.listen(ep))) {
+                network::os::socket s;
+                io::socket::tcp::reader rsock(s);
+                io::socket::tcp::writer wsock(s);
+                do {
+                    if ((ss.accept(s, ep))) {
+                        err = run_rw_accept_connection_rw(rsock, wsock, argc, argv, env);
+                        s.close();
                     }
-                }
-                if ((ssl_bio)) {
-                    TALAS_LOG_MESSAGE_DEBUG("...BIO_free_all(ssl_bio)");
-                    BIO_free_all(ssl_bio);
-                }
-            } else {
+                } while ((!err) && (!accept_once));
             }
-            if ((ssl)) {
-                TALAS_LOG_MESSAGE_DEBUG("...SSL_free(ssl)");
-                SSL_free(ssl);
-            }
-        } else {
+            ss.close();
         }
         return err;
     }
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    virtual int run_accept(int argc, char** argv, char** env) {
+    virtual int run_rw_accept_connection_rw
+    (io::reader& rd, io::writer& wr, int argc, char** argv, char** env) {
+        int err = 0;
+        protocol::tls::openssl::BIO_RW rw(&rd, &wr);
+        BIO *rw_bio = 0;
+
+        TALAS_LOG_MESSAGE_DEBUG("protocol::tls::openssl::BIO_new_rw(&rw)...");
+        if ((rw_bio = protocol::tls::openssl::BIO_new_rw(&rw))) {
+            TALAS_LOG_MESSAGE_DEBUG("...protocol::tls::openssl::BIO_new_rw(&rw)");
+
+            TALAS_LOG_MESSAGE_DEBUG("...SSL_set_bio(ssl, rw_bio, rw_bio)");
+            SSL_set_bio(ssl, rw_bio, rw_bio);
+            rw_bio = 0;
+
+            err = run_rw_accept(argc, argv, env);
+
+            if ((rw_bio)) {
+                TALAS_LOG_MESSAGE_DEBUG("...BIO_free_all(rw_bio)");
+                BIO_free_all(rw_bio);
+                rw_bio = 0;
+            }
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_rw_accept(int argc, char** argv, char** env) {
+        int err = 0;
+        int did_accept = 0;
+
+        TALAS_LOG_MESSAGE_DEBUG("SSL_accept(ssl)...");
+        if (1 == (did_accept = SSL_accept(ssl))) {
+            TALAS_LOG_MESSAGE_DEBUG("...SSL_accept(ssl)");
+
+            run_accept_request(argc, argv, env);
+        } else {
+            error_string = ERR_error_string(error = ERR_get_error(), NULL);
+            TALAS_LOG_MESSAGE_DEBUG
+            ("...failed (" << error << ") \"" << error_string << "\" on " <<
+             "SSL_accept(ssl)");
+            err = 1;
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_ssl_accept_connection(int argc, char** argv, char** env) {
+        int err = 0;
+        protocol::tls::openssl::port port(accept_host, accept_port);
+
+        TALAS_LOG_MESSAGE_DEBUG("bio = BIO_new_accept(port)...");
+        if ((bio = BIO_new_accept(port))) {
+            TALAS_LOG_MESSAGE_DEBUG("...bio = BIO_new_accept(port)");
+
+            TALAS_LOG_MESSAGE_DEBUG("...BIO_set_accept_bios(bio, ssl_bio)");
+            BIO_set_accept_bios(bio, ssl_bio);
+            ssl_bio = 0;
+
+            err = run_ssl_accept(argc, argv, env);
+
+            if ((bio)) {
+                TALAS_LOG_MESSAGE_DEBUG("...BIO_free_all(bio)");
+                BIO_free_all(bio);
+                bio = 0;
+            }
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_ssl_accept(int argc, char** argv, char** env) {
         int err = 0;
         int did_accept = 0;
         BIO *accept_bio = 0;
@@ -273,15 +370,16 @@ protected:
 
                     TALAS_LOG_MESSAGE_DEBUG("...BIO_free_all(accept_bio)");
                     BIO_free_all(accept_bio);
+                    accept_bio = 0;
                 }
             } else {
                 error_string = ERR_error_string(error = ERR_get_error(), NULL);
                 TALAS_LOG_MESSAGE_DEBUG
-                ("failed (" << error << ") \"" << error_string << "\" on " <<
+                ("...failed (" << error << ") \"" << error_string << "\" on " <<
                  "BIO_do_accept(bio)");
                 err = 1;
             }
-        } while (did_accept);
+        } while ((did_accept) && !(accept_once));
         return err;
     }
     ///////////////////////////////////////////////////////////////////////
@@ -290,8 +388,6 @@ protected:
         int err = 0;
         if (!(err = run_read_request(argc, argv, env))) {
             err = run_write_response(argc, argv, env);
-        }
-        if (0 <= (count)) {
         }
         return err;
     }
@@ -523,9 +619,11 @@ protected:
         int eol = 0;
         char last = 0;
 
-        TALAS_LOG_MESSAGE_DEBUG("count = BIO_read(bio, &http, 1)...");
+        count = 0;
+        TALAS_LOG_MESSAGE_DEBUG("read_data(&http, 1)...");
         for (bool done = false; !done; ) {
-            if (0 < (count = BIO_read(bio, &http, 1))) {
+            if (0 < (amount = read_data(&http, 1))) {
+                count += amount;
                 out(&http, 1);
                 switch(http) {
                 case '\r':
@@ -552,16 +650,9 @@ protected:
             }
         }
         out_flush();
-        TALAS_LOG_MESSAGE_DEBUG("...count = " << count << " = BIO_read(bio, &http, 1)");
-        if (0 > (count)) {
-            error_string = ERR_error_string(error = ERR_get_error(), NULL);
-            TALAS_LOG_MESSAGE_DEBUG
-            ("failed (" << error << ") \"" << error_string << "\" on " <<
-             "BIO_read(bio, &http, 1)");
-        } else {
-            if (0 < (count)) {
-                err = 0;
-            }
+        if (0 < (amount)) {
+            TALAS_LOG_MESSAGE_DEBUG("...count = " << count << " = read_data(&http, 1)...");
+            err = 0;
         }
         return err;
     }
@@ -571,17 +662,86 @@ protected:
     (const char* http, int http_len, int argc, char** argv, char** env) {
         int err = 0;
 
-        TALAS_LOG_MESSAGE_DEBUG("BIO_write(bio, http = \"" << http << "\", http_len = " << http_len << ")...");
-        if (0 <= (BIO_write(bio, http, http_len))) {
-            TALAS_LOG_MESSAGE_DEBUG("...BIO_write(bio, http = \"" << http << "\", http_len = " << http_len << ")");
+        TALAS_LOG_MESSAGE_DEBUG("write_data(http = \"" << http << "\", http_len = " << http_len << ")...");
+        if (0 < (count = write_data(http, http_len))) {
+            TALAS_LOG_MESSAGE_DEBUG("..." << count << " = write_data(http = \"" << http << "\", http_len = " << http_len << ")");
         } else {
-            error_string = ERR_error_string(error = ERR_get_error(), NULL);
-            TALAS_LOG_MESSAGE_DEBUG
-            ("failed (" << error << ") \"" << error_string << "\" on " <<
-             count << " != BIO_write(bio, http = \"" << http << "\", http_len = " << http_len << ")");
             err = 1;
         }
         return err;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int read_data(void *buf, int len) {
+        int count = -1;
+        if ((read_data_)) {
+            count = (this->*read_data_)(buf, len);
+        } else {
+            count = bio_read_data(buf, len);
+        }
+        return count;
+    }
+    virtual int write_data(const void *buf, int len) {
+        int count = -1;
+        if ((write_data_)) {
+            count = (this->*write_data_)(buf, len);
+        } else {
+            count = bio_write_data(buf, len);
+        }
+        return count;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int bio_read_data(void *buf, int len) {
+        int count = -1;
+        if ((buf) && (0 < len)) {
+            if (0 >= (count = BIO_read(bio, buf, len))) {
+                error_string = ERR_error_string(error = ERR_get_error(), NULL);
+                TALAS_LOG_MESSAGE_DEBUG
+                ("failed (" << error << ") \"" << error_string << "\" on " <<
+                 "BIO_read(bio, buf, len)");
+            }
+        }
+        return count;
+    }
+    virtual int bio_write_data(const void *buf, int len) {
+        int count = -1;
+        if ((buf) && (0 < len)) {
+            if (0 >= (count = BIO_write(bio, buf, len))) {
+                error_string = ERR_error_string(error = ERR_get_error(), NULL);
+                TALAS_LOG_MESSAGE_DEBUG
+                ("failed (" << error << ") \"" << error_string << "\" on " <<
+                 "BIO_write(bio, buf, len)");
+            }
+        }
+        return count;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int ssl_read_data(void *buf, int len) {
+        int count = -1;
+        if ((buf) && (0 < len)) {
+            if (0 >= (count = SSL_read(ssl, buf, len))) {
+                error_string = ERR_error_string(error = ERR_get_error(), NULL);
+                TALAS_LOG_MESSAGE_DEBUG
+                ("failed (" << error << ") \"" << error_string << "\" on " <<
+                 "SSL_read(ssl, buf, len)");
+            }
+        }
+        return count;
+    }
+    virtual int ssl_write_data(const void *buf, int len) {
+        int count = -1;
+        if ((buf) && (0 < len)) {
+            if (0 >= (count = SSL_write(ssl, buf, len))) {
+                error_string = ERR_error_string(error = ERR_get_error(), NULL);
+                TALAS_LOG_MESSAGE_DEBUG
+                ("failed (" << error << ") \"" << error_string << "\" on " <<
+                 "SSL_write(ssl, buf, len)");
+            }
+        }
+        return count;
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -632,15 +792,35 @@ protected:
         if ((optarg) && (optarg[0])) {
             if (!(chars_t::compare(optarg, TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_RW_C))
                 || !(chars_t::compare(optarg, TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_RW_S))) {
+                run_accept_connection_ = &Derives::run_rw_accept_connection;
                 run_connection_ = &Derives::run_rw_connection;
+                if ((run_ != &Derives::run_server)) {
+                    read_data_ = 0;
+                    write_data_ = 0;
+                } else {
+                    read_data_ = &Derives::ssl_read_data;
+                    write_data_ = &Derives::ssl_write_data;
+                }
             } else {
                 if (!(chars_t::compare(optarg, TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_SSL_C))
                     || !(chars_t::compare(optarg, TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_SSL_S))) {
+                    run_accept_connection_ = &Derives::run_ssl_accept_connection;
                     run_connection_ = &Derives::run_ssl_connection;
+                    read_data_ = 0;
+                    write_data_ = 0;
                 } else {
                 }
             }
         }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    virtual int on_one_option
+    (int optval, const char* optarg,
+     const char* optname, int optind,
+     int argc, char**argv, char**env) {
+        int err = 0;
+        accept_once = true;
         return err;
     }
 

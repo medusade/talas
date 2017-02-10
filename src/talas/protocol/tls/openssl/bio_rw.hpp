@@ -66,6 +66,7 @@ public:
     ///////////////////////////////////////////////////////////////////////
     virtual int BIO_read(BIO *bio, char *buf, int size) {
         TALAS_LOG_MESSAGE_DEBUG("...BIO_read(..., int size = " << size << ")");
+        BIO_clear_retry_flags(bio);
         if ((reader_)) {
             if ((buf) && (0 < size)) {
                 return reader_->read(buf, size);
@@ -79,6 +80,7 @@ public:
     }
     virtual int BIO_write(BIO *bio, const char *buf, int num) {
         TALAS_LOG_MESSAGE_DEBUG("...BIO_write(..., int num = " << num << ")");
+        BIO_clear_retry_flags(bio);
         if ((writer_)) {
             if ((buf) && (0 < num)) {
                 if (num <= (writer_->write(buf, num))) {
@@ -122,13 +124,6 @@ public:
             ret = ::BIO_ctrl(bio->next_bio, cmd, arg1, arg2);
         }
         return ret;
-    }
-    virtual int BIO_new(BIO *bio) {
-        bio->init = 1;
-        return 1;
-    }
-    virtual int BIO_free(BIO *bio) {
-        return 1;
     }
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
