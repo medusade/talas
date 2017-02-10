@@ -495,26 +495,65 @@ protected:
     (io::reader& rd, io::writer& wr, int argc, char** argv, char** env) {
         int err = 0;
         protocol::tls::openssl::BIO_RW rw(&rd, &wr);
+        BIO *rw_bio = 0;
+
+        TALAS_LOG_MESSAGE_DEBUG("protocol::tls::openssl::BIO_new_rw(&rw)...");
+        if ((rw_bio = protocol::tls::openssl::BIO_new_rw(&rw))) {
+            TALAS_LOG_MESSAGE_DEBUG("...protocol::tls::openssl::BIO_new_rw(&rw)");
+
+            TALAS_LOG_MESSAGE_DEBUG("ssl = SSL_new(ctx)...");
+            if ((ssl = SSL_new(ctx))) {
+                TALAS_LOG_MESSAGE_DEBUG("...ssl = SSL_new(ctx))");
+
+                TALAS_LOG_MESSAGE_DEBUG("...SSL_set_bio(ssl, rw_bio, rw_bio)");
+                SSL_set_bio(ssl, rw_bio, rw_bio);
+                rw_bio = 0;
+
+                err = run_ssl_connect(argc, argv, env);
+
+                if ((ssl)) {
+                    TALAS_LOG_MESSAGE_DEBUG("...SSL_free(ssl)");
+                    SSL_free(ssl);
+                    ssl = 0;
+                }
+            }
+            if ((rw_bio)) {
+                TALAS_LOG_MESSAGE_DEBUG("...BIO_free_all(rw_bio)");
+                BIO_free_all(rw_bio);
+                rw_bio = 0;
+            }
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_bio_rw_connection_rw
+    (io::reader& rd, io::writer& wr, int argc, char** argv, char** env) {
+        int err = 0;
+        protocol::tls::openssl::BIO_RW rw(&rd, &wr);
         BIO *rw_bio = 0, *conn_bio = 0, *ssl_bio = 0;
 
-        TALAS_LOG_MESSAGE_DEBUG("BIO_new_connect(host = \"" << host << "\")...");
-        if ((bio = BIO_new_connect(host))) {
-            TALAS_LOG_MESSAGE_DEBUG("...BIO_new_connect(host = \"" << host << "\")");
+        TALAS_LOG_MESSAGE_DEBUG("protocol::tls::openssl::BIO_new_rw(&rw)...");
+        if ((rw_bio = protocol::tls::openssl::BIO_new_rw(&rw))) {
+            TALAS_LOG_MESSAGE_DEBUG("...protocol::tls::openssl::BIO_new_rw(&rw)");
 
-            BIO_set_conn_hostname(bio, host);
-            BIO_set_conn_int_port(bio, &port);
+            TALAS_LOG_MESSAGE_DEBUG("BIO_new_connect(host = \"" << host << "\")...");
+            if ((bio = BIO_new_connect(host))) {
+                TALAS_LOG_MESSAGE_DEBUG("...BIO_new_connect(host = \"" << host << "\")");
 
-            TALAS_LOG_MESSAGE_DEBUG("protocol::tls::openssl::BIO_new_rw(&rw)...");
-            if ((rw_bio = protocol::tls::openssl::BIO_new_rw(&rw))) {
-                TALAS_LOG_MESSAGE_DEBUG("...protocol::tls::openssl::BIO_new_rw(&rw)");
+                BIO_set_conn_hostname(bio, host);
+                BIO_set_conn_int_port(bio, &port);
 
+                TALAS_LOG_MESSAGE_DEBUG("...BIO_push(rw_bio, bio)");
                 if ((conn_bio = BIO_push(rw_bio, bio))) {
                     bio = conn_bio;
+                    rw_bio = 0;
 
                     TALAS_LOG_MESSAGE_DEBUG("BIO_new_ssl(ctx, TRUE)...");
                     if ((ssl_bio = BIO_new_ssl(ctx, TRUE))) {
                         TALAS_LOG_MESSAGE_DEBUG("...BIO_new_ssl(ctx, TRUE)");
 
+                        TALAS_LOG_MESSAGE_DEBUG("...BIO_push(ssl_bio, bio)");
                         if ((conn_bio = BIO_push(ssl_bio, bio))) {
                             bio = conn_bio;
 
@@ -531,12 +570,16 @@ protected:
                             BIO_free_all(ssl_bio);
                         }
                     }
-                } else {
-                    BIO_free_all(rw_bio);
                 }
+                TALAS_LOG_MESSAGE_DEBUG("...BIO_free_all(bio)");
+                BIO_free_all(bio);
+                bio = 0;
             }
-            TALAS_LOG_MESSAGE_DEBUG("...BIO_free_all(bio)");
-            BIO_free_all(bio);
+            if ((rw_bio)) {
+                TALAS_LOG_MESSAGE_DEBUG("...BIO_free_all(rw_bio)");
+                BIO_free_all(rw_bio);
+                rw_bio = 0;
+            }
         }
         return err;
     }
@@ -589,6 +632,31 @@ protected:
             TALAS_LOG_MESSAGE_DEBUG
             ("failed (" << error << ") \"" << error_string << "\" on " <<
              "BIO_do_connect(bio)");
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_ssl_connect(int argc, char** argv, char** env) {
+        int err = 0;
+
+        TALAS_LOG_MESSAGE_DEBUG("SSL_connect(ssl)...");
+        if (1 == (SSL_connect(ssl))) {
+            TALAS_LOG_MESSAGE_DEBUG("...SSL_connect(ssl)");
+
+            TALAS_LOG_MESSAGE_DEBUG("X509_V_OK == (SSL_get_verify_result(ssl))...");
+            if (X509_V_OK == (verify = SSL_get_verify_result(ssl))) {
+                TALAS_LOG_MESSAGE_DEBUG("...X509_V_OK == (SSL_get_verify_result(ssl))");
+
+                err = run_request(argc, argv, env);
+            } else {
+                TALAS_LOG_MESSAGE_DEBUG("...failed X509_V_OK != (" << verify << " = SSL_get_verify_result(ssl))");
+            }
+        } else {
+            error_string = ERR_error_string(error = ERR_get_error(), NULL);
+            TALAS_LOG_MESSAGE_DEBUG
+            ("failed (" << error << ") \"" << error_string << "\" on " <<
+             "SSL_connect(ssl)");
         }
         return err;
     }
@@ -794,13 +862,8 @@ protected:
                 || !(chars_t::compare(optarg, TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_RW_S))) {
                 run_accept_connection_ = &Derives::run_rw_accept_connection;
                 run_connection_ = &Derives::run_rw_connection;
-                if ((run_ != &Derives::run_server)) {
-                    read_data_ = 0;
-                    write_data_ = 0;
-                } else {
-                    read_data_ = &Derives::ssl_read_data;
-                    write_data_ = &Derives::ssl_write_data;
-                }
+                read_data_ = &Derives::ssl_read_data;
+                write_data_ = &Derives::ssl_write_data;
             } else {
                 if (!(chars_t::compare(optarg, TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_SSL_C))
                     || !(chars_t::compare(optarg, TALAS_APP_CONSOLE_OPENSSL_MAIN_CONNECTION_TYPE_OPTARG_SSL_S))) {

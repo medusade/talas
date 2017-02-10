@@ -65,7 +65,7 @@ public:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
     virtual int BIO_read(BIO *bio, char *buf, int size) {
-        TALAS_LOG_MESSAGE_DEBUG("...BIO_read(..., int size = " << size << ")");
+        TALAS_LOG_MESSAGE_DEBUG("...BIO_RW::BIO_read(..., int size = " << size << ")");
         BIO_clear_retry_flags(bio);
         if ((reader_)) {
             if ((buf) && (0 < size)) {
@@ -79,7 +79,7 @@ public:
         return -1;
     }
     virtual int BIO_write(BIO *bio, const char *buf, int num) {
-        TALAS_LOG_MESSAGE_DEBUG("...BIO_write(..., int num = " << num << ")");
+        TALAS_LOG_MESSAGE_DEBUG("...BIO_RW::BIO_write(..., int num = " << num << ")");
         BIO_clear_retry_flags(bio);
         if ((writer_)) {
             if ((buf) && (0 < num)) {
@@ -106,7 +106,7 @@ public:
     }
     virtual long BIO_ctrl(BIO *bio, int cmd, long arg1, void *arg2) {
         long ret = 1;
-        TALAS_LOG_MESSAGE_DEBUG("...BIO_ctrl(..., int cmd = " << cmd << ", ...)");
+        TALAS_LOG_MESSAGE_DEBUG("...BIO_RW::BIO_ctrl(..., int cmd = " << cmd << ", ...)");
         switch (cmd) {
         case BIO_CTRL_GET_CLOSE:
             ret = ((long)bio->shutdown);
