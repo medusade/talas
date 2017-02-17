@@ -1,5 +1,5 @@
 ########################################################################
-# Copyright (c) 1988-2015 $organization$
+# Copyright (c) 1988-2017 $organization$
 #
 # This software is provided by the author and contributors ``as is'' 
 # and any express or implied warranties, including, but not limited to, 
@@ -13,36 +13,35 @@
 # or otherwise) arising in any way out of the use of this software, 
 # even if advised of the possibility of such damage.
 #
-#   File: openssl.pro
+#   File: rete.pri
 #
 # Author: $author$
-#   Date: 12/25/2015
+#   Date: 2/15/2017
 ########################################################################
-include(../../../../QtCreator/talas.pri)
-include(../../talas.pri)
-include(../../../../QtCreator/openssl.pri)
-include(../../openssl.pri)
-include(../../../../QtCreator/app/openssl/openssl.pri)
-
-TARGET = talas-openssl
 
 ########################################################################
-INCLUDEPATH += \
-$${talas_INCLUDEPATH} \
-$${openssl_INCLUDEPATH} \
+# crono
+CRONO_BLD = ../$${CRONO_PKG}/build/$${TALAS_OS}/QtCreator/$${TALAS_CONFIG}
+CRONO_LIB = $${CRONO_BLD}/lib
 
-DEFINES += \
-$${talas_DEFINES} \
-$${openssl_DEFINES} \
+crono_INCLUDEPATH += \
 
-########################################################################
-HEADERS += \
-$${talas_openssl_HEADERS} \
+crono_DEFINES += \
 
-SOURCES += \
-$${talas_openssl_SOURCES} \
+crono_LIBS += \
+-L$${CRONO_LIB}/libcrono \
+-lcrono \
 
 ########################################################################
-LIBS += \
-$${xostalas_LIBS} \
-$${openssl_LIBS} \
+# rete
+RETE_BLD = ../$${RETE_PKG}/build/$${TALAS_OS}/QtCreator/$${TALAS_CONFIG}
+RETE_LIB = $${RETE_BLD}/lib
+
+rete_INCLUDEPATH += \
+
+rete_DEFINES += \
+
+rete_LIBS += \
+-L$${RETE_LIB}/librete \
+-lrete \
+

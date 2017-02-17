@@ -21,16 +21,25 @@
 
 ########################################################################
 talas_openssl_HEADERS += \
+$${OPENSSL_SRC}/crypto/bio/bio.h \
+
+talas_openssl_SOURCES += \
+$${OPENSSL_SRC}/crypto/bio/bio_lib.c \
+
+########################################################################
+talas_openssl_HEADERS += \
 $${TALAS_SRC}/talas/protocol/tls/openssl/bio_rw.hpp \
-$${TALAS_SRC}/talas/protocol/tls/openssl/openssl.hpp \
+$${TALAS_SRC}/talas/network/os/sockets.hpp \
 
 talas_openssl_SOURCES += \
 $${TALAS_SRC}/talas/protocol/tls/openssl/bio_rw.cpp \
 $${TALAS_SRC}/talas/protocol/tls/openssl/openssl.cpp \
+$${TALAS_SRC}/talas/network/os/sockets.cpp \
 
 ########################################################################
 talas_openssl_HEADERS += \
 $${TALAS_SRC}/talas/app/console/openssl/main.hpp \
+$${TALAS_SRC}/talas/app/console/openssl/main_opt.hpp \
 $${TALAS_SRC}/talas/console/main.hpp \
 $${TALAS_SRC}/talas/console/main_opt.hpp \
 $${TALAS_SRC}/talas/console/main_main.hpp \
@@ -43,6 +52,5 @@ $${TALAS_SRC}/talas/console/main_main.cpp \
 
 ########################################################################
 _talas_openssl_HEADERS += \
-$${TALAS_SRC}/talas/app/console/openssl/main_opt.hpp \
 
 _talas_openssl_SOURCES += \

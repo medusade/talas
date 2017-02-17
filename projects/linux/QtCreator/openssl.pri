@@ -18,11 +18,28 @@
 # Author: $author$
 #   Date: 12/25/2015
 ########################################################################
+OPENSSL_SRC = $${TALAS_PKG}/../../frameworks/openssl/openssl-0.9.8zh
+OPENSSL_BLD = $${TALAS_PKG}/../../../frameworks/openssl/openssl-0.9.8zh
+OPENSSL_INC = $${OPENSSL_SRC}/include
+
+HOME = /home/jboyd
 
 ########################################################################
 # openssl
+home_openssl_INCLUDEPATH += $${HOME}/build/openssl/include
+home_openssl_LIBPATH += -L$${HOME}/build/openssl/lib
+
+build_openssl_INCLUDEPATH += \
+$${OPENSSL_INC} $${OPENSSL_SRC}/crypto $${OPENSSL_SRC}
+build_openssl_LIBPATH += -L$${OPENSSL_BLD}
+
+########################################################################
 openssl_INCLUDEPATH += \
+$${build_openssl_INCLUDEPATH} \
 
 openssl_DEFINES += \
 
 openssl_LIBS += \
+$${build_openssl_LIBPATH} \
+-lssl \
+-lcrypto \

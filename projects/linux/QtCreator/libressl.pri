@@ -1,5 +1,5 @@
 ########################################################################
-# Copyright (c) 1988-2015 $organization$
+# Copyright (c) 1988-2017 $organization$
 #
 # This software is provided by the author and contributors ``as is''
 # and any express or implied warranties, including, but not limited to,
@@ -13,36 +13,30 @@
 # or otherwise) arising in any way out of the use of this software,
 # even if advised of the possibility of such damage.
 #
-#   File: openssl.pri
+#   File: libressl.pri
 #
 # Author: $author$
-#   Date: 12/25/2015
+#   Date: 2/12/2017
 ########################################################################
-OPENSSL_GROUP = frameworks/openssl/
-OPENSSL_VERSION = openssl-0.9.8zh
-OPENSSL_DIR = $${OPENSSL_GROUP}$${OPENSSL_VERSION}
-OPENSSL_SRC = $${TALAS_PKG}/../../$${OPENSSL_DIR}
-OPENSSL_BLD = $${TALAS_PKG}/../../../$${OPENSSL_DIR}
-OPENSSL_INC = $${OPENSSL_SRC}/include
 
-HOME = $(HOME)
+HOME = /home/jboyd
 
 ########################################################################
-# openssl
-home_openssl_INCLUDEPATH += $${HOME}/build/openssl/include
-home_openssl_LIBPATH += -L$${HOME}/build/openssl/lib
+# libressl
+home_libressl_INCLUDEPATH += $${HOME}/build/libressl/include
+home_libressl_LIBPATH += $${HOME}/build/libressl/lib
 
-build_openssl_INCLUDEPATH += \
-$${OPENSSL_INC} $${OPENSSL_SRC}/crypto $${OPENSSL_SRC}
-build_openssl_LIBPATH += -L$${OPENSSL_SRC}
+build_libressl_INCLUDEPATH += $${LIBRESSL_INC}
+build_libressl_LIBPATH += $${home_libressl_LIBPATH}
 
-########################################################################
-openssl_INCLUDEPATH += \
-$${build_openssl_INCLUDEPATH} \
+libressl_INCLUDEPATH += \
+$${build_libressl_INCLUDEPATH} \
 
-openssl_DEFINES += \
+libressl_DEFINES += \
 
-openssl_LIBS += \
-$${build_openssl_LIBPATH} \
+libressl_LIBS += \
+-L$${build_libressl_LIBPATH} \
+-ltls \
 -lssl \
 -lcrypto \
+

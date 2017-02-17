@@ -1,5 +1,5 @@
 ########################################################################
-# Copyright (c) 1988-2014 $organization$
+# Copyright (c) 1988-2017 $organization$
 #
 # This software is provided by the author and contributors ``as is'' 
 # and any express or implied warranties, including, but not limited to, 
@@ -13,71 +13,49 @@
 # or otherwise) arising in any way out of the use of this software, 
 # even if advised of the possibility of such damage.
 #
-#   File: talas.pri
+#   File: rete.pri
 #
 # Author: $author$
-#   Date: 11/18/2014
+#   Date: 2/15/2017
 ########################################################################
 
-#QMAKE_CXXFLAGS += -std=c++11
+########################################################################
+# patrona
+PATRONA_PKG = $${TALAS_PKG}/../patrona
+PATRONA_PRJ = $${PATRONA_PKG}
+PATRONA_SRC = $${PATRONA_PKG}/src
 
-TALAS_OS = macosx
+patrona_INCLUDEPATH += \
+$${PATRONA_SRC} \
+
+patrona_DEFINES += \
+
+patrona_LIBS += \
 
 ########################################################################
-# os
-os_LIBS += \
--lpthread \
--ldl \
+# crono
+CRONO_PKG = $${TALAS_PKG}/../crono
+CRONO_PRJ = $${CRONO_PKG}
+CRONO_SRC = $${CRONO_PKG}/src
+
+crono_INCLUDEPATH += \
+$${CRONO_SRC} \
+
+crono_DEFINES += \
+
+crono_LIBS += \
 
 ########################################################################
-# nadir
-NADIR_BLD = ../$${NADIR_PKG}/build/$${TALAS_OS}/QtCreator/$${TALAS_CONFIG}
-NADIR_LIB = $${NADIR_BLD}/lib
+# rete
+RETE_PKG = $${TALAS_PKG}/../rete
+RETE_PRJ = $${RETE_PKG}
+RETE_SRC = $${RETE_PKG}/src
 
-xosnadir_LIBS += \
--L$${NADIR_LIB}/libxosnadir \
--lxosnadir \
+rete_INCLUDEPATH += \
+$${RETE_SRC} \
+$${crono_INCLUDEPATH} \
+$${patrona_INCLUDEPATH} \
 
-nadir_LIBS += \
--L$${NADIR_LIB}/libnadir \
--lnadir \
+rete_DEFINES += \
 
-########################################################################
-# coral
-CORAL_BLD = ../$${CORAL_PKG}/build/$${TALAS_OS}/QtCreator/$${TALAS_CONFIG}
-CORAL_LIB = $${CORAL_BLD}/lib
-
-xosnadir_LIBS += \
--L$${CORAL_LIB}/libcoral \
--lcoral \
-
-########################################################################
-# talas
-xostalas_LIBS += \
--L$${TALAS_LIB}/libxostalas \
--lxostalas \
-$${xosnadir_LIBS} \
-$${os_LIBS} \
-
-talas_LIBS += \
--L$${TALAS_LIB}/libtalas \
--ltalas \
-$${nadir_LIBS} \
-$${os_LIBS} \
-
-########################################################################
-# talas_bn
-talas_bn_LIBS += \
--L$${TALAS_LIB}/libbn \
--lbn \
-
-########################################################################
-# talas_mp
-talas_mp_LIBS += \
--L$${TALAS_LIB}/libmp \
--lmp \
--L$${TALAS_LIB}/libmpz \
--lmpz \
--L$${TALAS_LIB}/libmpn \
--lmpn \
-
+rete_LIBS += \

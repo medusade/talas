@@ -23,13 +23,19 @@ HOME = /Users/jboyd
 
 ########################################################################
 # libressl
+home_libressl_INCLUDEPATH += $${HOME}/build/libressl/include
+home_libressl_LIBPATH += $${HOME}/build/libressl/lib
+
+build_libressl_INCLUDEPATH += $${LIBRESSL_INC}
+build_libressl_LIBPATH += $${home_libressl_LIBPATH}
+
 libressl_INCLUDEPATH += \
-$${HOME}/build/libressl/include \
+$${build_libressl_INCLUDEPATH} \
 
 libressl_DEFINES += \
 
 libressl_LIBS += \
--L$${HOME}/build/libressl/lib \
+-L$${build_libressl_LIBPATH} \
 -ltls \
 -lssl \
 -lcrypto \

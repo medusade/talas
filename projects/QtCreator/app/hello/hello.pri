@@ -13,48 +13,67 @@
 # or otherwise) arising in any way out of the use of this software, 
 # even if advised of the possibility of such damage.
 #
-#   File: libressl.pri
+#   File: hello.pri
 #
 # Author: $author$
-#   Date: 2/3/2017
+#   Date: 2/13/2017
 ########################################################################
 
-libressl_DEFINES += \
-__BEGIN_HIDDEN_DECLS= \
-__END_HIDDEN_DECLS= \
+TARGET = talas-hello
 
 ########################################################################
-talas_libressl_HEADERS += \
-$${LIBRESSL_SRC}/include/openssl/ssl.h \
-$${LIBRESSL_SRC}/include/tls.h \
+hello_INCLUDEPATH += \
+$${talas_INCLUDEPATH} \
+$${rete_INCLUDEPATH} \
+$${openssl_INCLUDEPATH} \
 
-talas_libressl_SOURCES += \
-$${LIBRESSL_SRC}/ssl/ssl_err.c \
-$${LIBRESSL_SRC}/ssl/ssl_algs.c \
-$${LIBRESSL_SRC}/tls/tls.c \
+hello_DEFINES += \
+USE_NADIR_BASE \
+$${talas_DEFINES} \
+$${openssl_DEFINES} \
 
 ########################################################################
-talas_libressl_HEADERS += \
-$${TALAS_SRC}/talas/protocol/tls/libressl/libressl.hpp \
+hello_HEADERS += \
 $${TALAS_SRC}/talas/network/os/sockets.hpp \
+
+hello_SOURCES += \
+$${TALAS_SRC}/talas/network/os/sockets.cpp \
+
+########################################################################
+hello_HEADERS += \
+$${TALAS_SRC}/talas/protocol/tls/openssl/client.hpp \
+$${TALAS_SRC}/talas/protocol/tls/openssl/connection.hpp \
+$${TALAS_SRC}/talas/protocol/tls/openssl/context.hpp \
+$${TALAS_SRC}/talas/protocol/tls/openssl/openssl.hpp \
+$${TALAS_SRC}/talas/protocol/tls/openssl/bio_rw.hpp \
+$${TALAS_SRC}/talas/protocol/tls/client.hpp \
+$${TALAS_SRC}/talas/protocol/tls/context.hpp \
+$${TALAS_SRC}/talas/protocol/tls/connection.hpp \
+$${TALAS_SRC}/talas/protocol/tls/version.hpp \
 $${TALAS_SRC}/talas/base/base.hpp \
 
-talas_libressl_SOURCES += \
-$${TALAS_SRC}/talas/protocol/tls/libressl/libressl.cpp \
-$${TALAS_SRC}/talas/network/os/sockets.cpp \
-$${TALAS_SRC}/talas/base/base.cpp \
+hello_SOURCES += \
+$${TALAS_SRC}/talas/protocol/tls/openssl/client.cpp \
+$${TALAS_SRC}/talas/protocol/tls/openssl/connection.cpp \
+$${TALAS_SRC}/talas/protocol/tls/openssl/context.cpp \
+$${TALAS_SRC}/talas/protocol/tls/openssl/openssl.cpp \
+$${TALAS_SRC}/talas/protocol/tls/openssl/bio_rw.cpp \
+$${TALAS_SRC}/talas/protocol/tls/version.cpp \
 
 ########################################################################
-talas_libressl_HEADERS += \
-$${TALAS_SRC}/talas/app/console/libressl/main.hpp \
-$${TALAS_SRC}/talas/app/console/libressl/main_opt.hpp \
+hello_HEADERS += \
+$${TALAS_SRC}/talas/app/console/hello/main_opt.hpp \
+$${TALAS_SRC}/talas/app/console/hello/main.hpp \
 $${TALAS_SRC}/talas/console/main.hpp \
 $${TALAS_SRC}/talas/console/main_opt.hpp \
 $${TALAS_SRC}/talas/console/main_main.hpp \
 
-talas_libressl_SOURCES += \
-$${TALAS_SRC}/talas/app/console/libressl/main.cpp \
+hello_SOURCES += \
+$${TALAS_SRC}/talas/app/console/hello/main.cpp \
 $${TALAS_SRC}/talas/console/main_opt.cpp \
 $${TALAS_SRC}/talas/console/main_main.cpp \
 
 ########################################################################
+hello_LIBS += \
+$${talas_LIBS} \
+$${openssl_LIBS} \

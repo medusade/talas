@@ -1,5 +1,5 @@
 ########################################################################
-# Copyright (c) 1988-2015 $organization$
+# Copyright (c) 1988-2017 $organization$
 #
 # This software is provided by the author and contributors ``as is'' 
 # and any express or implied warranties, including, but not limited to, 
@@ -13,36 +13,36 @@
 # or otherwise) arising in any way out of the use of this software, 
 # even if advised of the possibility of such damage.
 #
-#   File: openssl.pro
+#   File: libressl.pro
 #
 # Author: $author$
-#   Date: 12/25/2015
+#   Date: 2/12/2017
 ########################################################################
 include(../../../../QtCreator/talas.pri)
 include(../../talas.pri)
-include(../../../../QtCreator/openssl.pri)
-include(../../openssl.pri)
-include(../../../../QtCreator/app/openssl/openssl.pri)
+include(../../../../QtCreator/libressl.pri)
+include(../../libressl.pri)
+include(../../../../QtCreator/app/libressl/libressl.pri)
 
-TARGET = talas-openssl
+TARGET = talas-libressl
 
-########################################################################
 INCLUDEPATH += \
 $${talas_INCLUDEPATH} \
-$${openssl_INCLUDEPATH} \
+$${libressl_INCLUDEPATH} \
 
 DEFINES += \
 $${talas_DEFINES} \
-$${openssl_DEFINES} \
+$${libressl_DEFINES} \
 
 ########################################################################
 HEADERS += \
-$${talas_openssl_HEADERS} \
+$${talas_libressl_HEADERS} \
 
 SOURCES += \
-$${talas_openssl_SOURCES} \
+$${talas_libressl_SOURCES} \
 
 ########################################################################
 LIBS += \
-$${xostalas_LIBS} \
-$${openssl_LIBS} \
+$${talas_LIBS} \
+$${libressl_LIBS} \
+

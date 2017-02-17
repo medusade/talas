@@ -13,48 +13,33 @@
 # or otherwise) arising in any way out of the use of this software, 
 # even if advised of the possibility of such damage.
 #
-#   File: libressl.pri
+#   File: hello.pro
 #
 # Author: $author$
-#   Date: 2/3/2017
+#   Date: 2/13/2017
 ########################################################################
-
-libressl_DEFINES += \
-__BEGIN_HIDDEN_DECLS= \
-__END_HIDDEN_DECLS= \
-
-########################################################################
-talas_libressl_HEADERS += \
-$${LIBRESSL_SRC}/include/openssl/ssl.h \
-$${LIBRESSL_SRC}/include/tls.h \
-
-talas_libressl_SOURCES += \
-$${LIBRESSL_SRC}/ssl/ssl_err.c \
-$${LIBRESSL_SRC}/ssl/ssl_algs.c \
-$${LIBRESSL_SRC}/tls/tls.c \
+include(../../../../QtCreator/talas.pri)
+include(../../talas.pri)
+include(../../../../QtCreator/rete.pri)
+include(../../rete.pri)
+include(../../../../QtCreator/openssl.pri)
+include(../../openssl.pri)
+include(../../../../QtCreator/app/hello/hello.pri)
 
 ########################################################################
-talas_libressl_HEADERS += \
-$${TALAS_SRC}/talas/protocol/tls/libressl/libressl.hpp \
-$${TALAS_SRC}/talas/network/os/sockets.hpp \
-$${TALAS_SRC}/talas/base/base.hpp \
+INCLUDEPATH += \
+$${hello_INCLUDEPATH} \
 
-talas_libressl_SOURCES += \
-$${TALAS_SRC}/talas/protocol/tls/libressl/libressl.cpp \
-$${TALAS_SRC}/talas/network/os/sockets.cpp \
-$${TALAS_SRC}/talas/base/base.cpp \
+DEFINES += \
+$${hello_DEFINES} \
 
 ########################################################################
-talas_libressl_HEADERS += \
-$${TALAS_SRC}/talas/app/console/libressl/main.hpp \
-$${TALAS_SRC}/talas/app/console/libressl/main_opt.hpp \
-$${TALAS_SRC}/talas/console/main.hpp \
-$${TALAS_SRC}/talas/console/main_opt.hpp \
-$${TALAS_SRC}/talas/console/main_main.hpp \
+HEADERS += \
+$${hello_HEADERS} \
 
-talas_libressl_SOURCES += \
-$${TALAS_SRC}/talas/app/console/libressl/main.cpp \
-$${TALAS_SRC}/talas/console/main_opt.cpp \
-$${TALAS_SRC}/talas/console/main_main.cpp \
+SOURCES += \
+$${hello_SOURCES} \
 
 ########################################################################
+LIBS += \
+$${hello_LIBS} \

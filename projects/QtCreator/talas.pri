@@ -27,8 +27,10 @@ TALAS_SRC = $${TALAS_PKG}/src
 
 CONFIG(debug, debug|release) {
 TALAS_CONFIG = Debug
+DEFINES += DEBUG_BUILD
 } else {
 TALAS_CONFIG = Release
+DEFINES += RELEASE_BUILD
 }
 
 ########################################################################

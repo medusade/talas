@@ -19,9 +19,6 @@
 #   Date: 12/25/2015
 ########################################################################
 
-QMAKE_CXXFLAGS += -I${HOME}/build/openssl/include
-QMAKE_LFLAGS += -L${HOME}/build/openssl/lib
-
 ########################################################################
 # openssl
 openssl_INCLUDEPATH += \
@@ -29,5 +26,3 @@ openssl_INCLUDEPATH += \
 openssl_DEFINES += \
 
 openssl_LIBS += \
--lssl \
--lcrypto \

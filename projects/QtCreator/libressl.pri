@@ -18,6 +18,9 @@
 # Author: $author$
 #   Date: 2/3/2017
 ########################################################################
+LIBRESSL_PKG = $${TALAS_PKG}/../../frameworks/libressl/libressl-2.5.1
+LIBRESSL_SRC = $${LIBRESSL_PKG}
+LIBRESSL_INC = $${LIBRESSL_SRC}/include
 
 ########################################################################
 # libressl
