@@ -13,29 +13,35 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: sockets.cpp
+///   File: client.hpp
 ///
 /// Author: $author$
-///   Date: 2/5/2017
+///   Date: 2/15/2017
 ///////////////////////////////////////////////////////////////////////
-#include "talas/network/os/sockets.hpp"
+#ifndef _TALAS_PROTOCOL_TLS_CLIENT_HPP
+#define _TALAS_PROTOCOL_TLS_CLIENT_HPP
+
+#include "talas/protocol/tls/context.hpp"
 
 namespace talas {
-namespace network {
-namespace os {
+namespace protocol {
+namespace tls {
 
-#if !defined(USE_NADIR_BASE)
-#else // !defined(USE_NADIR_BASE)
-namespace sockets {
-bool startup() {
-    return true;
-}
-bool cleanup() {
-    return true;
-}
-} // namespace sockets
-#endif // !defined(USE_NADIR_BASE)
+typedef implement_base clientt_implements;
+///////////////////////////////////////////////////////////////////////
+///  Class: clientt
+///////////////////////////////////////////////////////////////////////
+template <class TImplements = clientt_implements>
+class _EXPORT_CLASS clientt: virtual public TImplements {
+public:
+    typedef TImplements Implements;
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+};
+typedef clientt<> client;
 
-} // namespace os
-} // namespace network 
+} // namespace tls 
+} // namespace protocol 
 } // namespace talas 
+
+#endif // _TALAS_PROTOCOL_TLS_CLIENT_HPP 

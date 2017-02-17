@@ -22,14 +22,24 @@
 #define _TALAS_IO_READER_HPP
 
 #include "talas/base/base.hpp"
+#if !defined(USE_NADIR_BASE)
 #include "xos/io/reader.hpp"
+#else // !defined(USE_NADIR_BASE)
+#include "nadir/io/reader.hpp"
+#endif // !defined(USE_NADIR_BASE)
 
 namespace talas {
 namespace io {
 
+#if !defined(USE_NADIR_BASE)
 typedef xos::io::reader reader;
 typedef xos::io::char_reader char_reader;
 typedef xos::io::byte_reader byte_reader;
+#else // !defined(USE_NADIR_BASE)
+typedef nadir::io::reader reader;
+typedef nadir::io::char_reader char_reader;
+typedef nadir::io::byte_reader byte_reader;
+#endif // !defined(USE_NADIR_BASE)
 
 } // namespace io
 } // namespace talas 

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2015 $organization$
+/// Copyright (c) 1988-2017 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,49 +13,45 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: types.hpp
+///   File: context.hpp
 ///
 /// Author: $author$
-///   Date: 4/7/2015
+///   Date: 2/13/2017
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_BASE_TYPES_HPP
-#define _TALAS_BASE_TYPES_HPP
+#ifndef _TALAS_PROTOCOL_TLS_CONTEXT_HPP
+#define _TALAS_PROTOCOL_TLS_CONTEXT_HPP
 
+#include "talas/protocol/tls/version.hpp"
 #include "talas/base/base.hpp"
-#if !defined(USE_NADIR_BASE)
-#include "xos/base/types.hpp"
-#else // !defined(USE_NADIR_BASE)
-#include "nadir/base/chars.hpp"
-#endif // !defined(USE_NADIR_BASE)
 
 namespace talas {
+namespace protocol {
+namespace tls {
 
-#if !defined(USE_NADIR_BASE)
+typedef implement_base contextt_implements;
 ///////////////////////////////////////////////////////////////////////
-///  Class: typest
+///  Class: contextt
 ///////////////////////////////////////////////////////////////////////
-#if defined(USE_CPP_11)
-template
-<class TWhat = char, class TEndWhat = TWhat, TEndWhat VEndWhat = 0,
- class TInt = int, class TUInt = unsigned, class TSize = size_t,
- class TLength = ssize_t, TLength VUndefinedLength = -1>
+template <class TImplements = contextt_implements>
+class _EXPORT_CLASS contextt: virtual public TImplements {
+public:
+    typedef TImplements Implements;
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual bool set_versions(const tls::versions& versions) {
+        return false;
+    }
+    virtual const tls::versions& versions() const {
+        static const tls::versions none;
+        return none;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+};
+typedef contextt<> context;
 
-using typest = typename xos::base::typest
-<TWhat, TEndWhat, VEndWhat, TInt, TUInt, TSize, TLength, VUndefinedLength>;
-#else // defined(USE_CPP_11)
-#endif // defined(USE_CPP_11)
+} // namespace tls 
+} // namespace protocol 
+} // namespace talas 
 
-typedef xos::base::chars_t chars_t;
-typedef xos::base::tchars_t tchars_t;
-typedef xos::base::wchars_t wchars_t;
-typedef xos::base::bytes_t bytes_t;
-typedef xos::base::words_t words_t;
-#else // !defined(USE_NADIR_BASE)
-typedef nadir::chars_t chars_t;
-typedef nadir::tchars_t tchars_t;
-typedef nadir::wchars_t wchars_t;
-#endif // !defined(USE_NADIR_BASE)
-
-} // namespace talas
-
-#endif // _TALAS_BASE_TYPES_HPP 
+#endif // _TALAS_PROTOCOL_TLS_CONTEXT_HPP 

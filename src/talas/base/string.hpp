@@ -22,11 +22,16 @@
 #define _TALAS_BASE_STRING_HPP
 
 #include "talas/base/base.hpp"
+#if !defined(USE_NADIR_BASE)
 #include "xos/base/string.hpp"
 #include "xos/base/to_string.hpp"
+#else // !defined(USE_NADIR_BASE)
+#include "nadir/base/string.hpp"
+#endif // !defined(USE_NADIR_BASE)
 
 namespace talas {
 
+#if !defined(USE_NADIR_BASE)
 ///////////////////////////////////////////////////////////////////////
 ///  Class: string
 ///////////////////////////////////////////////////////////////////////
@@ -48,6 +53,11 @@ typedef xos::base::wstring wstring_t, wchar_string_t;
 typedef xos::base::pointer_to_string pointer_to_string;
 typedef xos::base::bool_to_string bool_to_string;
 typedef xos::base::char_to_string char_to_string;
+#else // !defined(USE_NADIR_BASE)
+typedef nadir::char_string string_t, char_string_t;
+typedef nadir::tchar_string tstring_t, tchar_string_t;
+typedef nadir::wchar_string wstring_t, wchar_string_t;
+#endif // !defined(USE_NADIR_BASE)
 
 } // namespace talas
 

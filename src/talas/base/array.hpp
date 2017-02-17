@@ -22,7 +22,11 @@
 #define _TALAS_BASE_ARRAY_HPP
 
 #include "talas/base/base.hpp"
+#if !defined(USE_NADIR_BASE)
 #include "xos/base/array.hpp"
+#else // !defined(USE_NADIR_BASE)
+#include "nadir/base/array.hpp"
+#endif // !defined(USE_NADIR_BASE)
 
 #define TALAS_ARRAY_DEFAULT_SIZE XOS_ARRAY_DEFAULT_SIZE
 
@@ -30,6 +34,7 @@ namespace talas {
 
 typedef implement_base array_implements;
 typedef base array_extends;
+#if !defined(USE_NADIR_BASE)
 #if defined(USE_CPP_11)
 template
 <typename TWhat = char,
@@ -47,6 +52,14 @@ typedef xos::base::wchar_array wchar_array_t;
 
 typedef xos::base::byte_array byte_array_t;
 typedef xos::base::word_array word_array_t;
+#else // !defined(USE_NADIR_BASE)
+typedef nadir::char_array char_array_t;
+typedef nadir::tchar_array tchar_array_t;
+typedef nadir::wchar_array wchar_array_t;
+
+typedef nadir::byte_array byte_array_t;
+typedef nadir::word_array word_array_t;
+#endif // !defined(USE_NADIR_BASE)
 
 } // namespace talas
 

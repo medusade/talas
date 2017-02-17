@@ -13,29 +13,24 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: sockets.cpp
+///   File: main.cpp
 ///
 /// Author: $author$
-///   Date: 2/5/2017
+///   Date: 2/13/2017
 ///////////////////////////////////////////////////////////////////////
-#include "talas/network/os/sockets.hpp"
+#include "talas/app/console/hello/main.hpp"
 
 namespace talas {
-namespace network {
-namespace os {
+namespace app {
+namespace console {
+namespace hello {
 
-#if !defined(USE_NADIR_BASE)
-#else // !defined(USE_NADIR_BASE)
-namespace sockets {
-bool startup() {
-    return true;
-}
-bool cleanup() {
-    return true;
-}
-} // namespace sockets
-#endif // !defined(USE_NADIR_BASE)
+///////////////////////////////////////////////////////////////////////
+///  Class: main
+///////////////////////////////////////////////////////////////////////
+static main the_main;
 
-} // namespace os
-} // namespace network 
+} // namespace hello 
+} // namespace console 
+} // namespace app 
 } // namespace talas 

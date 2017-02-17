@@ -22,13 +22,19 @@
 #define _TALAS_IO_WRITE_FILE_HPP
 
 #include "talas/base/base.hpp"
+#if !defined(USE_NADIR_BASE)
 #include "xos/io/write/file.hpp"
+#else // !defined(USE_NADIR_BASE)
+#endif // !defined(USE_NADIR_BASE)
 
 namespace talas {
 namespace io {
 namespace write {
 
+#if !defined(USE_NADIR_BASE)
 typedef xos::io::write::file file;
+#else // !defined(USE_NADIR_BASE)
+#endif // !defined(USE_NADIR_BASE)
 
 } // namespace write
 } // namespace io 

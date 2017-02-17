@@ -58,6 +58,10 @@ public:
             err = on_verify_client_option
             (optval, optarg, optname, optind, argc, argv, env);
             break;
+        case TALAS_APP_CONSOLE_OPENSSL_MAIN_HOST_OPTVAL_C:
+            err = on_host_option
+            (optval, optarg, optname, optind, argc, argv, env);
+            break;
         case TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTVAL_C:
             err = on_port_option
             (optval, optarg, optname, optind, argc, argv, env);
@@ -92,6 +96,10 @@ public:
         case TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTVAL_C:
             optarg = TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTARG;
             chars = TALAS_APP_CONSOLE_OPENSSL_MAIN_VERIFY_CLIENT_OPTUSE;
+            break;
+        case TALAS_APP_CONSOLE_OPENSSL_MAIN_HOST_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_OPENSSL_MAIN_HOST_OPTARG;
+            chars = TALAS_APP_CONSOLE_OPENSSL_MAIN_HOST_OPTUSE;
             break;
         case TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTVAL_C:
             optarg = TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTARG;

@@ -22,14 +22,24 @@
 #define _TALAS_IO_WRITER_HPP
 
 #include "talas/base/base.hpp"
+#if !defined(USE_NADIR_BASE)
 #include "xos/io/writer.hpp"
+#else // !defined(USE_NADIR_BASE)
+#include "nadir/io/writer.hpp"
+#endif // !defined(USE_NADIR_BASE)
 
 namespace talas {
 namespace io {
 
+#if !defined(USE_NADIR_BASE)
 typedef xos::io::writer writer;
 typedef xos::io::char_writer char_writer;
 typedef xos::io::byte_writer byte_writer;
+#else // !defined(USE_NADIR_BASE)
+typedef nadir::io::writer writer;
+typedef nadir::io::char_writer char_writer;
+typedef nadir::io::byte_writer byte_writer;
+#endif // !defined(USE_NADIR_BASE)
 
 } // namespace io
 } // namespace talas 

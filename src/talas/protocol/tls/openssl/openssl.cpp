@@ -25,7 +25,33 @@ namespace protocol {
 namespace tls {
 namespace openssl {
 
-} // namespace openssl 
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+bool startup() {
+    bool success = true;
+
+    TALAS_LOG_DEBUG("ERR_load_BIO_strings()...");
+    ERR_load_BIO_strings();
+
+    TALAS_LOG_DEBUG("SSL_load_error_strings()...");
+    SSL_load_error_strings();
+
+    TALAS_LOG_DEBUG("SSL_library_init()...");
+    SSL_library_init();
+    return success;
+}
+bool cleanup() {
+    bool success = true;
+
+    TALAS_LOG_DEBUG("...EVP_cleanup()");
+    EVP_cleanup();
+
+    TALAS_LOG_DEBUG("...ERR_free_strings()");
+    ERR_free_strings();
+    return success;
+}
+
+} // namespace openssl
 } // namespace tls 
 } // namespace protocol 
 } // namespace talas 

@@ -841,6 +841,19 @@ protected:
         return err;
     }
     ///////////////////////////////////////////////////////////////////////
+    char_array_t host_array;
+    virtual int on_host_option
+    (int optval, const char* optarg,
+     const char* optname, int optind,
+     int argc, char**argv, char**env) {
+        int err = 0;
+        if ((optarg) && (optarg[0])) {
+            host_array.assign(optarg, chars_t::count(optarg));
+            accept_host = (host = host_array.elements());
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
     virtual int on_port_option
     (int optval, const char* optarg,
      const char* optname, int optind,

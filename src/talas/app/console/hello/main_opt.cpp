@@ -13,29 +13,41 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: sockets.cpp
+///   File: main_opt.cpp
 ///
 /// Author: $author$
-///   Date: 2/5/2017
+///   Date: 2/13/2017
 ///////////////////////////////////////////////////////////////////////
-#include "talas/network/os/sockets.hpp"
+#ifndef _TALAS_APP_CONSOLE_HELLO_MAIN_HPP
+#include "talas/app/console/hello/main_opt.hpp"
 
 namespace talas {
-namespace network {
-namespace os {
+namespace app {
+namespace console {
+namespace hello {
 
-#if !defined(USE_NADIR_BASE)
-#else // !defined(USE_NADIR_BASE)
-namespace sockets {
-bool startup() {
-    return true;
-}
-bool cleanup() {
-    return true;
-}
-} // namespace sockets
-#endif // !defined(USE_NADIR_BASE)
+typedef implement_base main_implements;
+typedef base main_extends;
+///////////////////////////////////////////////////////////////////////
+///  Class: main
+///////////////////////////////////////////////////////////////////////
+class _EXPORT_CLASS main: virtual public main_implements, public main_extends {
+public:
+    typedef main_implements Implements;
+    typedef main_extends Extends;
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    main() {
+    }
+    virtual ~main() {
+    }
+#endif // _TALAS_APP_CONSOLE_HELLO_MAIN_HPP
 
-} // namespace os
-} // namespace network 
+#ifndef _TALAS_APP_CONSOLE_HELLO_MAIN_HPP
+};
+
+} // namespace hello
+} // namespace console 
+} // namespace app 
 } // namespace talas 
+#endif // _TALAS_APP_CONSOLE_HELLO_MAIN_HPP
