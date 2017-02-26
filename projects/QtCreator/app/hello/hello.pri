@@ -41,11 +41,16 @@ $${TALAS_SRC}/talas/network/os/sockets.cpp \
 
 ########################################################################
 hello_HEADERS += \
+$${TALAS_SRC}/talas/protocol/tls/openssl/server.hpp \
+$${TALAS_SRC}/talas/protocol/tls/openssl/server_context.hpp \
 $${TALAS_SRC}/talas/protocol/tls/openssl/client.hpp \
+$${TALAS_SRC}/talas/protocol/tls/openssl/client_context.hpp \
 $${TALAS_SRC}/talas/protocol/tls/openssl/connection.hpp \
+$${TALAS_SRC}/talas/protocol/tls/openssl/session.hpp \
 $${TALAS_SRC}/talas/protocol/tls/openssl/context.hpp \
 $${TALAS_SRC}/talas/protocol/tls/openssl/openssl.hpp \
 $${TALAS_SRC}/talas/protocol/tls/openssl/bio_rw.hpp \
+$${TALAS_SRC}/talas/protocol/tls/server.hpp \
 $${TALAS_SRC}/talas/protocol/tls/client.hpp \
 $${TALAS_SRC}/talas/protocol/tls/context.hpp \
 $${TALAS_SRC}/talas/protocol/tls/connection.hpp \
@@ -53,8 +58,12 @@ $${TALAS_SRC}/talas/protocol/tls/version.hpp \
 $${TALAS_SRC}/talas/base/base.hpp \
 
 hello_SOURCES += \
+$${TALAS_SRC}/talas/protocol/tls/openssl/server.cpp \
+$${TALAS_SRC}/talas/protocol/tls/openssl/server_context.cpp \
 $${TALAS_SRC}/talas/protocol/tls/openssl/client.cpp \
+$${TALAS_SRC}/talas/protocol/tls/openssl/client_context.cpp \
 $${TALAS_SRC}/talas/protocol/tls/openssl/connection.cpp \
+$${TALAS_SRC}/talas/protocol/tls/openssl/session.cpp \
 $${TALAS_SRC}/talas/protocol/tls/openssl/context.cpp \
 $${TALAS_SRC}/talas/protocol/tls/openssl/openssl.cpp \
 $${TALAS_SRC}/talas/protocol/tls/openssl/bio_rw.cpp \
@@ -77,3 +86,4 @@ $${TALAS_SRC}/talas/console/main_main.cpp \
 hello_LIBS += \
 $${talas_LIBS} \
 $${openssl_LIBS} \
+
