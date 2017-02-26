@@ -38,6 +38,10 @@
 #include "rete/network/ip/v6/Endpoint.hpp"
 #include "rete/network/ip/v4/tcp/Transport.hpp"
 #include "rete/network/ip/v4/Endpoint.hpp"
+#include "rete/io/socket/tcp/Writer.hpp"
+#include "rete/io/socket/Writer.hpp"
+#include "rete/io/socket/tcp/Reader.hpp"
+#include "rete/io/socket/Reader.hpp"
 #include "nadir/io/reader.hpp"
 #include "nadir/io/writer.hpp"
 #endif // !defined(USE_NADIR_BASE)
@@ -81,10 +85,22 @@ typedef rete::network::ip::v4::Endpoint endpoint_extends;
 class _EXPORT_CLASS endpoint: public endpoint_extends {
 public:
     typedef endpoint_extends Extends;
+    typedef Extends::Attached attached_t;
     endpoint(const string_t& host, unsigned port)
     : Extends(host.chars(), port) {}
     endpoint(const char* host, unsigned port)
     : Extends(host, port) {}
+    endpoint(unsigned port)
+    : Extends(port) {}
+    endpoint() {}
+    attached_t attach(const string_t& host, unsigned port)
+    { return this->Attach(host, port); }
+    attached_t attach(const char* host, unsigned port)
+    { return this->Attach(host, port); }
+    attached_t attach(unsigned port)
+    { return this->Attach(port); }
+    attached_t detach()
+    { return this->Detach(); }
 };
 namespace tcp {
 typedef rete::network::ip::v4::tcp::Transport transport;
@@ -96,10 +112,22 @@ typedef rete::network::ip::v6::Endpoint endpoint_extends;
 class _EXPORT_CLASS endpoint: public endpoint_extends {
 public:
     typedef endpoint_extends Extends;
+    typedef Extends::Attached attached_t;
     endpoint(const string_t& host, unsigned port)
     : Extends(host.chars(), port) {}
     endpoint(const char* host, unsigned port)
     : Extends(host, port) {}
+    endpoint(unsigned port)
+    : Extends(port) {}
+    endpoint() {}
+    attached_t attach(const string_t& host, unsigned port)
+    { return this->Attach(host, port); }
+    attached_t attach(const char* host, unsigned port)
+    { return this->Attach(host, port); }
+    attached_t attach(unsigned port)
+    { return this->Attach(port); }
+    attached_t detach()
+    { return this->Detach(); }
 };
 namespace tcp {
 typedef rete::network::ip::v6::tcp::Transport transport;
@@ -115,6 +143,8 @@ public:
     virtual bool open(const transport& tp) { return Extends::Open(tp); }
     virtual bool close() { return Extends::Close(); }
     virtual bool connect(const endpoint& ep) { return Extends::Connect(ep); }
+    virtual bool listen(const endpoint& ep) { return Extends::Listen(ep); }
+    virtual bool accept(socket& sk, const endpoint& ep) { return Extends::Accept(sk, ep); }
 };
 namespace sockets {
 bool startup();
@@ -138,93 +168,37 @@ typedef xos::io::socket::tcp::writer writer;
 namespace io {
 namespace socket {
 namespace tcp {
-typedef nadir::io::reader reader_implements;
-typedef base reader_extends;
-///////////////////////////////////////////////////////////////////////
-///  Class: readert
-///////////////////////////////////////////////////////////////////////
-template
-<class TImplements = reader_implements, class TExtends = reader_extends>
-class _EXPORT_CLASS readert: virtual public TImplements, public TExtends {
+typedef nadir::io::reader nadir_reader_implements;
+typedef rete::io::socket::Reader reader_implements;
+typedef rete::io::socket::tcp::Reader reader_extend;
+class _EXPORT_CLASS reader
+: virtual public nadir_reader_implements,
+  virtual public reader_implements, public reader_extend {
 public:
-    typedef TImplements Implements;
-    typedef TExtends Extends;
-    typedef typename TImplements::what_t what_t;
-    typedef typename TImplements::sized_t sized_t;
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    readert(network::socket& sk): sk_(sk) {
+    reader(network::socket& sk): reader_extend(sk) {}
+    virtual ssize_t read(nadir::io::reader::what_t* what, size_t size) {
+        size_t count = this->Read(what, size);
+        return count;
     }
-    virtual ~readert() {
-    }
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    virtual ssize_t read(what_t* what, size_t size) {
+};
+typedef nadir::io::writer nadir_writer_implements;
+typedef rete::io::socket::Writer writer_implements;
+typedef rete::io::socket::tcp::Writer writer_extend;
+class _EXPORT_CLASS writer
+: virtual public nadir_writer_implements,
+  virtual public writer_implements, public writer_extend {
+public:
+    writer(network::socket& sk): writer_extend(sk) {}
+    virtual ssize_t write(const nadir::io::writer::what_t* what, ssize_t size) {
         size_t count = 0;
-        if ((what) && (size)) {
-            count = recv(what, size);
+        if (0 > (size)) {
+            count = this->Write(what);
+        } else {
+            count = this->Write(what, size);
         }
         return count;
     }
-    virtual ssize_t recv(what_t* what, size_t size) {
-        size_t count = sk_.Recv(what, size, 0);
-        return count;
-    }
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-protected:
-    network::socket& sk_;
 };
-typedef readert<> reader;
-
-typedef nadir::io::writer writer_implements;
-typedef base writer_extends;
-///////////////////////////////////////////////////////////////////////
-///  Class: writert
-///////////////////////////////////////////////////////////////////////
-template
-<class TImplements = writer_implements, class TExtends = writer_extends>
-class _EXPORT_CLASS writert: virtual public TImplements, public TExtends {
-public:
-    typedef TImplements Implements;
-    typedef TExtends Extends;
-    typedef typename TImplements::what_t what_t;
-    typedef typename TImplements::sized_t sized_t;
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    writert(network::socket& sk): sk_(sk) {
-    }
-    virtual ~writert() {
-    }
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    virtual ssize_t write(const what_t* what, ssize_t size) {
-        ssize_t count = 0;
-        if ((what) && (size)) {
-            if (0 > (size)) {
-                const sized_t* sized = 0;
-                if ((sized = ((const sized_t*)what))) {
-                    for (size = 0; *sized; ++sized) {
-                        ++size;
-                    }
-                }
-            }
-            if (0 < (size)) {
-                count = send(what, size);
-            }
-        }
-        return count;
-    }
-    virtual ssize_t send(const what_t* what, size_t size) {
-        ssize_t count = sk_.Send(what, size, 0);
-        return count;
-    }
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-protected:
-    network::socket& sk_;
-};
-typedef writert<> writer;
 } // namespace tcp
 } // namespace socket
 } // namespace io

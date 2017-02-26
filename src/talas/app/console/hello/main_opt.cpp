@@ -43,6 +43,91 @@ public:
     }
 #endif // _TALAS_APP_CONSOLE_HELLO_MAIN_HPP
 
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int on_option
+    (int optval, const char* optarg,
+     const char* optname, int optind,
+     int argc, char**argv, char**env) {
+        int err = 0;
+        switch(optval) {
+        case TALAS_APP_CONSOLE_HELLO_MAIN_CLIENT_OPTVAL_C:
+            err = on_client_option
+            (optval, optarg, optname, optind, argc, argv, env);
+            break;
+        case TALAS_APP_CONSOLE_HELLO_MAIN_SERVER_OPTVAL_C:
+            err = on_server_option
+            (optval, optarg, optname, optind, argc, argv, env);
+            break;
+        case TALAS_APP_CONSOLE_HELLO_MAIN_VERIFY_OPTVAL_C:
+            err = on_verify_option
+            (optval, optarg, optname, optind, argc, argv, env);
+            break;
+        case TALAS_APP_CONSOLE_HELLO_MAIN_ONE_OPTVAL_C:
+            err = on_one_option
+            (optval, optarg, optname, optind, argc, argv, env);
+            break;
+        case TALAS_APP_CONSOLE_HELLO_MAIN_HOST_OPTVAL_C:
+            err = on_host_option
+            (optval, optarg, optname, optind, argc, argv, env);
+            break;
+        case TALAS_APP_CONSOLE_HELLO_MAIN_PORT_OPTVAL_C:
+            err = on_port_option
+            (optval, optarg, optname, optind, argc, argv, env);
+            break;
+        default:
+            err = Extends::on_option
+            (optval, optarg, optname, optind, argc, argv, env);
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    virtual const char* option_usage
+    (const char*& optarg, const struct option* longopt) {
+        const char* chars = "";
+        switch(longopt->val) {
+        case TALAS_APP_CONSOLE_HELLO_MAIN_CLIENT_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_HELLO_MAIN_CLIENT_OPTARG;
+            chars = TALAS_APP_CONSOLE_HELLO_MAIN_CLIENT_OPTUSE;
+            break;
+        case TALAS_APP_CONSOLE_HELLO_MAIN_SERVER_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_HELLO_MAIN_SERVER_OPTARG;
+            chars = TALAS_APP_CONSOLE_HELLO_MAIN_SERVER_OPTUSE;
+            break;
+        case TALAS_APP_CONSOLE_HELLO_MAIN_VERIFY_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_HELLO_MAIN_VERIFY_OPTARG;
+            chars = TALAS_APP_CONSOLE_HELLO_MAIN_VERIFY_OPTUSE;
+            break;
+        case TALAS_APP_CONSOLE_HELLO_MAIN_ONE_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_HELLO_MAIN_ONE_OPTARG;
+            chars = TALAS_APP_CONSOLE_HELLO_MAIN_ONE_OPTUSE;
+            break;
+        case TALAS_APP_CONSOLE_HELLO_MAIN_HOST_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_HELLO_MAIN_HOST_OPTARG;
+            chars = TALAS_APP_CONSOLE_HELLO_MAIN_HOST_OPTUSE;
+            break;
+        case TALAS_APP_CONSOLE_HELLO_MAIN_PORT_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_HELLO_MAIN_PORT_OPTARG;
+            chars = TALAS_APP_CONSOLE_HELLO_MAIN_PORT_OPTUSE;
+            break;
+        default:
+            chars = Extends::option_usage(optarg, longopt);
+        }
+        return chars;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    virtual const char* options(const struct option*& longopts) {
+        int err = 0;
+        static const char* chars = TALAS_APP_CONSOLE_HELLO_MAIN_OPTIONS_CHARS;
+        static struct option optstruct[]= {
+            TALAS_APP_CONSOLE_HELLO_MAIN_OPTIONS_OPTIONS
+            {0, 0, 0, 0}};
+        longopts = optstruct;
+        return chars;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
 #ifndef _TALAS_APP_CONSOLE_HELLO_MAIN_HPP
 };
 

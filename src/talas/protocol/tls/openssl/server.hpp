@@ -13,34 +13,33 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: client.hpp
+///   File: server.hpp
 ///
 /// Author: $author$
-///   Date: 2/15/2017
+///   Date: 2/23/2017
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_PROTOCOL_TLS_OPENSSL_CLIENT_HPP
-#define _TALAS_PROTOCOL_TLS_OPENSSL_CLIENT_HPP
+#ifndef _TALAS_PROTOCOL_TLS_OPENSSL_SERVER_HPP
+#define _TALAS_PROTOCOL_TLS_OPENSSL_SERVER_HPP
 
-#include "talas/protocol/tls/openssl/client_context.hpp"
+#include "talas/protocol/tls/openssl/server_context.hpp"
 #include "talas/protocol/tls/openssl/session.hpp"
 #include "talas/protocol/tls/openssl/context.hpp"
 #include "talas/protocol/tls/openssl/connection.hpp"
-#include "talas/protocol/tls/client.hpp"
+#include "talas/protocol/tls/server.hpp"
 
 namespace talas {
 namespace protocol {
 namespace tls {
 namespace openssl {
 
-typedef session_implementt<tls::client> clientt_implements;
-typedef sessiont<tls::client> clientt_extends;
+typedef session_implementt<tls::server> servert_implements;
+typedef sessiont<tls::server> servert_extends;
 ///////////////////////////////////////////////////////////////////////
-///  Class: clientt
+///  Class: servert
 ///////////////////////////////////////////////////////////////////////
 template
-<class TImplements = clientt_implements, class TExtends = clientt_extends>
-
-class _EXPORT_CLASS clientt: virtual public TImplements, public TExtends {
+<class TImplements = servert_implements, class TExtends = servert_extends>
+class _EXPORT_CLASS servert: virtual public TImplements, public TExtends {
 public:
     typedef TImplements Implements;
     typedef TExtends Extends;
@@ -48,15 +47,15 @@ public:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    clientt
-    (client_context& context,
+    servert
+    (server_context& context,
      attached_t attached = 0, bool is_created = false)
     : Extends(attached, is_created), context_(context) {
     }
-    clientt(clientt& copy)
+    servert(servert& copy)
     : Extends(copy), context_(copy.context()) {
     }
-    virtual ~clientt() {
+    virtual ~servert() {
         if (!(this->destroyed())) {
             create_exception e(destroy_failed);
             TALAS_LOG_ERROR("...throwing create_exception e(destroy_failed)...");
@@ -66,14 +65,13 @@ public:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    virtual bool connect(openssl::connection& connection) {
+    virtual bool accept(openssl::connection& connection) {
         protocol::tls::openssl::BIO_RW& rw = connection.rw();
         SSL* ssl = 0;
         if ((ssl = this->attached_to())) {
+            bool success = false;
             BIO *rw_bio = 0;
-            long verify = 0;
-            unsigned long error = 0;
-            char* error_string = 0;
+            int did_accept = 0;
 
             TALAS_LOG_DEBUG("protocol::tls::openssl::BIO_new_rw(&rw)...");
             if ((rw_bio = protocol::tls::openssl::BIO_new_rw(&rw))) {
@@ -83,28 +81,26 @@ public:
                 SSL_set_bio(ssl, rw_bio, rw_bio);
                 rw_bio = 0;
 
-                TALAS_LOG_DEBUG("SSL_connect(ssl)...");
-                if (1 == (SSL_connect(ssl))) {
-                    TALAS_LOG_DEBUG("...SSL_connect(ssl)");
-
-                    TALAS_LOG_DEBUG("X509_V_OK == (SSL_get_verify_result(ssl))...");
-                    if (X509_V_OK == (verify = SSL_get_verify_result(ssl))) {
-                        TALAS_LOG_DEBUG("...X509_V_OK == (SSL_get_verify_result(ssl))");
-
-                        connection.attach(ssl);
-                        return true;
-                    } else {
-                        TALAS_LOG_ERROR("...failed X509_V_OK != (" << verify << " = SSL_get_verify_result(ssl))");
-                    }
+                TALAS_LOG_DEBUG("SSL_accept(ssl)...");
+                if (1 == (did_accept = SSL_accept(ssl))) {
+                    TALAS_LOG_DEBUG("...SSL_accept(ssl)");
+                    success = true;
                 } else {
-                    error_string = ERR_error_string(error = ERR_get_error(), NULL);
-                    TALAS_LOG_ERROR
-                    ("failed (" << error << ") \"" << error_string << "\" on " <<
-                     "SSL_connect(ssl)");
+                    unsigned long error = 0;
+                    const char* error_string = ERR_error_string(error = ERR_get_error(), NULL);
+                    TALAS_LOG_MESSAGE_DEBUG
+                    ("...failed (" << error << ") \"" << error_string << "\" on " <<
+                     "SSL_accept(ssl)");
+                }
+                if ((rw_bio)) {
+                    TALAS_LOG_DEBUG("...BIO_free_all(rw_bio)");
+                    BIO_free_all(rw_bio);
+                    rw_bio = 0;
                 }
             } else {
                 TALAS_LOG_ERROR("...failed on protocol::tls::openssl::BIO_new_rw(&rw)");
             }
+            return success;
         }
         return false;
     }
@@ -113,7 +109,7 @@ public:
     ///////////////////////////////////////////////////////////////////////
     using Extends::create_detached;
     virtual attached_t create_detached() const {
-        client_context::attached_t ctx = 0;
+        server_context::attached_t ctx = 0;
         if ((ctx = context_.attached_to())) {
             return this->create_detached(ctx);
         }
@@ -122,20 +118,20 @@ public:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    virtual client_context& context() const {
-        return ((client_context&)context_);
+    virtual server_context& context() const {
+        return ((server_context&)context_);
     }
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
 protected:
-    client_context& context_;
+    server_context& context_;
 };
-typedef clientt<> client;
+typedef servert<> server;
 
 } // namespace openssl 
 } // namespace tls 
 } // namespace protocol 
 } // namespace talas 
 
-#endif // _TALAS_PROTOCOL_TLS_OPENSSL_CLIENT_HPP 
+#endif // _TALAS_PROTOCOL_TLS_OPENSSL_SERVER_HPP 

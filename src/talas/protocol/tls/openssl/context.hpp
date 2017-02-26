@@ -100,6 +100,18 @@ public:
             TALAS_LOG_DEBUG("SSL_CTX_load_verify_locations(ctx, trust = \"" << trust << "\", certs = \"" << certs << "\")...");
             if ((SSL_CTX_load_verify_locations(ctx, trust, certs))) {
                 TALAS_LOG_DEBUG("...SSL_CTX_load_verify_locations(ctx, trust = \"" << trust << "\", certs = \"" << certs << "\")");
+                if ((this->is_server())) {
+                    typedef int (*verify_callback_t)(int, X509_STORE_CTX*);
+                    verify_callback_t verify_callback = NULL;
+                    int verify_mode = SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT;
+                    int verify_depth = this->verify_depth();
+
+                    TALAS_LOG_DEBUG("SSL_CTX_set_verify(ctx, verify_mode, verify_callback)...");
+                    SSL_CTX_set_verify(ctx, verify_mode, verify_callback);
+
+                    TALAS_LOG_DEBUG("SSL_CTX_set_verify_depth(ctx, verify_depth)...");
+                    SSL_CTX_set_verify_depth(ctx, verify_depth);
+                }
                 return true;
             } else {
                 unsigned long error = 0;
@@ -180,6 +192,16 @@ public:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
     virtual attached_t create_detached(const tls::versions& versions) const {
+        SSL_METHOD* method = 0;
+        if ((method = this->method())) {
+            attached_t detached = 0;
+            TALAS_LOG_DEBUG("SSL_CTX_new(method)...");
+            if ((detached = SSL_CTX_new(method))) {
+                return detached;
+            } else {
+                TALAS_LOG_ERROR("...failed on SSL_CTX_new(method)");
+            }
+        }
         return 0;
     }
     virtual bool destroy_detached(attached_t detached) const {
@@ -190,65 +212,23 @@ public:
         }
         return false;
     }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual SSL_METHOD* method() const {
+        return TLSv1_method();
+    }
+    virtual bool is_server() const {
+        return false;
+    }
+    virtual int verify_depth() const {
+        return 10;
+    }
+
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
 };
 typedef contextt<> context;
-
-typedef contextt_implements client_contextt_implements;
-typedef context client_contextt_extends;
-///////////////////////////////////////////////////////////////////////
-///  Class: client_contextt
-///////////////////////////////////////////////////////////////////////
-template
-<class TImplements = client_contextt_implements,
- class TExtends = client_contextt_extends>
-
-class _EXPORT_CLASS client_contextt: virtual public TImplements,public TExtends {
-public:
-    typedef TImplements Implements;
-    typedef TExtends Extends;
-    typedef typename Extends::attached_t attached_t;
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    client_contextt(const tls::versions& versions) {
-        if (!(this->create(versions))) {
-            create_exception e(create_failed);
-            TALAS_LOG_ERROR("...throwing create_exception e(create_failed)...");
-            throw (e);
-        }
-    }
-    client_contextt(attached_t attached = 0, bool is_created = false)
-    : Extends(attached, is_created) {
-    }
-    client_contextt(const client_contextt& copy)
-    : Extends(copy.attached_to()) {
-    }
-    virtual ~client_contextt() {
-        if (!(this->destroyed())) {
-            create_exception e(destroy_failed);
-            TALAS_LOG_ERROR("...throwing create_exception e(destroy_failed)...");
-            throw (e);
-        }
-    }
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    virtual attached_t create_detached(const tls::versions& versions) const {
-        SSL_METHOD* method = TLSv1_client_method();
-        attached_t detached = 0;
-
-        TALAS_LOG_DEBUG("SSL_CTX_new(method)...");
-        if ((detached = SSL_CTX_new(method))) {
-            return detached;
-        } else {
-            TALAS_LOG_ERROR("...failed on SSL_CTX_new(method)");
-        }
-        return 0;
-    }
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-};
-typedef client_contextt<> client_context;
 
 } // namespace openssl
 } // namespace tls 
