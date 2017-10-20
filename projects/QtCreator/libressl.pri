@@ -18,7 +18,15 @@
 # Author: $author$
 #   Date: 2/3/2017
 ########################################################################
-LIBRESSL_PKG = $${TALAS_PKG}/../../frameworks/libressl/libressl-2.5.1
+LIBRESSL_VERSION_MAJOR = 2
+LIBRESSL_VERSION_MINOR = 5
+LIBRESSL_VERSION_RELEASE = 3
+
+LIBRESSL_VERSION = \
+$${LIBRESSL_VERSION_MAJOR}.$${LIBRESSL_VERSION_MINOR}.$${LIBRESSL_VERSION_RELEASE}
+
+LIBRESSL_DIR = ../../frameworks/libressl
+LIBRESSL_PKG = $${TALAS_PKG}/$${LIBRESSL_DIR}/libressl-$${LIBRESSL_VERSION}
 LIBRESSL_SRC = $${LIBRESSL_PKG}
 LIBRESSL_INC = $${LIBRESSL_SRC}/include
 

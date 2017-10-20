@@ -47,7 +47,11 @@ nadir_LIBS += \
 CORAL_BLD = ../$${CORAL_PKG}/build/$${TALAS_OS}/QtCreator/$${TALAS_CONFIG}
 CORAL_LIB = $${CORAL_BLD}/lib
 
-xosnadir_LIBS += \
+xoscoral_LIBS += \
+-L$${CORAL_LIB}/libxoscoral \
+-lxoscoral \
+
+coral_LIBS += \
 -L$${CORAL_LIB}/libcoral \
 -lcoral \
 

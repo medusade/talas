@@ -24,12 +24,17 @@
 #include "talas/base/base.hpp"
 #include <tls.h>
 
+#if !defined(HEADER_TLS_CLEANUP_H)
+inline void tls_cleanup(void) {
+}
+#endif // !defined(HEADER_TLS_CLEANUP_H)
+
 namespace talas {
 namespace protocol {
 namespace tls {
 namespace libressl {
 
-} // namespace libressl 
+} // namespace libressl
 } // namespace tls 
 } // namespace protocol 
 } // namespace talas 

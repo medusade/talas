@@ -1,5 +1,5 @@
 ########################################################################
-# Copyright (c) 1988-2014 $organization$
+# Copyright (c) 1988-2015 $organization$
 #
 # This software is provided by the author and contributors ``as is''
 # and any express or implied warranties, including, but not limited to,
@@ -13,31 +13,16 @@
 # or otherwise) arising in any way out of the use of this software,
 # even if advised of the possibility of such damage.
 #
-#   File: Makefile
+#   File: openssl.pri
 #
 # Author: $author$
-#   Date: 5/23/2015
-#
-# Linux Gcc Makefile for talas applications
+#   Date: 12/25/2015
 ########################################################################
-PKG = ../../../../..
 
-PRJ = projects/linux/Makefile/Gcc
-SRC = src
+########################################################################
+# openssl
+openssl_INCLUDEPATH += \
 
-include $(PKG)/$(PRJ)/Makedefines
+openssl_DEFINES += \
 
-#
-# Source subdirs
-#
-#SRC_DIRS = \
-#$(PKG)/$(PRJ)/somedir \
-#
-SRC_DIRS = \
-$(PKG)/$(PRJ)/app/talas \
-
-old_SRC_DIRS = \
-$(PKG)/$(PRJ)/app/openssl \
-
-include $(PKG)/$(PRJ)/Makedirs
-
+openssl_LIBS += \

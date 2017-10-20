@@ -43,5 +43,5 @@ $${talas_libressl_SOURCES} \
 
 ########################################################################
 LIBS += \
-$${talas_LIBS} \
+$${xostalas_LIBS} \
 $${libressl_LIBS} \

@@ -45,6 +45,7 @@ public:
     ///////////////////////////////////////////////////////////////////////
     main()
     : run_(0),
+      accept_one_(false),
       host_("localhost"), port_("4433"),
       request_("GET / HTTP/1.0\r\n\r\nHello\r\n"),
       response_("HTTP/1.0 200 Ok\r\n\r\nHello\r\n"),
@@ -321,15 +322,19 @@ protected:
             if ((ss.open(tp))) {
                 if ((ss.listen(ep))) {
                     socket s(*this);
+
                     for (bool done = false; !done;) {
-                    if ((ss.accept(s, ep))) {
-                        if (!(accept_socket_cbs(s, tls))) {
+                        if ((ss.accept(s, ep))) {
+                            if (!(accept_socket_cbs(s, tls))) {
+                                done = true;
+                            }
+                            s.close();
+                            if ((accept_one_)) {
+                                done = true;
+                            }
+                        } else {
                             done = true;
                         }
-                        s.close();
-                    } else {
-                        done = true;
-                    }
                     }
                 }
                 ss.close();
@@ -468,6 +473,7 @@ protected:
     ///////////////////////////////////////////////////////////////////////
     typedef int (Derives::*run_t)(int argc, char** argv, char** env);
     run_t run_;
+    bool accept_one_;
     string_t host_, port_, request_, response_,
              protocols_, ciphers_, key_file_, cert_file_;
 };

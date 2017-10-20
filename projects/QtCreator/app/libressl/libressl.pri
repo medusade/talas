@@ -26,12 +26,17 @@ __END_HIDDEN_DECLS= \
 ########################################################################
 talas_libressl_HEADERS += \
 $${LIBRESSL_SRC}/include/openssl/ssl.h \
+$${LIBRESSL_SRC}/include/openssl/ssl_cleanup.h \
 $${LIBRESSL_SRC}/include/tls.h \
+$${LIBRESSL_SRC}/include/tls_cleanup.h \
 
 talas_libressl_SOURCES += \
 $${LIBRESSL_SRC}/ssl/ssl_err.c \
+$${LIBRESSL_SRC}/ssl/ssl_err_cleanup.c \
 $${LIBRESSL_SRC}/ssl/ssl_algs.c \
+$${LIBRESSL_SRC}/ssl/ssl_algs_cleanup.c \
 $${LIBRESSL_SRC}/tls/tls.c \
+$${LIBRESSL_SRC}/tls/tls_cleanup.c \
 
 ########################################################################
 talas_libressl_HEADERS += \
