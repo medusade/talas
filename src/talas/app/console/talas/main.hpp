@@ -937,7 +937,13 @@ protected:
             const string_t source(argv[optind]);
             err = hash_file(source, hash);
         } else {
-            err = this->hash(hash, 0,0);
+            const char_t* chars = 0;
+            size_t length = 0;
+            if ((chars = plain_text(length))) {
+                err = this->hash(hash, chars, length);
+            } else {
+                err = this->hash(hash, 0,0);
+            }
         }
         return err;
     }
@@ -1082,6 +1088,18 @@ protected:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
+    virtual const char_t* set_plain_text(const char_t* chars) {
+        plain_text_.assign(chars);
+        chars = plain_text_.has_chars();
+        return chars;
+    }
+    virtual const char_t* plain_text(size_t& length) const {
+        const char_t* chars = plain_text_.has_chars(length);
+        return chars;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
 #include "talas/app/console/talas/main_opt.cpp"
 
     ///////////////////////////////////////////////////////////////////////
@@ -1110,6 +1128,7 @@ protected:
     sha512_t sha512_;
     size_t block_size_;
     char block_[TALAS_APP_CONSOLE_TALAS_MAIN_BLOCKSIZE];
+    string_t plain_text_;
 };
 
 } // namespace talas 

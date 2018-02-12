@@ -50,6 +50,8 @@ typedef xos::base::string string_t, char_string_t;
 typedef xos::base::tstring tstring_t, tchar_string_t;
 typedef xos::base::wstring wstring_t, wchar_string_t;
 
+typedef xos::base::unsigned_to_string unsigned_to_string;
+typedef xos::base::signed_to_string signed_to_string;
 typedef xos::base::pointer_to_string pointer_to_string;
 typedef xos::base::bool_to_string bool_to_string;
 typedef xos::base::char_to_string char_to_string;

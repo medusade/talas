@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2015 $organization$
+/// Copyright (c) 1988-2018 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,67 +13,45 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main.hpp
+///   File: main_opt.hpp
 ///
 /// Author: $author$
-///   Date: 4/28/2015
+///   Date: 2/10/2018
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_CRYPTO_CONSOLE_MAIN_HPP
-#define _TALAS_CRYPTO_CONSOLE_MAIN_HPP
+#ifndef _TALAS_APP_CONSOLE_DH_MAIN_OPT_HPP
+#define _TALAS_APP_CONSOLE_DH_MAIN_OPT_HPP
 
-#include "talas/console/main.hpp"
-#include "talas/crypto/base.hpp"
+#include "talas/crypto/console/main.hpp"
 
 namespace talas {
-namespace crypto {
+namespace app {
 namespace console {
+namespace dh {
 
-typedef ::talas::console::main_implements main_implements;
-typedef ::talas::console::main main_extends;
+typedef crypto::console::main_implements main_opt_implements;
+typedef crypto::console::main main_opt_extends;
 ///////////////////////////////////////////////////////////////////////
-///  Class: maint
+///  Class: main_opt
 ///////////////////////////////////////////////////////////////////////
-template
-<class TImplements = main_implements, class TExtends = main_extends>
-
-class _EXPORT_CLASS maint: virtual public TImplements, public TExtends {
+class _EXPORT_CLASS main_opt: virtual public main_opt_implements,public main_opt_extends {
 public:
-    typedef TImplements Implements;
-    typedef TExtends Extends;
-#if !defined(USE_NADIR_BASE)
-    typedef typename Extends::Extends::Extends::Extends::Extends MainExtends;
-#else // !defined(USE_NADIR_BASE)
-    typedef Extends MainExtends;
-#endif // !defined(USE_NADIR_BASE)
+    typedef main_opt_implements Implements;
+    typedef main_opt_extends Extends;
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    maint() {
+    main_opt() {
     }
-    virtual ~maint() {
-    }
-
-protected:
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    virtual int main(int argc, char** argv, char** env) {
-        int err = 0;
-        try {
-            err = MainExtends::main(argc, argv, env);
-        } catch (const crypto::error& e) {
-            TALAS_LOG_ERROR("...caught crypto::error &e = " << e);
-            err = 1;
-        }
-        return err;
+    virtual ~main_opt() {
     }
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
 };
-typedef maint<> main;
 
+} // namespace dh 
 } // namespace console 
-} // namespace crypto 
+} // namespace app 
 } // namespace talas 
 
-#endif // _TALAS_CRYPTO_CONSOLE_MAIN_HPP 
+#endif // _TALAS_APP_CONSOLE_DH_MAIN_OPT_HPP 

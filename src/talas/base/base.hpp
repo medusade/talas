@@ -23,6 +23,9 @@
 
 #if !defined(USE_NADIR_BASE)
 #include "xos/base/base.hpp"
+#include "xos/base/attached.hpp"
+#include "xos/base/created.hpp"
+#include "xos/base/opened.hpp"
 #else // !defined(USE_NADIR_BASE)
 #include "nadir/base/base.hpp"
 #include "nadir/base/attached.hpp"
@@ -35,6 +38,14 @@ namespace talas {
 #if !defined(USE_NADIR_BASE)
 typedef xos::base::implement_base implement_base;
 typedef xos::base::base base;
+
+typedef ::xos::base::creator_exception creator_exception;
+static const creator_exception failed_to_create = ::xos::base::failed_to_create;
+static const creator_exception failed_to_destroy = ::xos::base::failed_to_destroy;
+
+typedef ::xos::base::opener_exception opener_exception;
+static const opener_exception failed_to_open = ::xos::base::failed_to_open;
+static const opener_exception failed_to_close = ::xos::base::failed_to_close;
 #else // !defined(USE_NADIR_BASE)
 typedef nadir::implement_base implement_base;
 typedef nadir::base base;

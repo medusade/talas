@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2015 $organization$
+/// Copyright (c) 1988-2018 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,51 +13,43 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: types.hpp
+///   File: time.hpp
 ///
 /// Author: $author$
-///   Date: 4/7/2015
+///   Date: 1/2/2018
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_BASE_TYPES_HPP
-#define _TALAS_BASE_TYPES_HPP
+#ifndef _TALAS_BASE_TIME_HPP
+#define _TALAS_BASE_TIME_HPP
 
 #include "talas/base/base.hpp"
+
 #if !defined(USE_NADIR_BASE)
-#include "xos/base/types.hpp"
+#include "xos/os/time.hpp"
 #else // !defined(USE_NADIR_BASE)
-#include "nadir/base/chars.hpp"
+#include "nadir/os/time.hpp"
 #endif // !defined(USE_NADIR_BASE)
 
 namespace talas {
 
 #if !defined(USE_NADIR_BASE)
-///////////////////////////////////////////////////////////////////////
-///  Class: typest
-///////////////////////////////////////////////////////////////////////
-#if defined(USE_CPP_11)
-template
-<class TWhat = char, class TEndWhat = TWhat, TEndWhat VEndWhat = 0,
- class TInt = int, class TUInt = unsigned, class TSize = size_t,
- class TLength = ssize_t, TLength VUndefinedLength = -1>
-
-using typest = typename xos::base::typest
-<TWhat, TEndWhat, VEndWhat, TInt, TUInt, TSize, TLength, VUndefinedLength>;
-#else // defined(USE_CPP_11)
-#endif // defined(USE_CPP_11)
-
-typedef xos::base::chars_t chars_t;
-typedef xos::base::tchars_t tchars_t;
-typedef xos::base::wchars_t wchars_t;
-typedef xos::base::bytes_t bytes_t;
-typedef xos::base::words_t words_t;
+namespace timens = xos::os::os;
 #else // !defined(USE_NADIR_BASE)
-typedef nadir::chars_t chars_t;
-typedef nadir::tchars_t tchars_t;
-typedef nadir::wchars_t wchars_t;
-typedef nadir::bytes_t bytes_t;
-typedef nadir::words_t words_t;
+namespace timens = nadir::os::os;
 #endif // !defined(USE_NADIR_BASE)
 
-} // namespace talas
+typedef timens::time time;
 
-#endif // _TALAS_BASE_TYPES_HPP 
+namespace current {
+
+typedef timens::current::time time;
+
+namespace gmt {
+
+typedef timens::current::gmt::time time;
+
+} // namespace gmt
+
+} // namespace current
+} // namespace talas 
+
+#endif // _TALAS_BASE_TIME_HPP 

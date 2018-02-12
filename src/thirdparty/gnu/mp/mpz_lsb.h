@@ -19,16 +19,16 @@
  * the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
  * MA 02111-1307, USA.
  *
- *   File: mpz_msb.h
+ *   File: mpz_lsb.h
  *
  * Author: $author$
- *   Date: 2/1/2005
+ *   Date: 2/9/2018
  *
  *    $Id$
  **********************************************************************
  */
-#ifndef _MPZ_MSB_H
-#define _MPZ_MSB_H
+#ifndef _MPZ_LSB_H
+#define _MPZ_LSB_H
 
 #include <gmp.h>
 
@@ -38,31 +38,31 @@ extern "C" {
 
 /**
  **********************************************************************
- * Function: mpz_get_msb
- *
- *   Author: $author$
- *     Date: 2/1/2005
- **********************************************************************
- */
-mp_size_t mpz_get_msb _PROTO ((unsigned char *, mp_size_t , mpz_srcptr));
-/**
- **********************************************************************
- * Function: mpz_set_msb
- *
- *   Author: $author$
- *     Date: 2/1/2005
- **********************************************************************
- */
-mp_size_t mpz_set_msb _PROTO ((mpz_ptr, const unsigned char *, mp_size_t));
-/**
- **********************************************************************
- * Function: mpz_init_set_msb
+ * Function: mpz_get_lsb
  *
  *   Author: $author$
  *     Date: 2/9/2018
  **********************************************************************
  */
-mp_size_t mpz_init_set_msb _PROTO ((mpz_ptr, const unsigned char *, mp_size_t));
+mp_size_t mpz_get_lsb _PROTO ((unsigned char *, mp_size_t , mpz_srcptr));
+/**
+ **********************************************************************
+ * Function: mpz_set_lsb
+ *
+ *   Author: $author$
+ *     Date: 2/9/2018
+ **********************************************************************
+ */
+mp_size_t mpz_set_lsb _PROTO ((mpz_ptr, const unsigned char *, mp_size_t));
+/**
+ **********************************************************************
+ * Function: mpz_init_set_lsb
+ *
+ *   Author: $author$
+ *     Date: 2/9/2018
+ **********************************************************************
+ */
+mp_size_t mpz_init_set_lsb _PROTO ((mpz_ptr, const unsigned char *, mp_size_t));
 
 #if defined(__cplusplus)
 }

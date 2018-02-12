@@ -201,6 +201,17 @@ protected:
         return err;
     }
     ///////////////////////////////////////////////////////////////////////
+    virtual int on_plain_text_option
+    (int optval, const char* optarg,
+     const char* optname, int optind,
+     int argc, char**argv, char**env) {
+        int err = 0;
+        if ((optarg) && (optarg[0])) {
+            set_plain_text(optarg);
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
     virtual int on_number_option
     (int optval, const char* optarg,
      const char* optname, int optind,
@@ -292,6 +303,10 @@ protected:
             err = on_random_seed_option
             (optval, optarg, optname, optind, argc, argv, env);
             break;
+        case TALAS_APP_CONSOLE_TALAS_MAIN_RANDOM_PLAIN_OPTVAL_C:
+            err = on_plain_text_option
+            (optval, optarg, optname, optind, argc, argv, env);
+            break;
         case TALAS_APP_CONSOLE_TALAS_MAIN_NUMBER_OPTVAL_C:
             err = on_number_option
             (optval, optarg, optname, optind, argc, argv, env);
@@ -354,6 +369,10 @@ protected:
         case TALAS_APP_CONSOLE_TALAS_MAIN_RANDOM_SEED_OPTVAL_C:
             optarg = TALAS_APP_CONSOLE_TALAS_MAIN_RANDOM_SEED_OPTARG;
             chars = TALAS_APP_CONSOLE_TALAS_MAIN_RANDOM_SEED_OPTUSE;
+            break;
+        case TALAS_APP_CONSOLE_TALAS_MAIN_RANDOM_PLAIN_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_TALAS_MAIN_RANDOM_PLAIN_OPTARG;
+            chars = TALAS_APP_CONSOLE_TALAS_MAIN_RANDOM_PLAIN_OPTUSE;
             break;
         case TALAS_APP_CONSOLE_TALAS_MAIN_NUMBER_OPTVAL_C:
             optarg = TALAS_APP_CONSOLE_TALAS_MAIN_NUMBER_OPTARG;

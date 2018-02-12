@@ -55,39 +55,26 @@
  * copied and put under another distribution licence
  * [including the GNU Public Licence.]
  *
- * bn_msb.c
+ * bn_lsb.c
  *
  * $author$
- * 2/3/1999
+ * 2/9/2018
  */
 
-#include <stdio.h>
-#include "bn_msb.h"
+#ifndef BN_LSB_H
+#define BN_LSB_H
 
-void BN_set_msb(BIGNUM *n,const unsigned char *buff,unsigned bytes)
-{
-    unsigned i;
+#include "bn.h"
 
-    BN_set_word(n,0);
-    for (i=0; i<bytes; i++)
-    {
-        BN_lshift(n,n,8);
-        BN_add_word(n,buff[i]);
-    }
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void BN_set_lsb(BIGNUM *n,const unsigned char *buff,unsigned bytes);
+void BN_get_lsb(const BIGNUM *n,unsigned char *buff,unsigned bytes);
+
+#ifdef __cplusplus
 }
-void BN_get_msb(const BIGNUM *n,unsigned char *buff,unsigned bytes)
-{
-    BIGNUM *t;
-    unsigned i;
+#endif
 
-    if ((t=BN_new())!=NULL)
-    {
-        BN_copy(t,(BIGNUM*)(n));
-        for (i=bytes; i>0; i--)
-        {
-            buff[i-1]=(unsigned char)BN_mod_word(t,256);
-            BN_rshift(t,t,8);
-        }
-        BN_free(t);
-    }
-}
+#endif

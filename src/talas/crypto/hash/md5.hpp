@@ -49,6 +49,12 @@ public:
         KEYMAX    = BLOCKSIZE,
         KEYSIZE   = BLOCKSIZE
     };
+    enum {
+        HASH_SIZE = HASHSIZE,
+        KEY_MIN = KEYMIN,
+        KEY_MAX = KEYMAX,
+        KEY_SIZE = KEYSIZE
+    };
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
