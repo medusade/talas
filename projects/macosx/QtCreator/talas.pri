@@ -18,10 +18,9 @@
 # Author: $author$
 #   Date: 11/18/2014
 ########################################################################
-
-#QMAKE_CXXFLAGS += -std=c++11
-
 TALAS_OS = macosx
+#CONFIG += c++11
+#CONFIG += c++0x
 
 ########################################################################
 # os
@@ -34,22 +33,14 @@ os_LIBS += \
 NADIR_BLD = ../$${NADIR_PKG}/build/$${TALAS_OS}/QtCreator/$${TALAS_CONFIG}
 NADIR_LIB = $${NADIR_BLD}/lib
 
-xosnadir_LIBS += \
+nadir_LIBS += \
 -L$${NADIR_LIB}/libxosnadir \
 -lxosnadir \
-
-nadir_LIBS += \
--L$${NADIR_LIB}/libnadir \
--lnadir \
 
 ########################################################################
 # coral
 CORAL_BLD = ../$${CORAL_PKG}/build/$${TALAS_OS}/QtCreator/$${TALAS_CONFIG}
 CORAL_LIB = $${CORAL_BLD}/lib
-
-xoscoral_LIBS += \
--L$${CORAL_LIB}/libxoscoral \
--lxoscoral \
 
 coral_LIBS += \
 -L$${CORAL_LIB}/libcoral \
@@ -57,12 +48,6 @@ coral_LIBS += \
 
 ########################################################################
 # talas
-xostalas_LIBS += \
--L$${TALAS_LIB}/libxostalas \
--lxostalas \
-$${xosnadir_LIBS} \
-$${os_LIBS} \
-
 talas_LIBS += \
 -L$${TALAS_LIB}/libtalas \
 -ltalas \
@@ -84,4 +69,3 @@ talas_mp_LIBS += \
 -lmpz \
 -L$${TALAS_LIB}/libmpn \
 -lmpn \
-

@@ -19,22 +19,25 @@
 #   Date: 11/18/2014
 ########################################################################
 include(../../../../QtCreator/talas.pri)
-include(../../../../QtCreator/lib/libtalas/libtalas.pri)
 include(../../talas.pri)
+include(../../../../QtCreator/lib/libtalas/libtalas.pri)
 
-TARGET = talas
+TARGET = $${libtalas_TARGET}
+TEMPLATE = $${libtalas_TEMPLATE}
+CONFIG += $${libtalas_CONFIG}
 
-TEMPLATE = lib
-CONFIG += staticlib
-
+########################################################################
 INCLUDEPATH += \
 $${libtalas_INCLUDEPATH} \
 
 DEFINES += \
 $${libtalas_DEFINES} \
 
+########################################################################
 HEADERS += \
 $${libtalas_HEADERS} \
 
 SOURCES += \
 $${libtalas_SOURCES} \
+
+########################################################################

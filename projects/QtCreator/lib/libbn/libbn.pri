@@ -19,12 +19,17 @@
 #   Date: 4/23/2015
 ########################################################################
 
+libbn_TARGET = bn
+libbn_TEMPLATE = lib
+libbn_CONFIG += staticlib
+
 libbn_INCLUDEPATH += \
 $${bn_INCLUDEPATH} \
 
 libbn_DEFINES += \
 $${bn_DEFINES} \
 
+########################################################################
 libbn_HEADERS += \
 
 libbn_SOURCES += \
@@ -37,6 +42,7 @@ $${bn_SRC}/bn_lib.c \
 $${bn_SRC}/bn_mod.c \
 $${bn_SRC}/bn_mont.c \
 $${bn_SRC}/bn_mpi.c \
+$${bn_SRC}/bn_lsb.c \
 $${bn_SRC}/bn_msb.c \
 $${bn_SRC}/bn_mul.c \
 $${bn_SRC}/bn_mulw.c \
@@ -48,7 +54,7 @@ $${bn_SRC}/bn_sqr.c \
 $${bn_SRC}/bn_sub.c \
 $${bn_SRC}/bn_word.c \
 
+########################################################################
 libbn_LIBS += \
 -L$${NADIR_LIB}/libbn \
 -lbn \
-

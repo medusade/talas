@@ -19,6 +19,10 @@
 #   Date: 4/23/2015
 ########################################################################
 
+libmpz_TARGET = mpz
+libmpz_TEMPLATE = lib
+libmpz_CONFIG += staticlib
+
 libmpz_INCLUDEPATH += \
 $${mp_INCLUDEPATH} \
 
@@ -26,6 +30,7 @@ libmpz_DEFINES += \
 $${mp_DEFINES} \
 _NO_INLINES \
 
+########################################################################
 libmpz_HEADERS += \
 
 libmpz_SOURCES += \
@@ -82,6 +87,7 @@ $${mp_SRC}/mpz/jacobi.c \
 $${mp_SRC}/mpz/legendre.c \
 $${mp_SRC}/mpz/mod.c \
 $${mp_SRC}/mpz/mod_inverse.c \
+$${mp_SRC}/mpz_lsb.c \
 $${mp_SRC}/mpz_msb.c \
 $${mp_SRC}/mpz/mul.c \
 $${mp_SRC}/mpz/mul_2exp.c \
@@ -124,4 +130,5 @@ $${mp_SRC}/mpz/tdiv_r_2exp.c \
 $${mp_SRC}/mpz/tdiv_r_ui.c \
 $${mp_SRC}/mpz/ui_pow_ui.c \
 
+########################################################################
 libmpz_LIBS += \

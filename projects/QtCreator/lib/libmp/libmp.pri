@@ -19,12 +19,17 @@
 #   Date: 4/23/2015
 ########################################################################
 
+libmp_TARGET = mp
+libmp_TEMPLATE = lib
+libmp_CONFIG += staticlib
+
 libmp_INCLUDEPATH += \
 $${mp_INCLUDEPATH} \
 
 libmp_DEFINES += \
 $${mp_DEFINES} \
 
+########################################################################
 libmp_HEADERS += \
 
 libmp_SOURCES += \
@@ -37,6 +42,7 @@ $${mp_SRC}/mp_set_fns.c \
 $${mp_SRC}/stack-alloc.c \
 $${mp_SRC}/version.c \
 
+########################################################################
 libmp_LIBS += \
 -L$${NADIR_LIB}/libmpz \
 -lmpz \
@@ -46,4 +52,3 @@ libmp_LIBS += \
 unused = \
 -L$${NADIR_LIB}/libmp \
 -lmp \
-

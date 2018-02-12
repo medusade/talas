@@ -22,9 +22,9 @@ include(../../../../QtCreator/mp.pri)
 include(../../mp.pri)
 include(../../../../QtCreator/lib/libmp/libmp.pri)
 
-TARGET = mp
-TEMPLATE = lib
-CONFIG += staticlib
+TARGET = $${libmp_TARGET}
+TEMPLATE = $${libmp_TEMPLATE}
+CONFIG += $${libmp_CONFIG}
 
 INCLUDEPATH += \
 $${libmp_INCLUDEPATH} \
@@ -32,9 +32,11 @@ $${libmp_INCLUDEPATH} \
 DEFINES += \
 $${libmp_DEFINES} \
 
+########################################################################
 HEADERS += \
 $${libmp_HEADERS} \
 
 SOURCES += \
 $${libmp_SOURCES} \
 
+########################################################################

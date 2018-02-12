@@ -19,11 +19,12 @@
 #   Date: 12/7/2014
 ########################################################################
 
-QMAKE_CXXFLAGS += -std=c++0x
+BUILD_OS = linux
+#QMAKE_CXXFLAGS += -std=c++0x
 
 ########################################################################
 # nadir
-NADIR_BLD = ../$${NADIR_PKG}/build/linux/QtCreator/Debug
+NADIR_BLD = ../$${NADIR_PKG}/build/$${BUILD_OS}/QtCreator/Debug
 NADIR_LIB = $${NADIR_BLD}/lib
 
 ########################################################################

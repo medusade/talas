@@ -19,6 +19,10 @@
 #   Date: 11/18/2014
 ########################################################################
 
+libtalas_TARGET = talas
+libtalas_TEMPLATE = lib
+libtalas_CONFIG += staticlib
+
 libtalas_INCLUDEPATH += \
 $${talas_INCLUDEPATH} \
 $${talas_bn_INCLUDEPATH} \

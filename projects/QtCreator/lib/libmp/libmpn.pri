@@ -19,12 +19,17 @@
 #   Date: 4/23/2015
 ########################################################################
 
+libmpn_TARGET = mpn
+libmpn_TEMPLATE = lib
+libmpn_CONFIG += staticlib
+
 libmpn_INCLUDEPATH += \
 $${mp_INCLUDEPATH} \
 
 libmpn_DEFINES += \
 $${mp_DEFINES} \
 
+########################################################################
 libmpn_HEADERS += \
 
 libmpn_SOURCES += \
@@ -61,5 +66,5 @@ $${mp_SRC}/mpn/generic/sub_n.c \
 $${mp_SRC}/mpn/generic/submul_1.c \
 $${mp_SRC}/mpn/generic/udiv_w_sdiv.c \
 
+########################################################################
 libmpn_LIBS += \
-

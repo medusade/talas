@@ -19,10 +19,10 @@
 #   Date: 11/18/2014
 ########################################################################
 include(../../../../QtCreator/talas.pri)
-include(../../../../QtCreator/app/talas/talas.pri)
 include(../../talas.pri)
+include(../../../../QtCreator/app/talas/talas.pri)
 
-TARGET = talas
+TARGET = $${talas_TARGET}
 
 INCLUDEPATH += \
 $${talas_INCLUDEPATH} \
@@ -32,12 +32,14 @@ $${talas_mp_INCLUDEPATH} \
 DEFINES += \
 $${talas_DEFINES} \
 
+########################################################################
 HEADERS += \
 $${talas_HEADERS} \
 
 SOURCES += \
 $${talas_SOURCES} \
 
+########################################################################
 LIBS += \
 $${talas_LIBS} \
 $${talas_bn_LIBS} \

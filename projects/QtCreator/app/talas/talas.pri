@@ -19,6 +19,9 @@
 #   Date: 11/18/2014
 ########################################################################
 
+talas_TARGET = talas
+
+########################################################################
 talas_HEADERS += \
 $${TALAS_SRC}/talas/app/console/talas/main_opt.hpp \
 $${TALAS_SRC}/talas/app/console/talas/main.hpp \
@@ -31,6 +34,4 @@ $${TALAS_SRC}/talas/app/console/talas/main.cpp \
 $${TALAS_SRC}/talas/console/main_opt.cpp \
 $${TALAS_SRC}/talas/console/main_main.cpp \
 
-talas_HEADERS += \
-
-talas_SOURCES += \
+########################################################################

@@ -22,9 +22,9 @@ include(../../../../QtCreator/mp.pri)
 include(../../mp.pri)
 include(../../../../QtCreator/lib/libmp/libmpn.pri)
 
-TARGET = mpn
-TEMPLATE = lib
-CONFIG += staticlib
+TARGET = $${libmpn_TARGET}
+TEMPLATE = $${libmpn_TEMPLATE}
+CONFIG += $${libmpn_CONFIG}
 
 INCLUDEPATH += \
 $${libmpn_INCLUDEPATH} \
@@ -32,9 +32,11 @@ $${libmpn_INCLUDEPATH} \
 DEFINES += \
 $${libmpn_DEFINES} \
 
+########################################################################
 HEADERS += \
 $${libmpn_HEADERS} \
 
 SOURCES += \
 $${libmpn_SOURCES} \
 
+########################################################################

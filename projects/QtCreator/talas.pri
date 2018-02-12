@@ -43,6 +43,7 @@ nadir_INCLUDEPATH += \
 $${NADIR_SRC} \
 
 nadir_DEFINES += \
+NO_USE_XOS_LOGGER_INTERFACE \
 
 ########################################################################
 # coral

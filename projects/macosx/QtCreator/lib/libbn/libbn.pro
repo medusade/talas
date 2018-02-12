@@ -19,12 +19,12 @@
 #   Date: 5/1/2015
 ########################################################################
 include(../../../../QtCreator/bn.pri)
-include(../../../../QtCreator/lib/libbn/libbn.pri)
 include(../../bn.pri)
+include(../../../../QtCreator/lib/libbn/libbn.pri)
 
-TARGET = bn
-TEMPLATE = lib
-CONFIG += staticlib
+TARGET = $${libbn_TARGET}
+TEMPLATE = $${libbn_TEMPLATE}
+CONFIG += $${libbn_CONFIG}
 
 INCLUDEPATH += \
 $${libbn_INCLUDEPATH} \
@@ -32,9 +32,11 @@ $${libbn_INCLUDEPATH} \
 DEFINES += \
 $${libbn_DEFINES} \
 
+########################################################################
 HEADERS += \
 $${libbn_HEADERS} \
 
 SOURCES += \
 $${libbn_SOURCES} \
 
+########################################################################

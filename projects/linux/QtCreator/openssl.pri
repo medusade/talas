@@ -18,11 +18,16 @@
 # Author: $author$
 #   Date: 12/25/2015
 ########################################################################
-OPENSSL_SRC = $${TALAS_PKG}/../../frameworks/openssl/openssl-0.9.8zh
-OPENSSL_BLD = $${TALAS_PKG}/../../../frameworks/openssl/openssl-0.9.8zh
+OPENSSL_PKG = $${TALAS_PKG}/..
+OPENSSL_GROUP = thirdparty/openssl/
+OPENSSL_VERSION = openssl-0.9.8zh
+
+OPENSSL_DIR = $${OPENSSL_GROUP}$${OPENSSL_VERSION}
+OPENSSL_SRC = $${OPENSSL_PKG}/$${OPENSSL_DIR}
+OPENSSL_BLD = $${OPENSSL_PKG}/../$${OPENSSL_DIR}
 OPENSSL_INC = $${OPENSSL_SRC}/include
 
-HOME = /home/jboyd
+HOME = ${HOME}
 
 ########################################################################
 # openssl

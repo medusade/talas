@@ -22,9 +22,9 @@ include(../../../../QtCreator/mp.pri)
 include(../../mp.pri)
 include(../../../../QtCreator/lib/libmp/libmpz.pri)
 
-TARGET = mpz
-TEMPLATE = lib
-CONFIG += staticlib
+TARGET = $${libmpz_TARGET}
+TEMPLATE = $${libmpz_TEMPLATE}
+CONFIG += $${libmpz_CONFIG}
 
 INCLUDEPATH += \
 $${libmpz_INCLUDEPATH} \
@@ -32,9 +32,11 @@ $${libmpz_INCLUDEPATH} \
 DEFINES += \
 $${libmpz_DEFINES} \
 
+########################################################################
 HEADERS += \
 $${libmpz_HEADERS} \
 
 SOURCES += \
 $${libmpz_SOURCES} \
 
+########################################################################
