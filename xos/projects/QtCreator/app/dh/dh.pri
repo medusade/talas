@@ -33,19 +33,27 @@ $${talas_mbu_INCLUDEPATH} \
 
 dh_DEFINES += \
 $${talas_DEFINES} \
+$${talas_mbu_DEFINES} \
 
 ########################################################################
 dh_HEADERS += \
 $${TALAS_SRC}/talas/crypto/dh/mbu/private_key.hpp \
+$${TALAS_SRC}/talas/crypto/dh/mbu/public_key.hpp \
 $${TALAS_SRC}/talas/crypto/dh/mbu/key.hpp \
-$${TALAS_SRC}/talas/crypto/dh/public_key.hpp \
+$${TALAS_SRC}/talas/crypto/dh/mp/private_key.hpp \
+$${TALAS_SRC}/talas/crypto/dh/mp/public_key.hpp \
+$${TALAS_SRC}/talas/crypto/dh/mp/key.hpp \
+$${TALAS_SRC}/talas/crypto/dh/bn/private_key.hpp \
+$${TALAS_SRC}/talas/crypto/dh/bn/public_key.hpp \
+$${TALAS_SRC}/talas/crypto/dh/bn/key.hpp \
 $${TALAS_SRC}/talas/crypto/dh/private_key.hpp \
+$${TALAS_SRC}/talas/crypto/dh/public_key.hpp \
 $${TALAS_SRC}/talas/crypto/dh/key.hpp \
 
 dh_SOURCES += \
-$${TALAS_SRC}/talas/crypto/dh/public_key.cpp \
-$${TALAS_SRC}/talas/crypto/dh/mbu/private_key.cpp \
-$${TALAS_SRC}/talas/crypto/dh/mbu/key.cpp \
+$${TALAS_SRC}/talas/crypto/dh/bn/private_key.cpp \
+$${TALAS_SRC}/talas/crypto/dh/mp/public_key.cpp \
+$${TALAS_SRC}/talas/crypto/dh/mp/key.cpp \
 
 ########################################################################
 dh_HEADERS += \
@@ -66,4 +74,3 @@ $${talas_LIBS} \
 $${talas_bn_LIBS} \
 $${talas_mp_LIBS} \
 $${talas_mbu_LIBS} \
-
