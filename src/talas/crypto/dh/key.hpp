@@ -284,6 +284,7 @@ public:
     ///////////////////////////////////////////////////////////////////////
 };
 typedef key_implementst<> key_implements;
+typedef key_implements key;
 
 ///////////////////////////////////////////////////////////////////////
 ///  Class: keyt
@@ -405,7 +406,7 @@ public:
 protected:
     size_t genbytes_, modbytes_, expbytes_;
 };
-typedef keyt<> key;
+typedef keyt<> key_extend;
 
 } // namespace dh 
 } // namespace crypto 

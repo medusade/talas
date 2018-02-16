@@ -22,14 +22,19 @@
 #define _TALAS_APP_CONSOLE_DH_MAIN_HPP
 
 #include "talas/app/console/dh/main_opt.hpp"
+
 #include "talas/crypto/dh/mbu/private_key.hpp"
 #include "talas/crypto/dh/mbu/public_key.hpp"
 #include "talas/crypto/dh/mbu/key.hpp"
+
 #include "talas/crypto/dh/bn/private_key.hpp"
 #include "talas/crypto/dh/bn/public_key.hpp"
 #include "talas/crypto/dh/bn/key.hpp"
+
+#include "talas/crypto/dh/mp/private_key.hpp"
 #include "talas/crypto/dh/mp/public_key.hpp"
 #include "talas/crypto/dh/mp/key.hpp"
+
 #include "talas/crypto/dh/private_key.hpp"
 #include "talas/crypto/dh/public_key.hpp"
 #include "talas/crypto/dh/key.hpp"
@@ -76,64 +81,121 @@ class _EXPORT_CLASS main: virtual public main_implements,public main_extends {
 public:
     typedef main_implements Implements;
     typedef main_extends Extends;
+    typedef main Derives;
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    main() {
+    main(): run_(0) {
     }
     virtual ~main() {
     }
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
+    int (Derives::*run_)(int argc, char_t** argv, char_t** env);
     virtual int run(int argc, char_t** argv, char_t** env) {
         int err = 0;
 
         TALAS_LOG_DEBUG("try {...");
         try {
-            size_t size = 0;
-            //crypto::dh::mp::key key(g, 1, n, sizeof(n), x, sizeof(x));
-            crypto::dh::mp::public_key pub(g, 1, n, sizeof(n), x, sizeof(x));
-            //crypto::dh::bn::key key(g, 1, n, sizeof(n), x, sizeof(x));
-            //crypto::dh::bn::public_key pub(g, 1, n, sizeof(n), x, sizeof(x));
-            //crypto::dh::bn::private_key prv(pub, y, sizeof(y));
-            //crypto::dh::mbu::key key(g, 1, n, sizeof(n), x, sizeof(x));
-            //crypto::dh::mbu::public_key pub(g, 1, n, sizeof(n), x, sizeof(x));
-            //crypto::dh::mbu::private_key prv(pub, y, sizeof(y));
-
-            /*if ((size = key.get_exponent_msb(k1, sizeof(k1)))) {
-                this->out("x = ");
-                this->outx(k1, size);
-                this->outln();
+            if ((run_)) {
+                err = (this->*run_)(argc, argv, env);
+            } else {
+                err = run_bn(argc, argv, env);
             }
-            if ((key.create_msb(g, 1, n, sizeof(n), y, sizeof(y)))) {
-                if ((size = key.get_exponent_msb(k1, sizeof(k1)))) {
-                    this->out("y = ");
-                    this->outx(k1, size);
-                    this->outln();
-                }
-            }*/
-            /*if ((size = pub.create_secret_msb(k1, sizeof(k1), y, sizeof(y)))) {
-            */if ((size = pub.create_secret_msb(k1, sizeof(k1), y, sizeof(y)))) {
-            /*if ((size = prv.get_exponent_msb(k1, sizeof(k1)))) {*/
-                this->out("k1 = ");
-                this->outx(k1, size);
-                this->outln();
-            }
-            /*if ((prv.create_msb(g, 1, n, sizeof(n), y, sizeof(y)))) {
-            */if ((pub.create_msb(g, 1, n, sizeof(n), y, sizeof(y)))) {
-                /*if ((pub.create(prv))) {
-                    if ((size = pub.create_secret_msb(k2, sizeof(k2), x, sizeof(x)))) {
-                    */if ((size = pub.create_secret_msb(k2, sizeof(k2), x, sizeof(x)))) {
-                        this->out("k2 = ");
-                        this->outx(k2, size);
-                        this->outln();
-                    }
-                }/*
-            }*/
             TALAS_LOG_DEBUG("...} try");
         } catch (...) {
             TALAS_LOG_DEBUG("...catch (...)");
+        }
+        return err;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_bn(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        crypto::dh::bn::key key(g, 1, n, sizeof(n), x, sizeof(x));
+        crypto::dh::bn::public_key pub(g, 1, n, sizeof(n), x, sizeof(x));
+        crypto::dh::bn::private_key prv(pub, y, sizeof(y));
+        err = run(key, pub, prv, argc, argv, env);
+        return err;
+    }
+    virtual int run_mp(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        crypto::dh::mp::key key(g, 1, n, sizeof(n), x, sizeof(x));
+        crypto::dh::mp::public_key pub(g, 1, n, sizeof(n), x, sizeof(x));
+        crypto::dh::mp::private_key prv(pub, y, sizeof(y));
+        err = run(key, pub, prv, argc, argv, env);
+        return err;
+    }
+    virtual int run_mbu(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        crypto::dh::mbu::key key(g, 1, n, sizeof(n), x, sizeof(x));
+        crypto::dh::mbu::public_key pub(g, 1, n, sizeof(n), x, sizeof(x));
+        crypto::dh::mbu::private_key prv(pub, y, sizeof(y));
+        err = run(key, pub, prv, argc, argv, env);
+        return err;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run
+    (crypto::dh::key& key, 
+     crypto::dh::public_key& pub,
+     crypto::dh::private_key& prv,
+     int argc, char_t** argv, char_t** env) {
+        size_t size = 0;
+        int err = 0;
+
+        if ((size = key.get_exponent_msb(k1, sizeof(k1)))) {
+            this->out("x = ");
+            this->outx(k1, size);
+            this->outln();
+        }
+        if ((key.create_msb(g, 1, n, sizeof(n), y, sizeof(y)))) {
+            if ((size = key.get_exponent_msb(k1, sizeof(k1)))) {
+                this->out("y = ");
+                this->outx(k1, size);
+                this->outln();
+            }
+        }
+        if ((size = prv.get_exponent_msb(k1, sizeof(k1)))) {
+            this->out("k1 = ");
+            this->outx(k1, size);
+            this->outln();
+        }
+        if ((pub.create_msb(g, 1, n, sizeof(n), y, sizeof(y)))) {
+            if ((prv.create(pub, x, sizeof(x)))) {
+                if ((size = prv.get_exponent_msb(k2, sizeof(k2)))) {
+                    this->out("k2 = ");
+                    this->outx(k2, size);
+                    this->outln();
+                }
+            }
+        }
+        return err;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int on_mp_integer_option
+    (int optval, const char_t* optarg,
+     const char_t* optname, int optind,
+     int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        if ((optarg) && (optarg[0])) {
+            if (!(optarg[0] != TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG_BN[1])) {
+                run_ = &Derives::run_bn;
+            } else {
+                if (!(optarg[0] != TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG_MP[1])) {
+                    run_ = &Derives::run_mp;
+                } else {
+                    if (!(optarg[0] != TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG_MBU[1])) {
+                        run_ = &Derives::run_mbu;
+                    } else {
+                    }
+                }
+            }
         }
         return err;
     }

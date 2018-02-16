@@ -49,12 +49,13 @@ public:
     ///////////////////////////////////////////////////////////////////////
 };
 typedef private_key_implementst<> private_key_implements;
+typedef private_key_implements private_key;
 
 ///////////////////////////////////////////////////////////////////////
 ///  Class: private_keyt
 ///////////////////////////////////////////////////////////////////////
 template
-<class TImplements = private_key_implements, class TExtends = key>
+<class TImplements = private_key_implements, class TExtends = key_extend>
 
 class _EXPORT_CLASS private_keyt: virtual public TImplements, public TExtends {
 public:
@@ -90,7 +91,7 @@ public:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
 };
-typedef private_keyt<> private_key;
+typedef private_keyt<> private_key_extend;
 
 } // namespace dh 
 } // namespace crypto 

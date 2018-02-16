@@ -23,6 +23,45 @@
 
 #include "talas/crypto/console/main.hpp"
 
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+#define TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPT "mp-integer"
+#define TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_REQUIRED
+#define TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG_RESULT 0
+#define TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG_BN "(b)BIGNUM"
+#define TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG_MP "(m)MP_INT"
+#define TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG_MBU "(u)MB_UINT"
+#define TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG \
+    "{ " TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG_BN \
+    " | " TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG_MP \
+    " | " TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG_MBU " }"
+#define TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTUSE ""
+#define TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTVAL_S "m:"
+#define TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTVAL_C 'm'
+#define TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTION \
+   {TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPT, \
+    TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG_REQUIRED, \
+    TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG_RESULT, \
+    TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTVAL_C}, \
+
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+#define TALAS_APP_CONSOLE_DH_MAIN_OPTIONS_CHARS \
+   TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTVAL_S \
+   TALAS_CONSOLE_MAIN_OPTIONS_CHARS
+
+#define TALAS_APP_CONSOLE_DH_MAIN_OPTIONS_OPTIONS \
+   TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTION \
+   TALAS_CONSOLE_MAIN_OPTIONS_OPTIONS
+
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+#define TALAS_APP_CONSOLE_DH_MAIN_ARGS 0
+#define TALAS_APP_CONSOLE_DH_MAIN_ARGV
+
+///////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+
 namespace talas {
 namespace app {
 namespace console {
@@ -33,7 +72,8 @@ typedef crypto::console::main main_opt_extends;
 ///////////////////////////////////////////////////////////////////////
 ///  Class: main_opt
 ///////////////////////////////////////////////////////////////////////
-class _EXPORT_CLASS main_opt: virtual public main_opt_implements,public main_opt_extends {
+class _EXPORT_CLASS main_opt
+: virtual public main_opt_implements, public main_opt_extends {
 public:
     typedef main_opt_implements Implements;
     typedef main_opt_extends Extends;
@@ -43,6 +83,70 @@ public:
     main_opt() {
     }
     virtual ~main_opt() {
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int on_mp_integer_option
+    (int optval, const char_t* optarg,
+     const char_t* optname, int optind,
+     int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        return err;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int on_option
+    (int optval, const char_t* optarg,
+     const char_t* optname, int optind,
+     int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        switch(optval) {
+        case TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTVAL_C:
+            err = on_mp_integer_option
+            (optval, optarg, optname, optind, argc, argv, env);
+            break;
+        default:
+            err = Extends::on_option
+            (optval, optarg, optname, optind, argc, argv, env);
+        }
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    virtual const char_t* option_usage
+    (const char_t*& optarg, const struct option* longopt) {
+        const char_t* chars = "";
+        switch(longopt->val) {
+        case TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG;
+            chars = TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTUSE;
+            break;
+        default:
+            chars = Extends::option_usage(optarg, longopt);
+        }
+        return chars;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    virtual const char_t* options(const struct option*& longopts) {
+        int err = 0;
+        static const char_t* chars = TALAS_APP_CONSOLE_DH_MAIN_OPTIONS_CHARS;
+        static struct option optstruct[]= {
+            TALAS_APP_CONSOLE_DH_MAIN_OPTIONS_OPTIONS
+            {0, 0, 0, 0}};
+        longopts = optstruct;
+        return chars;
+    }
+    
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual const char_t* arguments(const char_t**& argv) {
+        static const char_t* _args = TALAS_APP_CONSOLE_DH_MAIN_ARGS;
+        static const char_t* _argv[] = {
+            TALAS_APP_CONSOLE_DH_MAIN_ARGV
+            0};
+        argv = _argv;
+        return _args;
     }
 
     ///////////////////////////////////////////////////////////////////////

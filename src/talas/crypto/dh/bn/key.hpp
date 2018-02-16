@@ -75,7 +75,7 @@ namespace bn {
 ///  Class: keyt
 ///////////////////////////////////////////////////////////////////////
 template
-<class TImplements = dh::key_implements, class TExtends = dh::key>
+<class TImplements = dh::key_implements, class TExtends = dh::key_extend>
 
 class keyt: virtual public TImplements, public TExtends {
 public:

@@ -26,7 +26,7 @@
 #ifndef _TALAS_CRYPTO_DH_MP_PRIVATE_KEY_HPP
 #define _TALAS_CRYPTO_DH_MP_PRIVATE_KEY_HPP
 
-#include "talas/crypto/dh/mp/key.hpp"
+#include "talas/crypto/dh/mp/public_key.hpp"
 #include "talas/crypto/dh/private_key.hpp"
 
 namespace talas {
@@ -48,9 +48,57 @@ public:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
+    private_keyt
+    (const dh::public_key_implements& public_key,
+     const byte_t* exponent, size_t expbytes) {
+        if (!(this->create(public_key, exponent, expbytes))) {
+            const creator_exception e = failed_to_create;
+            TALAS_LOG_ERROR("...throw(const creator_exception e = failed_to_create)...")
+            throw(e);
+        }
+    }
     private_keyt() {
     }
     virtual ~private_keyt() {
+        if (!(this->destroyed())) {
+            const creator_exception e = failed_to_destroy;
+            TALAS_LOG_ERROR("...throw(const creator_exception e = failed_to_destroy)...")
+            throw(e);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual bool create
+    (const dh::public_key_implements& public_key,
+     const byte_t* exponent, size_t expbytes) {
+        if ((exponent) && (expbytes)) {
+            public_key_implemented* pub = 0;
+
+            if ((pub = public_key.mp_key_implemented())) {
+                size_t genbytes = 0, modbytes = 0;
+                MP_INT *g = 0, *n = 0;
+
+                if ((g = pub->g()) && (genbytes = pub->genbytes()) 
+                    && (n = pub->n()) && (modbytes = pub->modbytes())) {
+
+                    if ((Implements::create(genbytes, modbytes, expbytes))) {
+                        
+                        TALAS_LOG_DEBUG("::mpz_set(&this->g_, g)...");
+                        ::mpz_set(&this->g_, g);
+                        
+                        TALAS_LOG_DEBUG("::mpz_set(&this->n_, n)...");
+                        ::mpz_set(&this->n_, n);
+                        
+                        if ((pub->create_secret_msb(&this->x_, exponent, expbytes))) {
+                            return true;
+                        }
+                        Implements::destroy();
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////////
