@@ -27,21 +27,19 @@
 #ifndef DBPRINTF
 #define dbif(cond)
 #define dbprintf(args)
-#define dbset(buff,val,bytes)
-#define dbdump(buff,bytes)
 #else
 #include <stdio.h>
 #define dbif(cond) if (cond)
-#define dbprintf(args) stderr_dbprintf args
+#define dbprintf(args) _dbprintf args
+#ifndef _dbprintf
 #ifdef __cplusplus
 extern "C" {
 #endif /* def __cplusplus */
-extern int stderr_dbprintf(const char* format, ...);
-extern void dbset(void *buff,unsigned char val,unsigned long bytes);
-extern void dbdump(const void *buff,unsigned long bytes);
+extern int _dbprintf(const char* format, ...);
 #ifdef __cplusplus
 } /* extern "C" { */
+#endif /* ndef _dbprintf */
 #endif /* def __cplusplus */
-#endif
-#endif
-#endif
+#endif /* ndef DBPRINTF */
+#endif /* ndef dbprintf */
+#endif /* ndef DBPRINTF_H */

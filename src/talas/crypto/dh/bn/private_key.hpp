@@ -62,39 +62,109 @@
 ///////////////////////////////////////////////////////////////////////
 #ifndef _TALAS_CRYPTO_DH_BN_PRIVATE_KEY_HPP
 #define _TALAS_CRYPTO_DH_BN_PRIVATE_KEY_HPP
-#include "talas/crypto/dh/bn/key.hpp"
+
+#include "talas/crypto/dh/bn/public_key.hpp"
+#include "talas/crypto/dh/private_key.hpp"
 
 namespace talas {
 namespace crypto {
 namespace dh {
 namespace bn {
 
-
-typedef key_implements private_keyt_implements;
-typedef key private_keyt_extends;
 ///////////////////////////////////////////////////////////////////////
 ///  Class: private_keyt
 ///////////////////////////////////////////////////////////////////////
 template
-<class TImplements = private_keyt_implements, class TExtends = private_keyt_extends>
-class private_keyt: virtual public TImplements,public TExtends {
+<class TImplements = dh::private_key_implements, 
+ class TExtends = dh::private_keyt<dh::private_key_implements, key> >
+
+class private_keyt: virtual public TImplements, public TExtends {
 public:
     typedef TImplements Implements;
     typedef TExtends Extends;
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    private_keyt
+    (const dh::public_key_implements& public_key,
+     const byte_t* exponent, size_t expbytes) {
+        if (!(this->create(public_key, exponent, expbytes))) {
+            const creator_exception e = failed_to_create;
+            TALAS_LOG_ERROR("...throw(const creator_exception e = failed_to_create)...")
+            throw(e);
+        }
+    }
     private_keyt() {
     }
     virtual ~private_keyt() {
+        if (!(this->destroyed())) {
+            const creator_exception e = failed_to_destroy;
+            TALAS_LOG_ERROR("...throw(const creator_exception e = failed_to_destroy)...")
+            throw(e);
+        }
     }
-};
 
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual bool create
+    (const dh::public_key_implements& public_key,
+     const byte_t* exponent, size_t expbytes) {
+        if ((exponent) && (expbytes)) {
+            public_key_implemented* pub = 0;
+            if ((pub = public_key.bn_key_implemented())) {
+                size_t genbytes = 0, modbytes = 0;
+                BIGNUM *g = 0, *n = 0;
+                if ((g = pub->g()) && (genbytes = pub->genbytes()) 
+                    && (n = pub->n()) && (modbytes = pub->modbytes())) {
+                    if ((Implements::create(genbytes, modbytes, expbytes))) {
+                        
+                        TALAS_LOG_DEBUG("this->g_ = BN_new()...");
+                        if ((this->g_ = BN_new())) {
+                            
+                            TALAS_LOG_DEBUG("BN_copy(this->g_, g)...");
+                            BN_copy(this->g_, g);
+                            
+                            TALAS_LOG_DEBUG("this->n_ = BN_new()...");
+                            if ((this->n_ = BN_new())) {
+                                
+                                TALAS_LOG_DEBUG("BN_copy(this->n_, n)...");
+                                BN_copy(this->n_, n);
+                                
+                                TALAS_LOG_DEBUG("this->x_ = BN_new()...");
+                                if ((this->x_ = BN_new())) {
+                                    
+                                    if ((pub->create_secret_msb(this->x_, exponent, expbytes))) {
+                                        return true;
+                                    }
+                                    TALAS_LOG_DEBUG("BN_clear_free(this->x_)...");
+                                    BN_clear_free(this->x_);
+                                    this->x_ = 0;
+                                }
+                                TALAS_LOG_DEBUG("BN_clear_free(this->n_)...");
+                                BN_clear_free(this->n_);
+                                this->n_ = 0;
+                            }
+                            TALAS_LOG_DEBUG("BN_clear_free(this->g_)...");
+                            BN_clear_free(this->g_);
+                            this->g_ = 0;
+                        }
+                        Implements::destroy();
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+};
+typedef private_keyt<> private_key;
+typedef private_key::Implements private_key_implements;
 
 } // namespace bn 
 } // namespace dh 
 } // namespace crypto 
 } // namespace talas 
 
-
 #endif // _TALAS_CRYPTO_DH_BN_PRIVATE_KEY_HPP 
-
-        
-

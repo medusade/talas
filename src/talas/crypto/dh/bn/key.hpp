@@ -62,39 +62,217 @@
 ///////////////////////////////////////////////////////////////////////
 #ifndef _TALAS_CRYPTO_DH_BN_KEY_HPP
 #define _TALAS_CRYPTO_DH_BN_KEY_HPP
+
 #include "talas/crypto/dh/key.hpp"
+#include "bn_msb.h"
 
 namespace talas {
 namespace crypto {
 namespace dh {
 namespace bn {
 
-
-typedef dh::key_implements keyt_implements;
-typedef dh::key keyt_extends;
 ///////////////////////////////////////////////////////////////////////
 ///  Class: keyt
 ///////////////////////////////////////////////////////////////////////
 template
-<class TImplements = keyt_implements, class TExtends = keyt_extends>
-class keyt: virtual public TImplements,public TExtends {
+<class TImplements = dh::key_implements, class TExtends = dh::key>
+
+class keyt: virtual public TImplements, public TExtends {
 public:
     typedef TImplements Implements;
     typedef TExtends Extends;
-    keyt() {
+
+    enum {key_min = 1, key_max = 256};
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    keyt
+    (const unsigned& generator, size_t genbytes,
+     const byte_t* modulus, size_t modbytes,
+     const byte_t* exponent, size_t expbytes): g_(0), n_(0), x_(0) {
+        if (!(this->create_msb
+             (generator, genbytes, modulus, modbytes, exponent, expbytes))) {
+            const creator_exception e = failed_to_create;
+            TALAS_LOG_ERROR("...throw(const creator_exception e = failed_to_create)...")
+            throw(e);
+        }
+    }
+    keyt
+    (const byte_t* generator, size_t genbytes,
+     const byte_t* modulus, size_t modbytes,
+     const byte_t* exponent, size_t expbytes): g_(0), n_(0), x_(0) {
+        if (!(this->create_msb
+             (generator, genbytes, modulus, modbytes, exponent, expbytes))) {
+            const creator_exception e = failed_to_create;
+            TALAS_LOG_ERROR("...throw(const creator_exception e = failed_to_create)...")
+            throw(e);
+        }
+    }
+    keyt(): g_(0), n_(0), x_(0) {
     }
     virtual ~keyt() {
+        if (!(this->destroyed())) {
+            const creator_exception e = failed_to_destroy;
+            TALAS_LOG_ERROR("...throw(const creator_exception e = failed_to_destroy)...")
+            throw(e);
+        }
     }
-};
+    
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual bool create(size_t genbytes, size_t modbytes, size_t expbytes) {
+        if ((Implements::create(genbytes, modbytes, expbytes))) {
 
+            TALAS_LOG_DEBUG("g_ = BN_new()...");
+            if ((g_ = BN_new())) {
+
+                TALAS_LOG_DEBUG("n_ = BN_new()...");
+                if ((n_ = BN_new())) {
+
+                    TALAS_LOG_DEBUG("x_ = BN_new()...");
+                    if ((x_ = BN_new())) {
+                        return true;
+                    }
+                    BN_clear_free(n_);
+                }
+                BN_clear_free(g_);
+            }
+            Implements::destroy();
+        }
+        return false;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual void clear() {
+        if ((g_)) {
+            TALAS_LOG_DEBUG("BN_clear_free(g_)...");
+            BN_clear_free(g_);
+            g_ = 0;
+        }
+        if ((n_)) {
+            TALAS_LOG_DEBUG("BN_clear_free(n_)...");
+            BN_clear_free(n_);
+            n_ = 0;
+        }
+        if ((g_)) {
+            TALAS_LOG_DEBUG("BN_clear_free(g_)...");
+            BN_clear_free(g_);
+            g_ = 0;
+        }
+        Extends::clear();
+    }
+        
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    using Implements::set_msb;
+    virtual bool set_msb
+    (const byte_t* generator, size_t genbytes,
+     const byte_t* modulus, size_t modbytes,
+     const byte_t* exponent, size_t expbytes) {
+        if ((generator) && (genbytes) && (genbytes <= this->genbytes())
+            && (modulus) && (modbytes) && (modbytes <= this->modbytes())
+            && (exponent) && (expbytes) && (expbytes <= this->expbytes())
+            && (g_) && (n_) && (x_)) {
+
+            if ((set_generator_msb(generator, genbytes))) {
+                if ((set_modulus_msb(modulus, modbytes))) {
+                    if ((set_exponent_msb(exponent, expbytes))) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual ssize_t set_generator_msb
+    (const byte_t* generator, size_t genbytes) {
+        if ((generator) && (genbytes) && (genbytes <= this->genbytes()) && (g_)) {
+
+            TALAS_LOG_DEBUG("BN_set_msb(g_, generator = " << x_to_string(generator, genbytes) << ", genbytes = " << genbytes << ")...");
+            BN_set_msb(g_, generator, genbytes);
+            return genbytes;
+        }
+        return 0;
+    }
+    virtual ssize_t get_generator_msb
+    (byte_t* generator, size_t genbytes) const {
+        return 0;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    virtual ssize_t set_modulus_msb
+    (const byte_t* modulus, size_t modbytes) {
+        if ((modulus) && (modbytes) && (modbytes <= this->modbytes()) && (n_)) {
+
+            TALAS_LOG_DEBUG("BN_set_msb(n_, modulus = " << x_to_string(modulus, modbytes) << ", modbytes = " << modbytes << ")...");
+            BN_set_msb(n_, modulus, modbytes);
+            return modbytes;
+        }
+        return 0;
+    }
+    virtual ssize_t get_modulus_msb
+    (byte_t* modulus, size_t modbytes) const {
+        return 0;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    virtual ssize_t set_exponent_msb
+    (const byte_t* exponent, size_t expbytes) {
+        if ((exponent) && (expbytes) && (expbytes <= this->expbytes()) && (x_)) {
+
+            TALAS_LOG_DEBUG("BN_set_msb(x_, exponent = " << x_to_string(exponent, expbytes) << ", expbytes = " << expbytes << ")...");
+            BN_set_msb(x_, exponent, expbytes);
+            return expbytes;
+        }
+        return 0;
+    }
+    virtual ssize_t get_exponent_msb
+    (byte_t* exponent, size_t expbytes) const {
+        if ((exponent) && (expbytes) && (expbytes >= this->expbytes_) && (x_)) {
+
+            TALAS_LOG_DEBUG("BN_get_msb(x_, exponent, this->expbytes_ = " << this->expbytes_ << ")...");
+            BN_get_msb(x_, exponent, this->expbytes_);
+            return expbytes;
+        }
+        return 0;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual size_t genbytes_min() const {
+        return key_min;
+    }
+    virtual size_t genbytes_max() const {
+        return key_max;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    virtual size_t modbytes_min() const {
+        return key_min;
+    }
+    virtual size_t modbytes_max() const {
+        return key_max;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    virtual size_t expbytes_min() const {
+        return key_min;
+    }
+    virtual size_t expbytes_max() const {
+        return key_max;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+protected:
+    BIGNUM *g_, *n_, *x_;
+};
+typedef keyt<> key;
+typedef key::Implements key_implements;
 
 } // namespace bn 
 } // namespace dh 
 } // namespace crypto 
 } // namespace talas 
 
-
 #endif // _TALAS_CRYPTO_DH_BN_KEY_HPP 
-
-        
-

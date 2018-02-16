@@ -22,14 +22,9 @@
 #define _TALAS_CONSOLE_MAIN_HPP
 
 #include "talas/console/main_opt.hpp"
-#include "talas/base/base.hpp"
-#if !defined(USE_NADIR_BASE)
+#include "talas/io/logger.hpp"
 #include "xos/base/getopt/main.hpp"
 #include "xos/base/main.hpp"
-#else // !defined(USE_NADIR_BASE)
-#include "nadir/console/getopt/main.hpp"
-#include "nadir/console/main.hpp"
-#endif // !defined(USE_NADIR_BASE)
 
 #define TALAS_CONSOLE_MAIN_LOGGING_LEVELS_OPT "logging"
 #define TALAS_CONSOLE_MAIN_LOGGING_LEVELS_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_REQUIRED
@@ -70,13 +65,8 @@
 namespace talas {
 namespace console {
 
-#if !defined(USE_NADIR_BASE)
 typedef xos::base::getopt::main_implement main_implements;
 typedef xos::base::getopt::main main_extends;
-#else // !defined(USE_NADIR_BASE)
-typedef nadir::console::getopt::maint_implements main_implements;
-typedef nadir::console::getopt::main main_extends;
-#endif // !defined(USE_NADIR_BASE)
 ///////////////////////////////////////////////////////////////////////
 ///  Class: maint
 ///////////////////////////////////////////////////////////////////////

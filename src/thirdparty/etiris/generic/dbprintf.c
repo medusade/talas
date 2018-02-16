@@ -24,7 +24,8 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-int stderr_dbprintf(const char* format, ...) {
+#ifndef _dbprintf
+int _dbprintf(const char* format, ...) {
     int count = 0;
     va_list va;
     va_start(va, format);
@@ -32,3 +33,4 @@ int stderr_dbprintf(const char* format, ...) {
     va_end(va);
     return count;    
 }
+#endif /* ndef _dbprintf */

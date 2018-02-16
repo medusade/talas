@@ -24,18 +24,6 @@ namespace talas {
 namespace network {
 namespace os {
 
-#if !defined(USE_NADIR_BASE)
-#else // !defined(USE_NADIR_BASE)
-namespace sockets {
-bool startup() {
-    return true;
-}
-bool cleanup() {
-    return true;
-}
-} // namespace sockets
-#endif // !defined(USE_NADIR_BASE)
-
 } // namespace os
 } // namespace network 
 } // namespace talas 

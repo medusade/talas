@@ -25,39 +25,43 @@
 ///////////////////////////////////////////////////////////////////////
 #ifndef _TALAS_CRYPTO_DH_MP_PRIVATE_KEY_HPP
 #define _TALAS_CRYPTO_DH_MP_PRIVATE_KEY_HPP
+
 #include "talas/crypto/dh/mp/key.hpp"
+#include "talas/crypto/dh/private_key.hpp"
 
 namespace talas {
 namespace crypto {
 namespace dh {
 namespace mp {
 
-
-typedef key_implements private_keyt_implements;
-typedef key private_keyt_extends;
 ///////////////////////////////////////////////////////////////////////
 ///  Class: private_keyt
 ///////////////////////////////////////////////////////////////////////
 template
-<class TImplements = private_keyt_implements, class TExtends = private_keyt_extends>
-class _EXPORT_CLASS private_keyt: virtual public TImplements,public TExtends {
+<class TImplements = dh::private_key_implements, 
+ class TExtends = dh::private_keyt<dh::private_key_implements, key> >
+
+class _EXPORT_CLASS private_keyt: virtual public TImplements, public TExtends {
 public:
     typedef TImplements Implements;
     typedef TExtends Extends;
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
     private_keyt() {
     }
     virtual ~private_keyt() {
     }
-};
 
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+};
+typedef private_keyt<> private_key;
+typedef private_key::Implements private_key_implements;
 
 } // namespace mp 
 } // namespace dh 
 } // namespace crypto 
 } // namespace talas 
 
-
 #endif // _TALAS_CRYPTO_DH_MP_PRIVATE_KEY_HPP 
-
-        
-

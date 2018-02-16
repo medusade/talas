@@ -22,20 +22,11 @@
 #define _TALAS_BASE_TIME_HPP
 
 #include "talas/base/base.hpp"
-
-#if !defined(USE_NADIR_BASE)
 #include "xos/os/time.hpp"
-#else // !defined(USE_NADIR_BASE)
-#include "nadir/os/time.hpp"
-#endif // !defined(USE_NADIR_BASE)
 
 namespace talas {
 
-#if !defined(USE_NADIR_BASE)
 namespace timens = xos::os::os;
-#else // !defined(USE_NADIR_BASE)
-namespace timens = nadir::os::os;
-#endif // !defined(USE_NADIR_BASE)
 
 typedef timens::time time;
 
@@ -50,6 +41,7 @@ typedef timens::current::gmt::time time;
 } // namespace gmt
 
 } // namespace current
+
 } // namespace talas 
 
 #endif // _TALAS_BASE_TIME_HPP 

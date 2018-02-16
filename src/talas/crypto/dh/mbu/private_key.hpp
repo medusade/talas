@@ -21,7 +21,7 @@
 #ifndef _TALAS_CRYPTO_DH_MBU_PRIVATE_KEY_HPP
 #define _TALAS_CRYPTO_DH_MBU_PRIVATE_KEY_HPP
 
-#include "talas/crypto/dh/mbu/key.hpp"
+#include "talas/crypto/dh/mbu/public_key.hpp"
 #include "talas/crypto/dh/private_key.hpp"
 
 namespace talas {
@@ -29,14 +29,12 @@ namespace crypto {
 namespace dh {
 namespace mbu {
 
-typedef dh::private_key_implements private_keyt_implements;
-typedef dh::private_keyt
-<private_keyt_implements, mbu::key> private_keyt_extends;
 ///////////////////////////////////////////////////////////////////////
 ///  Class: private_keyt
 ///////////////////////////////////////////////////////////////////////
 template
-<class TImplements = private_keyt_implements, class TExtends = private_keyt_extends>
+<class TImplements = dh::private_key_implements, 
+ class TExtends = dh::private_keyt<dh::private_key_implements, key> >
 
 class _EXPORT_CLASS private_keyt: virtual public TImplements, public TExtends {
 public:
@@ -48,22 +46,9 @@ public:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
     private_keyt
-    (const unsigned& generator, size_t genbytes,
-     const byte_t* modulus, size_t modbytes,
+    (const dh::public_key_implements& public_key,
      const byte_t* exponent, size_t expbytes) {
-        if (!(this->create_msb
-             (generator, genbytes, modulus, modbytes, exponent, expbytes))) {
-            const creator_exception e = failed_to_create;
-            TALAS_LOG_ERROR("...throw(const creator_exception e = failed_to_create)...")
-            throw(e);
-        }
-    }
-    private_keyt
-    (const byte_t* generator, size_t genbytes,
-     const byte_t* modulus, size_t modbytes,
-     const byte_t* exponent, size_t expbytes) {
-        if (!(this->create_msb
-             (generator, genbytes, modulus, modbytes, exponent, expbytes))) {
+        if (!(this->create(public_key, exponent, expbytes))) {
             const creator_exception e = failed_to_create;
             TALAS_LOG_ERROR("...throw(const creator_exception e = failed_to_create)...")
             throw(e);
@@ -81,39 +66,42 @@ public:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    virtual void clear() {
+    virtual bool create
+    (const dh::public_key_implements& public_key,
+     const byte_t* exponent, size_t expbytes) {
+        if ((exponent) && (expbytes)) {
+            public_key_implemented* pub = 0;
 
-        TALAS_LOG_DEBUG("::memset(x_, 0, key_max = " << key_max << ")...");
-        ::memset(x_, 0, key_max);
-        Extends::clear();
-    }
+            if ((pub = public_key.mbu_key_implemented())) {
+                size_t genbytes = 0, modbytes = 0;
+                byte_t *g = 0, *n = 0;
 
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    virtual ssize_t set_exponent_msb
-    (const byte_t* exponent, size_t expbytes) {
-        if ((exponent) && (expbytes) && (expbytes == this->expbytes())) {
+                if ((g = pub->g()) && (genbytes = pub->genbytes()) 
+                    && (n = pub->n()) && (modbytes = pub->modbytes())
+                    && (genbytes <= modbytes)) {
 
-            TALAS_LOG_DEBUG("::mbu_set(x_, exponent, expbytes = " << expbytes << ")...");
-            ::mbu_set(x_, exponent, expbytes);
-            return true;
+                    if ((Implements::create(genbytes, modbytes, expbytes))) {
+                        
+                        TALAS_LOG_DEBUG("::mbu_set(this->g_, g, modbytes = " << modbytes << ")...")
+                        ::mbu_set(this->g_, g, modbytes);
+
+                        TALAS_LOG_DEBUG("::mbu_set(this->n_, n, modbytes = " << modbytes << ")...")
+                        ::mbu_set(this->n_, n, modbytes);
+
+                        if ((pub->create_secret_msb
+                             (this->x_, expbytes, exponent, expbytes))) {
+                            return true;
+                        }
+                        Implements::destroy();
+                    }
+                }
+            }
         }
-        return 0;
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    virtual size_t expbytes_min() const {
-        return key_min;
-    }
-    virtual size_t expbytes_max() const {
-        return key_max;
-    }
-
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-protected:
-    unsigned char x_[key_max];
 };
 typedef private_keyt<> private_key;
 typedef private_key::Implements private_key_implements;

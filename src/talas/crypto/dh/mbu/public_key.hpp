@@ -1,38 +1,33 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (C) 1991, 1993, 1994, 1995, 1996 Free Software Foundation, Inc.
-/// 
-/// This file is part of the GNU MP Library.
-/// 
-/// The GNU MP Library is free software; you can redistribute it and/or modify
-/// it under the terms of the GNU Library General Public License as published by
-/// the Free Software Foundation; either version 2 of the License, or (at your
-/// option) any later version.
-/// 
-/// The GNU MP Library is distributed in the hope that it will be useful, but
-/// WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-/// or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
-/// License for more details.
-/// 
-/// You should have received a copy of the GNU Library General Public License
-/// along with the GNU MP Library; see the file COPYING.LIB.  If not, write to
-/// the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
-/// MA 02111-1307, USA.
+/// Copyright (c) 1988-2018 $organization$
+///
+/// This software is provided by the author and contributors ``as is'' 
+/// and any express or implied warranties, including, but not limited to, 
+/// the implied warranties of merchantability and fitness for a particular 
+/// purpose are disclaimed. In no event shall the author or contributors 
+/// be liable for any direct, indirect, incidental, special, exemplary, 
+/// or consequential damages (including, but not limited to, procurement 
+/// of substitute goods or services; loss of use, data, or profits; or 
+/// business interruption) however caused and on any theory of liability, 
+/// whether in contract, strict liability, or tort (including negligence 
+/// or otherwise) arising in any way out of the use of this software, 
+/// even if advised of the possibility of such damage.
 ///
 ///   File: public_key.hpp
 ///
 /// Author: $author$
-///   Date: 2/11/2018
+///   Date: 2/12/2018
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_CRYPTO_DH_MP_PUBLIC_KEY_HPP
-#define _TALAS_CRYPTO_DH_MP_PUBLIC_KEY_HPP
+#ifndef _TALAS_CRYPTO_DH_MBU_PUBLIC_KEY_HPP
+#define _TALAS_CRYPTO_DH_MBU_PUBLIC_KEY_HPP
 
 #include "talas/crypto/dh/public_key.hpp"
-#include "talas/crypto/dh/mp/key.hpp"
+#include "talas/crypto/dh/mbu/key.hpp"
 
 namespace talas {
 namespace crypto {
 namespace dh {
-namespace mp {
+namespace mbu {
 
 typedef dh::public_key_implements public_key_implements;
 ///////////////////////////////////////////////////////////////////////
@@ -44,17 +39,10 @@ public:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    virtual bool create_secret_msb
-    (MP_INT *X, const byte_t* exponent, size_t expbytes) {
-        return false;
-    }
-
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    virtual MP_INT* g() const {
+    virtual byte_t* g() const {
         return 0;
     }
-    virtual MP_INT* n() const {
+    virtual byte_t* n() const {
         return 0;
     }
 
@@ -69,10 +57,12 @@ template
 <class TImplements = public_key_implemented, 
  class TExtends = dh::public_keyt<public_key_implemented, key> >
 
-class _EXPORT_CLASS public_keyt: virtual public TImplements,public TExtends {
+class _EXPORT_CLASS public_keyt: virtual public TImplements, public TExtends {
 public:
     typedef TImplements Implements;
     typedef TExtends Extends;
+
+    enum { key_min = Extends::key_min, key_max = Extends::key_max};
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
@@ -112,63 +102,36 @@ public:
     ///////////////////////////////////////////////////////////////////////
     virtual ssize_t create_secret_msb
     (byte_t* secret, size_t secbytes, const byte_t* exponent, size_t expbytes) {
-        ssize_t size = 0;
-        
-        if ((secret) && (secbytes) && (secbytes >= this->modbytes_) 
-             && (exponent) && (expbytes) && (this->genbytes_) && (this->expbytes_)) {
-            MP_INT X;
-            
-            TALAS_LOG_DEBUG("::mpz_init_set_ui(&X, 0)...");
-            ::mpz_init_set_ui(&X, 0);
-            
-            if ((create_secret_msb(&X, exponent, expbytes))) {
-                
-                TALAS_LOG_DEBUG("::mpz_get_msb(secret, this->modbytes_, &X)...");
-                ::mpz_get_msb(secret, this->modbytes_, &X);
-                size = this->modbytes_;
-            }
-            
-            TALAS_LOG_DEBUG("::mpz_clear(&X)...");
-            ::mpz_clear(&X);
+        size_t size = 0;
+
+        if ((secret) && (secbytes >= this->modbytes_) 
+            && (exponent) && (expbytes) && (expbytes == this->modbytes_)) {
+            ::mbu_montgomery mont;
+
+            TALAS_LOG_DEBUG("::mbu_init_montgomery(&mont, this->n_, this->modbytes_ = " << this->modbytes_ << ")...");
+            ::mbu_init_montgomery(&mont, this->n_, this->modbytes_);
+
+            TALAS_LOG_DEBUG("::mbu_mod_exp_montgomery(secret, this->x_, &mont, exponent, expbytes)...");
+            ::mbu_mod_exp_montgomery(secret, this->x_, &mont, exponent, expbytes);
+            TALAS_LOG_DEBUG("...::mbu_mod_exp_montgomery(secret = " << x_to_string(secret, expbytes) << ", this->x_, &mont, exponent, expbytes = " << expbytes << ");...");
+            size = expbytes;
         }
         return size;
     }
-    virtual bool create_secret_msb
-    (MP_INT *X, const byte_t* exponent, size_t expbytes) {
-        bool success = false;
-        
-        if ((X) && (exponent) && (expbytes)) {
-            MP_INT x;
-            
-            TALAS_LOG_DEBUG("::mpz_init_set_msb(&x, exponent = " << x_to_string(exponent, expbytes) << ", expbytes = " << expbytes << ")...");
-            ::mpz_init_set_msb(&x, exponent, expbytes);
-            
-            success = create_secret(X, &x);
-            
-            TALAS_LOG_DEBUG("::mpz_clear(&x)...");
-            ::mpz_clear(&x);
-        }
-        return success;
-    }
-    virtual bool create_secret(MP_INT *X, MP_INT *x) {
-        bool success = false;
 
-        if ((X) && (x) && (this->expbytes_) && (this->modbytes_)) {
-            
-            TALAS_LOG_DEBUG("::mpz_powm(X, &this->x_, x, &this->n_)...");
-            ::mpz_powm(X, &this->x_, x, &this->n_);
-            success = true;
-        }
-        return success;
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual mbu::public_key_implemented* mbu_key_implemented() const {
+        return (mbu::public_key_implemented*)this;
     }
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    virtual MP_INT* g() const {
-        return (MP_INT*)(&this->g_);
+    virtual byte_t* g() const {
+        return (byte_t*)(this->g_);
     }
-    virtual MP_INT* n() const {
-        return (MP_INT*)(&this->n_);
+    virtual byte_t* n() const {
+        return (byte_t*)(this->n_);
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -182,29 +145,29 @@ public:
         }
         return size;
     }
-
+    
 protected:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
     virtual ssize_t set_exponent_modulus_msb
     (const byte_t* exponent, size_t expbytes) {
-        ssize_t size = 0;
-        
-        if ((this->genbytes_) && (this->modbytes_)
-            && (exponent) && (expbytes) && (expbytes <= this->expbytes_)) {
-            MP_INT x;
-            
-            TALAS_LOG_DEBUG("::mpz_init_set_msb(&x, exponent = " << x_to_string(exponent, expbytes) << ", expbytes = " << expbytes << ")...");
-            ::mpz_init_set_msb(&x, exponent, expbytes);
-            
-            TALAS_LOG_DEBUG("::mpz_powm(&this->x_, &this->g_, &x, &this->n_)...");
-            ::mpz_powm(&this->x_, &this->g_, &x, &this->n_);
-            size = this->modbytes_;
-            
-            TALAS_LOG_DEBUG("::mpz_clear(&x)...");
-            ::mpz_clear(&x);
+        if ((this->genbytes_) && (this->modbytes_) 
+            && (exponent) && (expbytes) && (expbytes == this->expbytes_)) {
+            unsigned char x[key_max];
+            ::mbu_montgomery mont;
+
+            TALAS_LOG_DEBUG("::mbu_set(x, exponent = " << x_to_string(exponent, expbytes) << ", expbytes = " << expbytes << ")...");
+            ::mbu_set(x, exponent, expbytes);
+
+            TALAS_LOG_DEBUG("::mbu_init_montgomery(&mont, this->n_, this->modbytes_ = " << this->modbytes_ << ")...");
+            ::mbu_init_montgomery(&mont, this->n_, this->modbytes_);
+
+            TALAS_LOG_DEBUG("::mbu_mod_exp_montgomery(this->x_, this->g_, &mont, x, this->modbytes = " << this->modbytes_ << ");...");
+            ::mbu_mod_exp_montgomery(this->x_, this->g_, &mont, x, this->modbytes_);
+            TALAS_LOG_DEBUG("...::mbu_mod_exp_montgomery(this->x_ = " << x_to_string(this->x_, this->expbytes_) << ", this->g_, &mont, x, this->expbytes);...");
+            return this->modbytes_;
         }
-        return size;
+        return 0;
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -212,9 +175,9 @@ protected:
 };
 typedef public_keyt<> public_key;
 
-} // namespace mp 
+} // namespace mbu 
 } // namespace dh 
 } // namespace crypto 
 } // namespace talas 
 
-#endif // _TALAS_CRYPTO_DH_MP_PUBLIC_KEY_HPP 
+#endif // _TALAS_CRYPTO_DH_MBU_PUBLIC_KEY_HPP 

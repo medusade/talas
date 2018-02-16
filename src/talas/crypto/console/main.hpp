@@ -40,11 +40,7 @@ class _EXPORT_CLASS maint: virtual public TImplements, public TExtends {
 public:
     typedef TImplements Implements;
     typedef TExtends Extends;
-#if !defined(USE_NADIR_BASE)
     typedef typename Extends::Extends::Extends::Extends::Extends MainExtends;
-#else // !defined(USE_NADIR_BASE)
-    typedef Extends MainExtends;
-#endif // !defined(USE_NADIR_BASE)
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////

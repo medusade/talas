@@ -22,19 +22,13 @@
 #define _TALAS_IO_READ_FILE_HPP
 
 #include "talas/base/base.hpp"
-#if !defined(USE_NADIR_BASE)
 #include "xos/io/read/file.hpp"
-#else // !defined(USE_NADIR_BASE)
-#endif // !defined(USE_NADIR_BASE)
 
 namespace talas {
 namespace io {
 namespace read {
 
-#if !defined(USE_NADIR_BASE)
 typedef xos::io::read::file file;
-#else // !defined(USE_NADIR_BASE)
-#endif // !defined(USE_NADIR_BASE)
 
 } // namespace read
 } // namespace io 

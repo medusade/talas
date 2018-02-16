@@ -68,12 +68,21 @@
 #ifndef DBPRINTF
 #define dbif(cond)
 #define dbprintf(args)
-#define dbdump(buff,bytes)
 #else
 #include <stdio.h>
 #define dbif(cond) if (cond)
-#define dbprintf(args) printf args
-extern void dbdump(const void *buff,unsigned long bytes);
+#define dbprintf(args) _db_printf args
+#ifndef _db_printf
+#include <stdarg.h>
+static int _db_printf(const char* format, ...) {
+    int count = 0;
+    va_list va;
+    va_start(va, format);
+    count = vfprintf(stderr, format, va);
+    va_end(va);
+    return count;    
+}
+#endif
 #endif
 #endif
 

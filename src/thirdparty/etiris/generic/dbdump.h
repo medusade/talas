@@ -27,13 +27,14 @@
 #define DBDUMP_COLS 32
 #endif
 
+#ifndef dbdump
 #ifndef DBPRINTF
 #define dbset(buff,val,bytes)
 #define dbdump(buff,bytes)
-#else
+#else /* ndef DBPRINTF */
 #define dbset _dbset
 #define dbdump _dbdump
-
+#ifndef _dbdump
 static void _dbset(void *buff,unsigned char val,unsigned long bytes)
 {
     unsigned long i;
@@ -41,7 +42,6 @@ static void _dbset(void *buff,unsigned char val,unsigned long bytes)
     for (i=0; i<bytes; i++)
         ((unsigned char*)buff)[i]=val;
 }
-
 static void _dbdump(const void *buff,unsigned long bytes)
 {
     unsigned long i,j;
@@ -59,5 +59,7 @@ static void _dbdump(const void *buff,unsigned long bytes)
     }
     dbprintf(("\n"));
 }
-#endif
-#endif
+#endif /* ndef _dbdump */
+#endif /* ndef DBPRINTF */
+#endif /* ndef dbdump */
+#endif /* ndef DBDUMP_H */

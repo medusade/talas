@@ -19,11 +19,7 @@
 ///   Date: 11/18/2014
 ///////////////////////////////////////////////////////////////////////
 #include "talas/console/main_main.hpp"
-#if !defined(USE_NADIR_BASE)
 #include "xos/base/main_main.cpp"
-#else // !defined(USE_NADIR_BASE)
-#include "nadir/console/main_main.cpp"
-#endif // !defined(USE_NADIR_BASE)
 
 namespace talas {
 namespace console {
