@@ -51,7 +51,7 @@ $${TALAS_SRC}/talas/crypto/dh/public_key.hpp \
 $${TALAS_SRC}/talas/crypto/dh/key.hpp \
 
 dh_SOURCES += \
-$${TALAS_SRC}/talas/crypto/dh/bn/private_key.cpp \
+$${TALAS_SRC}/talas/crypto/dh/mp/private_key.cpp \
 $${TALAS_SRC}/talas/crypto/dh/mp/public_key.cpp \
 $${TALAS_SRC}/talas/crypto/dh/mp/key.cpp \
 
