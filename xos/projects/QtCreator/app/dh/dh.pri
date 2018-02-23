@@ -29,11 +29,45 @@ dh_INCLUDEPATH += \
 $${talas_INCLUDEPATH} \
 $${talas_bn_INCLUDEPATH} \
 $${talas_mp_INCLUDEPATH} \
+$${talas_mb_INCLUDEPATH} \
 $${talas_mbu_INCLUDEPATH} \
 
 dh_DEFINES += \
 $${talas_DEFINES} \
 $${talas_mbu_DEFINES} \
+
+########################################################################
+dh_HEADERS += \
+$${MB_SRC}/mbu_msb.h \
+$${MB_SRC}/mbu.h \
+
+dh_SOURCES += \
+$${MB_SRC}/mbu_msb.c \
+$${MB_SRC}/mbu.c \
+
+########################################################################
+dh_HEADERS += \
+$${TALAS_SRC}/talas/crypto/dsa/bn/public_key.hpp \
+$${TALAS_SRC}/talas/crypto/dsa/bn/private_key.hpp \
+$${TALAS_SRC}/talas/crypto/dsa/bn/key.hpp \
+$${TALAS_SRC}/talas/crypto/dsa/public_key.hpp \
+$${TALAS_SRC}/talas/crypto/dsa/private_key.hpp \
+$${TALAS_SRC}/talas/crypto/dsa/key.hpp \
+
+dh_SOURCES += \
+$${TALAS_SRC}/talas/crypto/dsa/bn/public_key.cpp \
+$${TALAS_SRC}/talas/crypto/dsa/bn/private_key.cpp \
+$${TALAS_SRC}/talas/crypto/dsa/bn/key.cpp \
+
+########################################################################
+dh_HEADERS += \
+$${TALAS_SRC}/talas/app/console/dsa/main.hpp \
+$${TALAS_SRC}/talas/app/console/dsa/main_opt.hpp \
+
+dh_SOURCES += \
+$${TALAS_SRC}/talas/app/console/dsa/main.cpp \
+$${TALAS_SRC}/talas/app/console/dsa/main_opt.cpp \
+$${TALAS_SRC}/talas/console/main_main.cpp \
 
 ########################################################################
 dh_HEADERS += \
@@ -50,7 +84,7 @@ $${TALAS_SRC}/talas/crypto/dh/private_key.hpp \
 $${TALAS_SRC}/talas/crypto/dh/public_key.hpp \
 $${TALAS_SRC}/talas/crypto/dh/key.hpp \
 
-dh_SOURCES += \
+_dh_SOURCES += \
 $${TALAS_SRC}/talas/crypto/dh/mp/private_key.cpp \
 $${TALAS_SRC}/talas/crypto/dh/mp/public_key.cpp \
 $${TALAS_SRC}/talas/crypto/dh/mp/key.cpp \
@@ -63,7 +97,7 @@ $${TALAS_SRC}/talas/console/main.hpp \
 $${TALAS_SRC}/talas/console/main_opt.hpp \
 $${TALAS_SRC}/talas/console/main_main.hpp \
 
-dh_SOURCES += \
+_dh_SOURCES += \
 $${TALAS_SRC}/talas/app/console/dh/main.cpp \
 $${TALAS_SRC}/talas/app/console/dh/main_opt.cpp \
 $${TALAS_SRC}/talas/console/main_main.cpp \

@@ -98,6 +98,22 @@ mp_LIBS += \
 -l$${MP_NAME}z \
 
 ########################################################################
+# mb
+MB_THIRDPARTY_PKG_BLD = $${MB_THIRDPARTY_PKG}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
+MB_THIRDPARTY_PRJ_BLD = $${MB_THIRDPARTY_PRJ}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
+MB_PKG_BLD = $${OTHER_BLD}/$${MB_PKG}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
+MB_PRJ_BLD = $${OTHER_BLD}/$${MB_PRJ}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
+#MB_LIB = $${MB_THIRDPARTY_PKG_BLD}/lib
+#MB_LIB = $${MB_THIRDPARTY_PRJ_BLD}/lib
+#MB_LIB = $${MB_PKG_BLD}/lib
+#MB_LIB = $${MB_PRJ_BLD}/lib
+MB_LIB = $${TALAS_LIB}
+
+mb_LIBS += \
+-L$${MB_LIB}/lib$${MB_NAME} \
+-l$${MB_NAME} \
+
+########################################################################
 # mbu
 MBU_THIRDPARTY_PKG_BLD = $${MBU_THIRDPARTY_PKG}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
 MBU_THIRDPARTY_PRJ_BLD = $${MBU_THIRDPARTY_PRJ}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
@@ -139,6 +155,9 @@ $${bn_LIBS} \
 
 talas_mp_LIBS += \
 $${mp_LIBS} \
+
+talas_mb_LIBS += \
+$${mb_LIBS} \
 
 talas_mbu_LIBS += \
 $${mbu_LIBS} \
