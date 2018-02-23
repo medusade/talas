@@ -144,8 +144,8 @@ public:
      crypto::dh::public_key& pub,
      crypto::dh::private_key& prv,
      int argc, char_t** argv, char_t** env) {
-        size_t size = 0;
         int err = 0;
+        size_t size = 0;
 
         if ((size = key.get_exponent_msb(k1, sizeof(k1)))) {
             this->out("x = ");
