@@ -365,7 +365,7 @@ public:
     ///////////////////////////////////////////////////////////////////////
     virtual ssize_t set_p_msb(const byte_t* p, size_t pbytes) {
         if ((this->pbytes_) && (p) && (pbytes) && (pbytes <= this->pbytes_)) {
-            return this->pbytes_;
+            return pbytes;
         }
         return 0;
     }
@@ -381,7 +381,7 @@ public:
     ///////////////////////////////////////////////////////////////////////
     virtual ssize_t set_q_msb(const byte_t* q, size_t qbytes) {
         if ((this->qbytes_) && (q) && (qbytes) && (qbytes <= this->qbytes_)) {
-            return this->qbytes_;
+            return qbytes;
         }
         return 0;
     }
@@ -397,7 +397,7 @@ public:
     ///////////////////////////////////////////////////////////////////////
     virtual ssize_t set_g_msb(const byte_t* g, size_t gbytes) {
         if ((this->gbytes_) && (g) && (gbytes) && (gbytes <= this->gbytes_)) {
-            return this->gbytes_;
+            return gbytes;
         }
         return 0;
     }

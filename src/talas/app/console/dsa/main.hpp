@@ -27,11 +27,11 @@
 #include "talas/crypto/dsa/mbu/private_key.hpp"
 #include "talas/crypto/dsa/mbu/key.hpp"
 
+*/
 #include "talas/crypto/dsa/mp/public_key.hpp"
 #include "talas/crypto/dsa/mp/private_key.hpp"
 #include "talas/crypto/dsa/mp/key.hpp"
 
-*/
 #include "talas/crypto/dsa/bn/public_key.hpp"
 #include "talas/crypto/dsa/bn/private_key.hpp"
 #include "talas/crypto/dsa/bn/key.hpp"
@@ -145,7 +145,7 @@ public:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    virtual int run_default(int argc, char_t** argv, char_t** env) {
+    virtual int run_bn(int argc, char_t** argv, char_t** env) {
         int err = 0;
         crypto::dsa::bn::key key(p, sizeof(p), q, sizeof(q), g, sizeof(g));
         crypto::dsa::bn::private_key prv(p, sizeof(p), q, sizeof(q), g, sizeof(g), x, sizeof(q));
@@ -153,12 +153,31 @@ public:
         err = run(key, prv, pub, argc, argv, env);
         return err;
     }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_mp(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        crypto::dsa::mp::key key(p, sizeof(p), q, sizeof(q), g, sizeof(g));
+        crypto::dsa::mp::private_key prv(p, sizeof(p), q, sizeof(q), g, sizeof(g), x, sizeof(q));
+        crypto::dsa::mp::public_key pub(p, sizeof(p), q, sizeof(q), g, sizeof(g), y, sizeof(q));
+        err = run(key, prv, pub, argc, argv, env);
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
     virtual int run_null(int argc, char_t** argv, char_t** env) {
         int err = 0;
         crypto::dsa::null::key key(p, sizeof(p), q, sizeof(q), g, sizeof(g));
         crypto::dsa::null::private_key prv(p, sizeof(p), q, sizeof(q), g, sizeof(g), x, sizeof(q));
         crypto::dsa::null::public_key pub(p, sizeof(p), q, sizeof(q), g, sizeof(g), y, sizeof(q));
         err = run(key, prv, pub, argc, argv, env);
+        return err;
+    }
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int run_default(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        err = run_mp(argc, argv, env);
         return err;
     }
 
