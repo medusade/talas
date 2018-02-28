@@ -38,7 +38,6 @@
 #define TALAS_MAIN_HELP_OPTUSE XOS_MAIN_HELP_OPTUSE
 
 namespace talas {
-namespace console {
 
 typedef int main_opt_argument_t;
 enum {
@@ -47,20 +46,6 @@ enum {
     MAIN_OPT_ARGUMENT_OPTIONAL = TALAS_MAIN_OPT_ARGUMENT_OPTIONAL
 };
 
-} // namespace console
-
-namespace app {
-namespace console {
-
-typedef talas::console::main_opt_argument_t main_opt_argument_t;
-enum {
-    MAIN_OPT_ARGUMENT_NONE     = talas::console::MAIN_OPT_ARGUMENT_NONE,
-    MAIN_OPT_ARGUMENT_REQUIRED = talas::console::MAIN_OPT_ARGUMENT_REQUIRED,
-    MAIN_OPT_ARGUMENT_OPTIONAL = talas::console::MAIN_OPT_ARGUMENT_OPTIONAL
-};
-
-} // namespace console
-} // namespace app
 } // namespace talas
 
 #endif // _TALAS_CONSOLE_MAIN_OPT_HPP 

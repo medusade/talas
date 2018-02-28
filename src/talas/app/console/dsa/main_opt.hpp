@@ -21,15 +21,15 @@
 #ifndef _TALAS_APP_CONSOLE_DSA_MAIN_OPT_HPP
 #define _TALAS_APP_CONSOLE_DSA_MAIN_OPT_HPP
 
-#include "talas/crypto/console/main.hpp"
+#include "talas/crypto/console/mpinteger/main_opt.hpp"
 
 namespace talas {
 namespace app {
 namespace console {
 namespace dsa {
 
-typedef crypto::console::main_implements main_opt_implements;
-typedef crypto::console::main main_opt_extends;
+typedef crypto::console::mpinteger::main_opt_implements main_opt_implements;
+typedef crypto::console::mpinteger::main_opt main_opt_extends;
 ///////////////////////////////////////////////////////////////////////
 ///  Class: main_opt
 ///////////////////////////////////////////////////////////////////////

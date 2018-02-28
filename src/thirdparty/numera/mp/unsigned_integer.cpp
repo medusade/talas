@@ -13,46 +13,19 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main_opt.hpp
+///   File: unsigned_integer.cpp
 ///
 /// Author: $author$
-///   Date: 2/10/2018
+///   Date: 2/26/2018
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_APP_CONSOLE_DH_MAIN_OPT_HPP
-#define _TALAS_APP_CONSOLE_DH_MAIN_OPT_HPP
+#include "numera/mp/unsigned_integer.hpp"
 
-#include "talas/crypto/console/mpinteger/main_opt.hpp"
+namespace numera {
+namespace mp {
 
-namespace talas {
-namespace app {
-namespace console {
-namespace dh {
-
-typedef crypto::console::mpinteger::main_opt_implements main_opt_implements;
-typedef crypto::console::mpinteger::main_opt main_opt_extends;
 ///////////////////////////////////////////////////////////////////////
-///  Class: main_opt
+///  Class: unsigned_integert
 ///////////////////////////////////////////////////////////////////////
-class _EXPORT_CLASS main_opt
-: virtual public main_opt_implements, public main_opt_extends {
-public:
-    typedef main_opt_implements Implements;
-    typedef main_opt_extends Extends;
 
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-    main_opt() {
-    }
-    virtual ~main_opt() {
-    }
-
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-};
-
-} // namespace dh 
-} // namespace console 
-} // namespace app 
-} // namespace talas 
-
-#endif // _TALAS_APP_CONSOLE_DH_MAIN_OPT_HPP 
+} // namespace mp 
+} // namespace numera 

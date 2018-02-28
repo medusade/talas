@@ -22,6 +22,7 @@
 #define _TALAS_APP_CONSOLE_DH_MAIN_HPP
 
 #include "talas/app/console/dh/main_opt.hpp"
+#include "talas/crypto/console/mpinteger/main.hpp"
 
 #include "talas/crypto/dh/mbu/private_key.hpp"
 #include "talas/crypto/dh/mbu/public_key.hpp"
@@ -73,7 +74,7 @@ unsigned char y[] = {
 unsigned char k1[sizeof(x)], k2[sizeof(y)];
 
 typedef main_opt_implements main_implements;
-typedef main_opt main_extends;
+typedef crypto::console::mpinteger::main main_extends;
 ///////////////////////////////////////////////////////////////////////
 ///  Class: main
 ///////////////////////////////////////////////////////////////////////
@@ -184,13 +185,13 @@ public:
      int argc, char_t**argv, char_t**env) {
         int err = 0;
         if ((optarg) && (optarg[0])) {
-            if (!(optarg[0] != TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG_BN[1])) {
+            if (!(optarg[0] != TALAS_CRYPTO_CONSOLE_MPINTEGER_MAIN_MP_INTEGER_OPTARG_BN[1])) {
                 run_ = &Derives::run_bn;
             } else {
-                if (!(optarg[0] != TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG_MP[1])) {
+                if (!(optarg[0] != TALAS_CRYPTO_CONSOLE_MPINTEGER_MAIN_MP_INTEGER_OPTARG_MP[1])) {
                     run_ = &Derives::run_mp;
                 } else {
-                    if (!(optarg[0] != TALAS_APP_CONSOLE_DH_MAIN_MP_INTEGER_OPTARG_MBU[1])) {
+                    if (!(optarg[0] != TALAS_CRYPTO_CONSOLE_MPINTEGER_MAIN_MP_INTEGER_OPTARG_MBU[1])) {
                         run_ = &Derives::run_mbu;
                     } else {
                     }
