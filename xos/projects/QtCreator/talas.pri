@@ -272,6 +272,23 @@ mbu_DEFINES += DBPRINTF
 }
 
 ########################################################################
+# mpinteger
+MPINTEGER_NAME = mpinteger
+MPINTEGER_THIRDPARTY_SRC_GROUP = numera
+MPINTEGER_THIRDPARTY_SRC_DIR = $${THIRDPARTY_SRC}/$${MPINTEGER_THIRDPARTY_SRC_GROUP}
+MPINTEGER_SRC = $${MPINTEGER_THIRDPARTY_SRC_DIR}
+
+# INCLUDEPATH
+#
+mpinteger_INCLUDEPATH += \
+$${MPINTEGER_SRC} \
+$${MPINTEGER_SRC}/.. \
+
+# DEFINES
+#
+mpinteger_DEFINES += \
+
+########################################################################
 # nadir
 NADIR_VERSION_MAJOR = 0
 NADIR_VERSION_MINOR = 0
@@ -345,6 +362,9 @@ $${mb_INCLUDEPATH} \
 talas_mbu_INCLUDEPATH += \
 $${mbu_INCLUDEPATH} \
 
+talas_mpinteger_INCLUDEPATH += \
+$${mpinteger_INCLUDEPATH} \
+
 talas_INCLUDEPATH += \
 $${TALAS_SRC} \
 $${nadir_INCLUDEPATH} \
@@ -358,8 +378,14 @@ $${mp_DEFINES} \
 talas_mp_DEFINES += \
 $${mp_DEFINES} \
 
+talas_mb_DEFINES += \
+$${mp_DEFINES} \
+
 talas_mbu_DEFINES += \
 $${mbu_DEFINES} \
+
+talas_mpinteger_DEFINES += \
+$${mpinteger_DEFINES} \
 
 talas_DEFINES += \
 $${nadir_DEFINES} \

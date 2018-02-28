@@ -130,6 +130,14 @@ mbu_LIBS += \
 -l$${MBU_LIB_NAME} \
 
 ########################################################################
+# mpinteger
+MPINTEGER_LIB = $${TALAS_LIB}
+
+mpinteger_LIBS += \
+-L$${MPINTEGER_LIB}/lib$${MPINTEGER_NAME} \
+-l$${MPINTEGER_NAME} \
+
+########################################################################
 # nadir
 NADIR_THIRDPARTY_PKG_BLD = $${NADIR_THIRDPARTY_PKG}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
 NADIR_THIRDPARTY_PRJ_BLD = $${NADIR_THIRDPARTY_PRJ}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
@@ -161,6 +169,9 @@ $${mb_LIBS} \
 
 talas_mbu_LIBS += \
 $${mbu_LIBS} \
+
+talas_mpinteger_LIBS += \
+$${mpinteger_LIBS} \
 
 talas_LIBS += \
 $${nadir_LIBS} \
