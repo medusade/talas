@@ -22,7 +22,7 @@
 #define _TALAS_CRYPTO_RSA_KEY_HPP
 
 #include "talas/crypto/base.hpp"
-#include "xos/base/creator.hpp"
+#include "talas/io/logger.hpp"
 
 namespace talas {
 namespace crypto {
@@ -33,9 +33,11 @@ typedef xos::base::creatort<crypto::implement_base> key_implement_base;
 ///  Class: key_implementt
 ///////////////////////////////////////////////////////////////////////
 template <class TImplements = key_implement_base>
+
 class _EXPORT_CLASS key_implementt: virtual public TImplements {
 public:
     typedef TImplements Implements;
+
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
     virtual bool create_msb
@@ -71,8 +73,22 @@ public:
      byte_t* exponent, size_t expbytes) const {
         return false;
     }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual ssize_t set_modulus_msb
+    (const byte_t* modulus, size_t modbytes) {
+        return 0;
+    }
     virtual ssize_t get_modulus_msb
     (byte_t* modulus, size_t modbytes) const {
+        return 0;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual ssize_t set_exponent_msb
+    (const byte_t* exponent, size_t expbytes) {
         return 0;
     }
     virtual ssize_t get_exponent_msb
@@ -172,6 +188,7 @@ public:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
 };
+
 typedef key_implementt<> key_implements;
 typedef xos::base::creator_extendt<key_implements, crypto::base> key_extends;
 ///////////////////////////////////////////////////////////////////////
@@ -187,6 +204,37 @@ public:
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
+    keyt
+    (const byte_t* modulus, size_t modbytes,
+     const byte_t* exponent, size_t expbytes)
+    : m_modbytes(0), m_expbytes(0), m_pbytes(0) {
+        if (!(this->create_msb(modulus, modbytes, exponent, expbytes))) {
+            xos::base::creator_exception e = xos::base::failed_to_create;
+            TALAS_LOG_ERROR("...failed on create_msb(modulus, modbytes, exponent, expbytes) throwing creator_exception failed_to_create...");
+            throw (e);
+        }
+    }
+    keyt(size_t modbytes, size_t expbytes)
+    : m_modbytes(0), m_expbytes(0), m_pbytes(0) {
+        if (!(this->create(modbytes, expbytes))) {
+            xos::base::creator_exception e = xos::base::failed_to_create;
+            TALAS_LOG_ERROR("...failed on create(modbytes, expbytes) throwing creator_exception failed_to_create...");
+            throw (e);
+        }
+    }
+    keyt(size_t pbytes)
+    : m_modbytes(0), m_expbytes(0), m_pbytes(0) {
+        if (!(this->create(pbytes))) {
+            xos::base::creator_exception e = xos::base::failed_to_create;
+            TALAS_LOG_ERROR("...failed on create(pbytes) throwing creator_exception failed_to_create...");
+            throw (e);
+        }
+    }
+    keyt(const keyt& copy): m_modbytes(0), m_expbytes(0), m_pbytes(0) {
+        xos::base::creator_exception e = xos::base::failed_to_create;
+        TALAS_LOG_ERROR("...throwing creator_exception failed_to_create...");
+        throw (e);
+    }
     keyt(): m_modbytes(0), m_expbytes(0), m_pbytes(0) {
     }
     virtual ~keyt() {

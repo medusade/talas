@@ -118,7 +118,11 @@ public:
     virtual bool create(size_t modbytes, size_t expbytes) {
         if ((this->destroyed())) {
             if ((Extends::create(modbytes, expbytes))) {
+
+                TALAS_LOG_DEBUG("mpz_init_set_ui(&m_modulus,0)...");
                 mpz_init_set_ui(&m_modulus,0);
+
+                TALAS_LOG_DEBUG("mpz_init_set_ui(&m_exponent,0)...");
                 mpz_init_set_ui(&m_exponent,0);
                 return true;
                 Extends::destroy();
@@ -129,7 +133,11 @@ public:
     virtual bool destroy() {
         if ((this->is_created())) {
             bool success = true;
+
+            TALAS_LOG_DEBUG("mpz_clear(&m_modulus)...");
             mpz_clear(&m_modulus);
+
+            TALAS_LOG_DEBUG("mpz_clear(&m_exponent)...");
             mpz_clear(&m_exponent);
             if (!(Extends::destroy())) {
                 success = false;
@@ -146,7 +154,11 @@ public:
      const byte_t* exponent, size_t expbytes) {
         if ((modulus) && (modbytes) && (exponent) && (expbytes)) {
             if ((m_modbytes) && (m_expbytes)) {
+
+                TALAS_LOG_DEBUG("mpz_set_msb(&m_modulus, modulus, m_modbytes = modbytes)...");
                 mpz_set_msb(&m_modulus, modulus, m_modbytes = modbytes);
+
+                TALAS_LOG_DEBUG("mpz_set_msb(&m_exponent, exponent, m_expbytes = expbytes)...");
                 mpz_set_msb(&m_exponent, exponent, m_expbytes = expbytes);
                 m_pbytes = (m_modbytes >> 1);
                 return true;
@@ -161,7 +173,11 @@ public:
         if ((modulus) && (modbytes) && (exponent) && (expbytes)) {
             if ((m_modbytes) && (modbytes >= m_modbytes)
                 && (m_expbytes) && (expbytes >= m_expbytes)) {
+
+                TALAS_LOG_DEBUG("mpz_get_msb(modulus, m_modbytes, &m_modulus)...");
                 mpz_get_msb(modulus, m_modbytes, &m_modulus);
+
+                TALAS_LOG_DEBUG("mpz_get_msb(exponent, m_expbytes, &m_exponent)...");
                 mpz_get_msb(exponent, m_expbytes, &m_exponent);
                 explen = m_expbytes;
                 modlen = m_modbytes;
@@ -174,6 +190,8 @@ public:
     (byte_t* modulus, size_t modbytes) const {
         if ((modulus) && (modbytes)) {
             if ((m_modbytes) && (modbytes >= m_modbytes)) {
+
+                TALAS_LOG_DEBUG("mpz_get_msb(modulus, m_modbytes, &m_modulus)...");
                 mpz_get_msb(modulus, m_modbytes, &m_modulus);
                 return m_modbytes;
             }
@@ -184,6 +202,8 @@ public:
     (byte_t* exponent, size_t expbytes) const {
         if ((exponent) && (expbytes)) {
             if ((m_expbytes) && (expbytes >= m_expbytes)) {
+
+                TALAS_LOG_DEBUG("mpz_get_msb(exponent, m_expbytes, &m_exponent)...");
                 mpz_get_msb(exponent, m_expbytes, &m_exponent);
                 return m_expbytes;
             }
@@ -197,7 +217,11 @@ public:
     (const mpint_t* modulus, const mpint_t* exponent) {
         if ((modulus) && (exponent)) {
             if ((m_modbytes) && (m_expbytes)) {
+
+                TALAS_LOG_DEBUG("mpz_set(&m_modulus, (modulus))...");
                 mpz_set(&m_modulus, (modulus));
+
+                TALAS_LOG_DEBUG("mpz_set(&m_exponent, (exponent))...");
                 mpz_set(&m_exponent, (exponent));
                 return true;
             }
@@ -209,7 +233,11 @@ public:
      mpint_t*& modulus, mpint_t*& exponent) const {
         if ((modulus) && (exponent)) {
             if ((m_modbytes) && (m_expbytes)) {
+
+                TALAS_LOG_DEBUG("mpz_set(modulus, &m_modulus)...");
                 mpz_set(modulus, &m_modulus);
+
+                TALAS_LOG_DEBUG("mpz_set(exponent, &m_exponent)...");
                 mpz_set(exponent, &m_exponent);
                 explen = m_expbytes;
                 modlen = m_modbytes;
@@ -230,8 +258,13 @@ public:
             if ((inb = ((const byte_t*)in)) && (inlen == m_modbytes)
                 && (outb = ((byte_t*)out)) && (outsize >= m_modbytes)) {
 
+                TALAS_LOG_DEBUG("mpz_set_msb(&m_temp, inb, m_modbytes)...");
                 mpz_set_msb(&m_temp, inb, m_modbytes);
+
+                TALAS_LOG_DEBUG("mpz_powm(&m_temp, &m_temp, &m_exponent, &m_modulus)...");
                 mpz_powm(&m_temp, &m_temp, &m_exponent, &m_modulus);
+
+                TALAS_LOG_DEBUG("mpz_get_msb(outb, m_modbytes, &m_temp)...");
                 mpz_get_msb(outb, m_modbytes, &m_temp);
                 return m_modbytes;
             }
@@ -251,8 +284,7 @@ public:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
 protected:
-    MP_INT m_modulus;
-    MP_INT m_exponent;
+    MP_INT m_modulus, m_exponent;
 };
 
 } // namespace mp 

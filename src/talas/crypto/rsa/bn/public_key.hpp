@@ -158,11 +158,18 @@ public:
     virtual bool create(size_t modbytes, size_t expbytes) {
         if ((this->destroyed())) {
             if ((Extends::create(modbytes, expbytes))) {
+
+                TALAS_LOG_DEBUG("m_modulus = BN_new()...");
                 if ((m_modulus = BN_new())) {
+
+                    TALAS_LOG_DEBUG("m_exponent = BN_new()...");
                     if ((m_exponent = BN_new())) {
                         return true;
+
+                        TALAS_LOG_DEBUG("BN_free(m_exponent)...");
                         BN_free(m_exponent);
                     }
+                    TALAS_LOG_DEBUG("BN_free(m_modulus)...");
                     BN_free(m_modulus);
                 }
                 Extends::destroy();
@@ -173,9 +180,13 @@ public:
     virtual bool destroy() {
         if ((this->is_created())) {
             bool success = true;
+
+            TALAS_LOG_DEBUG("BN_free(m_exponent)...");
             if (!(BN_free(m_exponent))) {
                 success = false;
             }
+
+            TALAS_LOG_DEBUG("BN_free(m_modulus)...");
             if (!(BN_free(m_modulus))) {
                 success = false;
             }
@@ -194,7 +205,11 @@ public:
      const byte_t* exponent, size_t expbytes) {
         if ((modulus) && (modbytes) && (exponent) && (expbytes)) {
             if ((m_modulus) && (m_exponent)) {
+
+                TALAS_LOG_DEBUG("BN_set_msb(m_modulus, modulus, m_modbytes = modbytes)...");
                 BN_set_msb(m_modulus, modulus, m_modbytes = modbytes);
+
+                TALAS_LOG_DEBUG("BN_set_msb(m_exponent, exponent, m_expbytes = expbytes)...");
                 BN_set_msb(m_exponent, exponent, m_expbytes = expbytes);
                 return true;
             }
@@ -208,7 +223,11 @@ public:
         if ((modulus) && (modbytes) && (exponent) && (expbytes)) {
             if ((m_modulus) && (modbytes >= m_modbytes)
                 && (m_exponent) && (expbytes >= m_expbytes)) {
+
+                TALAS_LOG_DEBUG("BN_get_msb(m_modulus, modulus, m_modbytes)...");
                 BN_get_msb(m_modulus, modulus, m_modbytes);
+
+                TALAS_LOG_DEBUG("BN_get_msb(m_exponent, exponent, m_expbytes)...");
                 BN_get_msb(m_exponent, exponent, m_expbytes);
                 explen = m_expbytes;
                 modlen = m_modbytes;
@@ -221,6 +240,8 @@ public:
     (byte_t* modulus, size_t modbytes) const {
         if ((modulus) && (modbytes)) {
             if ((m_modulus) && (modbytes >= m_modbytes)) {
+
+                TALAS_LOG_DEBUG("BN_get_msb(m_modulus, modulus, m_modbytes)...");
                 BN_get_msb(m_modulus, modulus, m_modbytes);
                 return m_modbytes;
             }
@@ -231,6 +252,8 @@ public:
     (byte_t* exponent, size_t expbytes) const {
         if ((exponent) && (expbytes)) {
             if ((m_exponent) && (expbytes >= m_expbytes)) {
+
+                TALAS_LOG_DEBUG("BN_get_msb(m_exponent, exponent, m_expbytes)...");
                 BN_get_msb(m_exponent, exponent, m_expbytes);
                 return m_expbytes;
             }
@@ -244,7 +267,11 @@ public:
     (const mpint_t* modulus, const mpint_t* exponent) {
         if ((modulus) && (exponent)) {
             if ((m_modulus) && (m_exponent)) {
+
+                TALAS_LOG_DEBUG("BN_copy(m_modulus, (BIGNUM*)(modulus))...");
                 BN_copy(m_modulus, (BIGNUM*)(modulus));
+
+                TALAS_LOG_DEBUG("BN_copy(m_exponent, (BIGNUM*)(exponent))...");
                 BN_copy(m_exponent, (BIGNUM*)(exponent));
                 return true;
             }
@@ -256,7 +283,11 @@ public:
      mpint_t*& modulus, mpint_t*& exponent) const {
         if ((modulus) && (exponent)) {
             if ((m_modulus) && (m_exponent)) {
+
+                TALAS_LOG_DEBUG("BN_copy(modulus, m_modulus)...");
                 BN_copy(modulus, m_modulus);
+
+                TALAS_LOG_DEBUG("BN_copy(exponent, m_exponent)...");
                 BN_copy(exponent, m_exponent);
                 explen = m_expbytes;
                 modlen = m_modbytes;
@@ -278,8 +309,13 @@ public:
             if ((inb = ((const byte_t*)in)) && (inlen == m_modbytes)
                 && (outb = ((byte_t*)out)) && (outsize >= m_modbytes)) {
 
+                TALAS_LOG_DEBUG("BN_set_msb(m_temp, inb, inlen)...");
                 BN_set_msb(m_temp, inb, inlen);
+
+                TALAS_LOG_DEBUG("BN_mod_exp(m_temp, m_temp, m_exponent, m_modulus, m_ctx)...");
                 BN_mod_exp(m_temp, m_temp, m_exponent, m_modulus, m_ctx);
+
+                TALAS_LOG_DEBUG("BN_get_msb(m_temp, outb, m_modbytes)...");
                 BN_get_msb(m_temp, outb, m_modbytes);
                 return m_modbytes;
             }
@@ -316,8 +352,7 @@ public:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
 protected:
-    BIGNUM *m_modulus;
-    BIGNUM *m_exponent;
+    BIGNUM *m_modulus, *m_exponent;
 };
 
 } // namespace bn 

@@ -93,6 +93,11 @@ public:
     keyt(): m_temp(0), m_ctx(0) {
     }
     virtual ~keyt() {
+        if (!(this->destroyed())) {
+            xos::base::creator_exception e = xos::base::failed_to_destroy;
+            TALAS_LOG_ERROR("...failed on destroyed() throwing creator_exception failed_to_destroy...");
+            throw (e);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////
@@ -100,11 +105,15 @@ public:
     virtual bool create(size_t modbytes, size_t expbytes) {
         if ((this->destroyed())) {
             if ((Extends::create(modbytes, expbytes))) {
+                TALAS_LOG_DEBUG("m_temp = BN_new()...");
                 if ((m_temp = BN_new())) {
+                    TALAS_LOG_DEBUG("m_ctx = BN_CTX_new()...");
                     if ((m_ctx = BN_CTX_new())) {
                         return true;
+                        TALAS_LOG_DEBUG("BN_CTX_free(m_ctx)...");
                         BN_CTX_free(m_ctx);
                     }
+                    TALAS_LOG_DEBUG("BN_free(m_temp)...");
                     BN_free(m_temp);
                 }
                 Extends::destroy();
@@ -115,11 +124,15 @@ public:
     virtual bool create(size_t pbytes) {
         if ((this->destroyed())) {
             if ((Extends::create(pbytes))) {
+                TALAS_LOG_DEBUG("m_temp = BN_new()...");
                 if ((m_temp = BN_new())) {
+                    TALAS_LOG_DEBUG("m_ctx = BN_CTX_new()...");
                     if ((m_ctx = BN_CTX_new())) {
                         return true;
+                        TALAS_LOG_DEBUG("BN_CTX_free(m_ctx)...");
                         BN_CTX_free(m_ctx);
                     }
+                    TALAS_LOG_DEBUG("BN_free(m_temp)...");
                     BN_free(m_temp);
                 }
                 Extends::destroy();
@@ -130,9 +143,11 @@ public:
     virtual bool destroy() {
         if ((this->is_created())) {
             bool success = true;
+            TALAS_LOG_DEBUG("BN_CTX_free(m_ctx)...");
             if (!(BN_CTX_free(m_ctx))) {
                 success = false;
             }
+            TALAS_LOG_DEBUG("BN_free(m_temp)...");
             if (!(BN_free(m_temp))) {
                 success = false;
             }
@@ -158,6 +173,7 @@ protected:
     ///////////////////////////////////////////////////////////////////////
     virtual bool BN_CTX_free(BN_CTX*& a) {
         if ((a)) {
+            //TALAS_LOG_DEBUG("::BN_CTX_free(a)...");
             ::BN_CTX_free(a);
             a = 0;
             return true;
@@ -166,6 +182,7 @@ protected:
     }
     virtual bool BN_free(BIGNUM*& a) {
         if ((a)) {
+            //TALAS_LOG_DEBUG("::BN_free(a)...");
             ::BN_free(a);
             a = 0;
             return true;

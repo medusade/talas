@@ -131,12 +131,20 @@ public:
     virtual bool create(size_t pbytes) {
         if ((this->destroyed())) {
             if ((Extends::create(pbytes))) {
+                TALAS_LOG_DEBUG("mpz_init_set_ui(&m_p,0)...");
                 mpz_init_set_ui(&m_p,0);
+                TALAS_LOG_DEBUG("mpz_init_set_ui(&m_q,0)...");
                 mpz_init_set_ui(&m_q,0);
+                TALAS_LOG_DEBUG("mpz_init_set_ui(&m_dmp1,0)...");
                 mpz_init_set_ui(&m_dmp1,0);
+                TALAS_LOG_DEBUG("mpz_init_set_ui(&m_dmq1,0)...");
                 mpz_init_set_ui(&m_dmq1,0);
+                TALAS_LOG_DEBUG("mpz_init_set_ui(&m_iqmp,0)...");
                 mpz_init_set_ui(&m_iqmp,0);
+                TALAS_LOG_DEBUG("mpz_init_set_ui(&m_ptemp,0)...");
                 mpz_init_set_ui(&m_ptemp,0);
+
+                TALAS_LOG_DEBUG("mpz_init_set_ui(&m_qtemp,0)...");
                 mpz_init_set_ui(&m_qtemp,0);
                 return true;
                 Extends::destroy();
@@ -147,12 +155,26 @@ public:
     virtual bool destroy() {
         if ((this->is_created())) {
             bool success = true;
+
+            TALAS_LOG_DEBUG("mpz_clear(&m_p)...");
             mpz_clear(&m_p);
+
+            TALAS_LOG_DEBUG("mpz_clear(&m_q)...");
             mpz_clear(&m_q);
+
+            TALAS_LOG_DEBUG("mpz_clear(&m_dmp1)...");
             mpz_clear(&m_dmp1);
+
+            TALAS_LOG_DEBUG("mpz_clear(&m_dmq1)...");
             mpz_clear(&m_dmq1);
+
+            TALAS_LOG_DEBUG("mpz_clear(&m_iqmp)...");
             mpz_clear(&m_iqmp);
+
+            TALAS_LOG_DEBUG("mpz_clear(&m_ptemp)...");
             mpz_clear(&m_ptemp);
+
+            TALAS_LOG_DEBUG("mpz_clear(&m_qtemp)...");
             mpz_clear(&m_qtemp);
             if (!(Extends::destroy())) {
                 success = false; }
@@ -169,10 +191,20 @@ public:
      const byte_t *iqmp, size_t pbytes) {
         if ((p) && (q) && (dmp1) && (dmq1) && (iqmp)) {
             if ((m_pbytes)) {
+
+                TALAS_LOG_DEBUG("mpz_set_msb(&m_p,p,pbytes)...");
                 mpz_set_msb(&m_p,p,pbytes);
+
+                TALAS_LOG_DEBUG("mpz_set_msb(&m_q,q,pbytes)...");
                 mpz_set_msb(&m_q,q,pbytes);
+
+                TALAS_LOG_DEBUG("mpz_set_msb(&m_dmp1,dmp1,pbytes)...");
                 mpz_set_msb(&m_dmp1,dmp1,pbytes);
+
+                TALAS_LOG_DEBUG("mpz_set_msb(&m_dmq1,dmq1,pbytes)...");
                 mpz_set_msb(&m_dmq1,dmq1,pbytes);
+
+                TALAS_LOG_DEBUG("mpz_set_msb(&m_iqmp,iqmp,pbytes)...");
                 mpz_set_msb(&m_iqmp,iqmp,pbytes);
                 m_expbytes = (m_modbytes = ((m_pbytes = pbytes) << 1));
                 return true;
@@ -186,10 +218,20 @@ public:
      byte_t *iqmp, size_t pbytes) {
         if ((p) && (q) && (dmp1) && (dmq1) && (iqmp) && (pbytes >= m_pbytes)) {
             if ((m_pbytes)) {
+
+                TALAS_LOG_DEBUG("mpz_get_msb(p,pbytes,&m_p)...");
                 mpz_get_msb(p,pbytes,&m_p);
+
+                TALAS_LOG_DEBUG("mpz_get_msb(q,pbytes,&m_q)...");
                 mpz_get_msb(q,pbytes,&m_q);
+
+                TALAS_LOG_DEBUG("mpz_get_msb(dmp1,pbytes,&m_dmp1)...");
                 mpz_get_msb(dmp1,pbytes,&m_dmp1);
+
+                TALAS_LOG_DEBUG("mpz_get_msb(dmq1,pbytes,&m_dmq1)...");
                 mpz_get_msb(dmq1,pbytes,&m_dmq1);
+
+                TALAS_LOG_DEBUG("mpz_get_msb(iqmp,pbytes,&m_iqmp)...");
                 mpz_get_msb(iqmp,pbytes,&m_iqmp);
                 plen = m_pbytes;
                 return true;
@@ -203,6 +245,8 @@ public:
     virtual ssize_t get_p_msb
     (byte_t* p, size_t pbytes) const {
         if ((p) && (pbytes >= m_pbytes) && (m_pbytes)) {
+
+            TALAS_LOG_DEBUG("mpz_get_msb(p,pbytes,&m_p)...");
             mpz_get_msb(p,pbytes,&m_p);
             return m_pbytes;
         }
@@ -211,6 +255,8 @@ public:
     virtual ssize_t get_q_msb
     (byte_t* p, size_t pbytes) const {
         if ((p) && (pbytes >= m_pbytes) && (m_pbytes)) {
+
+            TALAS_LOG_DEBUG("mpz_get_msb(p,pbytes,&m_q)...");
             mpz_get_msb(p,pbytes,&m_q);
             return m_pbytes;
         }
@@ -219,6 +265,8 @@ public:
     virtual ssize_t get_dmp1_msb
     (byte_t* p, size_t pbytes) const {
         if ((p) && (pbytes >= m_pbytes) && (m_pbytes)) {
+
+            TALAS_LOG_DEBUG("mpz_get_msb(p,pbytes,&m_dmp1)...");
             mpz_get_msb(p,pbytes,&m_dmp1);
             return m_pbytes;
         }
@@ -227,6 +275,8 @@ public:
     virtual ssize_t get_dmq1_msb
     (byte_t* p, size_t pbytes) const {
         if ((p) && (pbytes >= m_pbytes) && (m_pbytes)) {
+
+            TALAS_LOG_DEBUG("mpz_get_msb(p,pbytes,&m_dmq1)...");
             mpz_get_msb(p,pbytes,&m_dmq1);
             return m_pbytes;
         }
@@ -235,6 +285,8 @@ public:
     virtual ssize_t get_iqmp_msb
     (byte_t* p, size_t pbytes) const {
         if ((p) && (pbytes >= m_pbytes) && (m_pbytes)) {
+
+            TALAS_LOG_DEBUG("mpz_get_msb(p,pbytes,&m_iqmp)...");
             mpz_get_msb(p,pbytes,&m_iqmp);
             return m_pbytes;
         }
@@ -249,10 +301,20 @@ public:
      const mpint_t *iqmp, size_t pbytes) {
         if ((p) && (q) && (dmp1) && (dmq1) && (iqmp) && (pbytes)) {
             if ((m_pbytes)) {
+
+                TALAS_LOG_DEBUG("mpz_set(&m_p,p)...");
                 mpz_set(&m_p,p);
+
+                TALAS_LOG_DEBUG("mpz_set(&m_q,q)...");
                 mpz_set(&m_q,q);
+
+                TALAS_LOG_DEBUG("mpz_set(&m_dmp1,dmp1)...");
                 mpz_set(&m_dmp1,dmp1);
+
+                TALAS_LOG_DEBUG("mpz_set(&m_dmq1,dmq1)...");
                 mpz_set(&m_dmq1,dmq1);
+
+                TALAS_LOG_DEBUG("mpz_set(&m_iqmp,iqmp)...");
                 mpz_set(&m_iqmp,iqmp);
                 m_expbytes = (m_modbytes = ((m_pbytes = pbytes) << 1));
                 return true;
@@ -265,10 +327,20 @@ public:
      mpint_t *dmp1, mpint_t *dmq1, mpint_t *iqmp) {
         if ((p) && (q) && (dmp1) && (dmq1) && (iqmp)) {
             if ((m_pbytes)) {
+
+                TALAS_LOG_DEBUG("mpz_set(p,&m_p)...");
                 mpz_set(p,&m_p);
+
+                TALAS_LOG_DEBUG("mpz_set(q,&m_q)...");
                 mpz_set(q,&m_q);
+
+                TALAS_LOG_DEBUG("mpz_set(dmp1,&m_dmp1)...");
                 mpz_set(dmp1,&m_dmp1);
+
+                TALAS_LOG_DEBUG("mpz_set(dmq1,&m_dmq1)...");
                 mpz_set(dmq1,&m_dmq1);
+
+                TALAS_LOG_DEBUG("mpz_set(iqmp,&m_iqmp)...");
                 mpz_set(iqmp,&m_iqmp);
                 plen = m_pbytes;
                 return true;
@@ -285,47 +357,67 @@ public:
     virtual ssize_t operator()
     (void* out, size_t outsize, const void* in, size_t inlen) {
         if ((m_modbytes)) {
-            const byte_t* inb;
-            byte_t* outb;
+            const byte_t* inb = 0;
+            byte_t* outb = 0;
 
             if ((inb = ((const byte_t*)in)) && (inlen == m_modbytes)
                 && (outb = ((byte_t*)out)) && (outsize >= m_modbytes)) {
-                bool subp;
+                bool subp = 0;
 
+                TALAS_LOG_DEBUG("mpz_set_msb(&m_temp,inb,m_modbytes)...");
                 mpz_set_msb(&m_temp,inb,m_modbytes);
 
-                /* Compute q2 = (value mod q) ^ dmq1 mod q.
-                 */
+                // Compute q2 = (value mod q) ^ dmq1 mod q.
+                //
+                TALAS_LOG_DEBUG("mpz_mod(&m_qtemp,&m_temp,&m_q)...");
                 mpz_mod(&m_qtemp,&m_temp,&m_q);
+
+                TALAS_LOG_DEBUG("mpz_powm(&m_qtemp,&m_qtemp,&m_dmq1,&m_q)...");
                 mpz_powm(&m_qtemp,&m_qtemp,&m_dmq1,&m_q);
 
-                /* Compute p2 = (value mod p) ^ dmp1 mod p.
-                 */
+                // Compute p2 = (value mod p) ^ dmp1 mod p.
+                //
+                TALAS_LOG_DEBUG("mpz_mod(&m_ptemp,&m_temp,&m_p)...");
                 mpz_mod(&m_ptemp,&m_temp,&m_p);
+
+                TALAS_LOG_DEBUG("mpz_powm(&m_ptemp,&m_ptemp,&m_dmp1,&m_p)...");
                 mpz_powm(&m_ptemp,&m_ptemp,&m_dmp1,&m_p);
 
-                /* if q2 > p then q2 = q2 - p
-                 */
-                if ((subp=(mpz_cmp(&m_qtemp,&m_p)>0))!=0)
+                // if q2 > p then q2 = q2 - p
+                //
+                if ((subp=(mpz_cmp(&m_qtemp,&m_p)>0))!=0) {
+                    TALAS_LOG_DEBUG("mpz_sub(&m_qtemp,&m_qtemp,&m_p)...");
                     mpz_sub(&m_qtemp,&m_qtemp,&m_p);
-
-                /* Compute k = (((p2 + p) - q2) mod p) * iqmp mod p.
-                 */
+                }
+                // Compute k = (((p2 + p) - q2) mod p) * iqmp mod p.
+                //
+                TALAS_LOG_DEBUG("mpz_add(&m_temp,&m_ptemp,&m_p)...");
                 mpz_add(&m_temp,&m_ptemp,&m_p);
+
+                TALAS_LOG_DEBUG("mpz_sub(&m_temp,&m_temp,&m_qtemp)...");
                 mpz_sub(&m_temp,&m_temp,&m_qtemp);
+
+                TALAS_LOG_DEBUG("mpz_mul(&m_ptemp,&m_temp,&m_iqmp)...");
                 mpz_mul(&m_ptemp,&m_temp,&m_iqmp);
+
+                TALAS_LOG_DEBUG("mpz_mmod(&m_temp,&m_ptemp,&m_p)...");
                 mpz_mmod(&m_temp,&m_ptemp,&m_p);
 
-                /* Compute value = q2 + q * k.
-                 */
+                // Compute value = q2 + q * k.
+                //
+                TALAS_LOG_DEBUG("mpz_mul(&m_ptemp,&m_temp,&m_q)...");
                 mpz_mul(&m_ptemp,&m_temp,&m_q);
+
+                TALAS_LOG_DEBUG("mpz_add(&m_temp,&m_ptemp,&m_qtemp)...");
                 mpz_add(&m_temp,&m_ptemp,&m_qtemp);
 
-                /* if we subtracted p before then add it back here
-                 */
-                if (subp)
+                // if we subtracted p before then add it back here
+                //
+                if (subp) {
+                    TALAS_LOG_DEBUG("mpz_add(&m_temp,&m_temp,&m_p)...");
                     mpz_add(&m_temp,&m_temp,&m_p);
-
+                }
+                TALAS_LOG_DEBUG("mpz_get_msb(outb,m_modbytes,&m_temp)...");
                 mpz_get_msb(outb,m_modbytes,&m_temp);
                 return m_modbytes;
             }
@@ -354,13 +446,7 @@ public:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
 protected:
-    MP_INT m_p;
-    MP_INT m_q;
-    MP_INT m_dmp1;
-    MP_INT m_dmq1;
-    MP_INT m_iqmp;
-    MP_INT m_ptemp;
-    MP_INT m_qtemp;
+    MP_INT m_p, m_q, m_dmp1, m_dmq1, m_iqmp, m_ptemp, m_qtemp;
 };
 
 } // namespace mp 

@@ -33,11 +33,65 @@ typedef key_implements public_key_implement_base;
 ///////////////////////////////////////////////////////////////////////
 template
 <class TImplements = public_key_implement_base>
+
 class _EXPORT_CLASS public_key_implementt: virtual public TImplements {
 public:
     typedef TImplements Implements;
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
 };
 typedef public_key_implementt<> public_key_implements;
+
+typedef public_key_implements public_key_implements;
+typedef key public_key_extends;
+///////////////////////////////////////////////////////////////////////
+///  Class: public_keyt
+///////////////////////////////////////////////////////////////////////
+template
+<class TImplements = public_key_implements, class TExtends = public_key_extends>
+
+class _EXPORT_CLASS public_keyt: virtual public TImplements, public TExtends {
+public:
+    typedef TImplements Implements;
+    typedef TExtends Extends;
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    public_keyt
+    (const byte_t* modulus, size_t modbytes,
+     const byte_t* exponent, size_t expbytes) {
+        if (!(this->create_msb(modulus, modbytes, exponent, expbytes))) {
+            xos::base::creator_exception e = xos::base::failed_to_create;
+            TALAS_LOG_ERROR("...failed on create_msb(modulus, modbytes, exponent, expbytes) throwing creator_exception failed_to_create...");
+            throw (e);
+        }
+    }
+    public_keyt(size_t modbytes, size_t expbytes) {
+        if (!(this->create(modbytes, expbytes))) {
+            xos::base::creator_exception e = xos::base::failed_to_create;
+            TALAS_LOG_ERROR("...failed on create(modbytes, expbytes) throwing creator_exception failed_to_create...");
+            throw (e);
+        }
+    }
+    public_keyt(const public_keyt& copy) {
+        xos::base::creator_exception e = xos::base::failed_to_create;
+        TALAS_LOG_ERROR("...throwing creator_exception failed_to_create...");
+        throw (e);
+    }
+    public_keyt() {
+    }
+    virtual ~public_keyt() {
+        if (!(this->destroyed())) {
+            xos::base::creator_exception e = xos::base::failed_to_destroy;
+            TALAS_LOG_ERROR("...failed on destroyed() throwing creator_exception failed_to_destroy...");
+            throw (e);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+};
+typedef public_keyt<> public_key;
 
 } // namespace rsa
 } // namespace crypto 

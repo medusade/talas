@@ -37,6 +37,7 @@ template
 class _EXPORT_CLASS private_key_implementt: virtual public TImplements {
 public:
     typedef TImplements Implements;
+
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
     virtual bool create_msb
@@ -45,6 +46,7 @@ public:
      const byte_t *iqmp, size_t pbytes) {
         return false;
     }
+
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
     virtual bool set_msb
@@ -105,8 +107,63 @@ public:
      BYTE *iqmp, size_t pbytes) {
         return get_msb(plen, p,q, dmp1,dmq1, iqmp, pbytes);
     }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
 };
 typedef private_key_implementt<> private_key_implements;
+
+typedef key private_key_extends;
+///////////////////////////////////////////////////////////////////////
+///  Class: private_keyt
+///////////////////////////////////////////////////////////////////////
+template
+<class TImplements = private_key_implements, 
+ class TExtends = private_key_extends>
+
+class _EXPORT_CLASS private_keyt: virtual public TImplements, public TExtends {
+public:
+    typedef TImplements Implements;
+    typedef TExtends Extends;
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    private_keyt
+    (const byte_t *p, const byte_t *q,
+     const byte_t *dmp1, const byte_t *dmq1,
+     const byte_t *iqmp, size_t pbytes) {
+        if (!(this->create_msb(p, q, dmp1, dmq1, iqmp, pbytes))) {
+            xos::base::creator_exception e = xos::base::failed_to_create;
+            TALAS_LOG_ERROR("...failed on create_msb(p, q, dmp1, dmq1, iqmp, pbytes) throwing creator_exception failed_to_create...");
+            throw (e);
+        }
+    }
+    private_keyt(size_t pbytes) {
+        if (!(this->create(pbytes))) {
+            xos::base::creator_exception e = xos::base::failed_to_create;
+            TALAS_LOG_ERROR("...failed on create(pbytes) throwing creator_exception failed_to_create...");
+            throw (e);
+        }
+    }
+    private_keyt(const private_keyt& copy) {
+        xos::base::creator_exception e = xos::base::failed_to_create;
+        TALAS_LOG_ERROR("...throwing creator_exception failed_to_create...");
+        throw (e);
+    }
+    private_keyt() {
+    }
+    virtual ~private_keyt() {
+        if (!(this->destroyed())) {
+            xos::base::creator_exception e = xos::base::failed_to_destroy;
+            TALAS_LOG_ERROR("...failed on destroyed() throwing creator_exception failed_to_destroy...");
+            throw (e);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+};
+typedef private_keyt<> private_key;
 
 } // namespace rsa 
 } // namespace crypto 

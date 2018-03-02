@@ -184,20 +184,48 @@ public:
     virtual bool create(size_t pbytes) {
         if ((this->destroyed())) {
             if ((Extends::create(pbytes))) {
+                
+            TALAS_LOG_DEBUG("m_p=BN_new()...");
             if ((m_p=BN_new())) {
+                
+            TALAS_LOG_DEBUG("m_q=BN_new()...");
             if ((m_q=BN_new())) {
+                
+            TALAS_LOG_DEBUG("m_dmp1=BN_new()...");
             if ((m_dmp1=BN_new())) {
+                
+            TALAS_LOG_DEBUG("m_dmq1=BN_new()...");
             if ((m_dmq1=BN_new())) {
+                
+            TALAS_LOG_DEBUG("m_iqmp=BN_new()...");
             if ((m_iqmp=BN_new())) {
+                
+            TALAS_LOG_DEBUG("m_ptemp=BN_new()...");
             if ((m_ptemp=BN_new())) {
+                
+            TALAS_LOG_DEBUG("m_qtemp=BN_new()...");
             if ((m_qtemp=BN_new())) {
                 return true;
+                
+            TALAS_LOG_DEBUG("BN_free(m_qtemp)...");
             BN_free(m_qtemp); }
+
+            TALAS_LOG_DEBUG("BN_free(m_ptemp)...");
             BN_free(m_ptemp); }
+
+            TALAS_LOG_DEBUG("BN_free(m_iqmp)...");
             BN_free(m_iqmp); }
+
+            TALAS_LOG_DEBUG("BN_free(m_dmq1)...");
             BN_free(m_dmq1); }
+
+            TALAS_LOG_DEBUG("BN_free(m_dmp1)...");
             BN_free(m_dmp1); }
+
+            TALAS_LOG_DEBUG("BN_free(m_q)...");
             BN_free(m_q); }
+
+            TALAS_LOG_DEBUG("BN_free(m_p)...");
             BN_free(m_p); }
             Extends::destroy(); }
         }
@@ -206,18 +234,32 @@ public:
     virtual bool destroy() {
         if ((this->is_created())) {
             bool success = true;
+
+            TALAS_LOG_DEBUG("BN_free(m_p)...");
             if (!(BN_free(m_p))) {
                 success = false; }
+
+            TALAS_LOG_DEBUG("BN_free(m_q)...");
             if (!(BN_free(m_q))) {
                 success = false; }
+
+            TALAS_LOG_DEBUG("BN_free(m_dmp1)...");
             if (!(BN_free(m_dmp1))) {
                 success = false; }
+
+            TALAS_LOG_DEBUG("BN_free(m_dmq1)...");
             if (!(BN_free(m_dmq1))) {
                 success = false; }
+
+            TALAS_LOG_DEBUG("BN_free(m_iqmp)...");
             if (!(BN_free(m_iqmp))) {
                 success = false; }
+
+            TALAS_LOG_DEBUG("BN_free(m_ptemp)...");
             if (!(BN_free(m_ptemp))) {
                 success = false; }
+
+            TALAS_LOG_DEBUG("BN_free(m_qtemp)...");
             if (!(BN_free(m_qtemp))) {
                 success = false; }
             if (!(Extends::destroy())) {
@@ -235,10 +277,20 @@ public:
      const byte_t *iqmp, size_t pbytes) {
         if ((p) && (q) && (dmp1) && (dmq1) && (iqmp)) {
             if ((m_p) && (m_q) && (m_dmp1) && (m_dmq1) && (m_iqmp)) {
+
+                TALAS_LOG_DEBUG("BN_set_msb(m_p,p,pbytes)...");
                 BN_set_msb(m_p,p,pbytes);
+
+                TALAS_LOG_DEBUG("BN_set_msb(m_q,q,pbytes)...");
                 BN_set_msb(m_q,q,pbytes);
+
+                TALAS_LOG_DEBUG("N_set_msb(m_dmp1,dmp1,pbytes)...");
                 BN_set_msb(m_dmp1,dmp1,pbytes);
+
+                TALAS_LOG_DEBUG("BN_set_msb(m_dmq1,dmq1,pbytes)...");
                 BN_set_msb(m_dmq1,dmq1,pbytes);
+
+                TALAS_LOG_DEBUG("BN_set_msb(m_iqmp,iqmp,pbytes)...");
                 BN_set_msb(m_iqmp,iqmp,pbytes);
                 m_expbytes = (m_modbytes = ((m_pbytes = pbytes) << 1));
                 return true;
@@ -252,10 +304,20 @@ public:
      byte_t *iqmp, size_t pbytes) {
         if ((p) && (q) && (dmp1) && (dmq1) && (iqmp) && (pbytes >= m_pbytes)) {
             if ((m_p) && (m_q) && (m_dmp1) && (m_dmq1) && (m_iqmp)) {
+
+                TALAS_LOG_DEBUG("BN_get_msb(m_p,p,pbytes)...");
                 BN_get_msb(m_p,p,pbytes);
+
+                TALAS_LOG_DEBUG("BN_get_msb(m_q,q,pbytes)...");
                 BN_get_msb(m_q,q,pbytes);
+
+                TALAS_LOG_DEBUG("BN_get_msb(m_dmp1,dmp1,pbytes)...");
                 BN_get_msb(m_dmp1,dmp1,pbytes);
+
+                TALAS_LOG_DEBUG("BN_get_msb(m_dmq1,dmq1,pbytes)...");
                 BN_get_msb(m_dmq1,dmq1,pbytes);
+
+                TALAS_LOG_DEBUG("BN_get_msb(m_iqmp,iqmp,pbytes)...");
                 BN_get_msb(m_iqmp,iqmp,pbytes);
                 plen = m_pbytes;
                 return true;
@@ -269,6 +331,8 @@ public:
     virtual ssize_t get_p_msb
     (byte_t* p, size_t pbytes) const {
         if ((m_p) && (p) && (pbytes >= m_pbytes)) {
+
+            TALAS_LOG_DEBUG("BN_get_msb(m_p,p,pbytes)...");
             BN_get_msb(m_p,p,pbytes);
             return m_pbytes;
         }
@@ -277,6 +341,8 @@ public:
     virtual ssize_t get_q_msb
     (byte_t* p, size_t pbytes) const {
         if ((m_q) && (p) && (pbytes >= m_pbytes)) {
+
+            TALAS_LOG_DEBUG("BN_get_msb(m_q,p,pbytes)...");
             BN_get_msb(m_q,p,pbytes);
             return m_pbytes;
         }
@@ -285,6 +351,8 @@ public:
     virtual ssize_t get_dmp1_msb
     (byte_t* p, size_t pbytes) const {
         if ((m_dmp1) && (p) && (pbytes >= m_pbytes)) {
+
+            TALAS_LOG_DEBUG("BN_get_msb(m_dmp1,p,pbytes)...");
             BN_get_msb(m_dmp1,p,pbytes);
             return m_pbytes;
         }
@@ -293,6 +361,8 @@ public:
     virtual ssize_t get_dmq1_msb
     (byte_t* p, size_t pbytes) const {
         if ((m_dmq1) && (p) && (pbytes >= m_pbytes)) {
+
+            TALAS_LOG_DEBUG("BN_get_msb(m_dmq1,p,pbytes)...");
             BN_get_msb(m_dmq1,p,pbytes);
             return m_pbytes;
         }
@@ -301,6 +371,8 @@ public:
     virtual ssize_t get_iqmp_msb
     (byte_t* p, size_t pbytes) const {
         if ((m_iqmp) && (p) && (pbytes >= m_pbytes)) {
+
+            TALAS_LOG_DEBUG("BN_get_msb(m_iqmp,p,pbytes)...");
             BN_get_msb(m_iqmp,p,pbytes);
             return m_pbytes;
         }
@@ -315,10 +387,20 @@ public:
      const mpint_t *iqmp, size_t pbytes) {
         if ((p) && (q) && (dmp1) && (dmq1) && (iqmp) && (pbytes)) {
             if ((m_p) && (m_q) && (m_dmp1) && (m_dmq1) && (m_iqmp)) {
+
+                TALAS_LOG_DEBUG("BN_copy(m_p,(BIGNUM*)(p))...");
                 BN_copy(m_p,(BIGNUM*)(p));
+
+                TALAS_LOG_DEBUG("BN_copy(m_q,(BIGNUM*)(q))...");
                 BN_copy(m_q,(BIGNUM*)(q));
+
+                TALAS_LOG_DEBUG("BN_copy(m_dmp1,(BIGNUM*)(dmp1))...");
                 BN_copy(m_dmp1,(BIGNUM*)(dmp1));
+
+                TALAS_LOG_DEBUG("BN_copy(m_dmq1,(BIGNUM*)(dmq1))...");
                 BN_copy(m_dmq1,(BIGNUM*)(dmq1));
+
+                TALAS_LOG_DEBUG("BN_copy(m_iqmp,(BIGNUM*)(iqmp))...");
                 BN_copy(m_iqmp,(BIGNUM*)(iqmp));
                 m_expbytes = (m_modbytes = ((m_pbytes = pbytes) << 1));
                 return true;
@@ -331,10 +413,20 @@ public:
      mpint_t *dmp1, mpint_t *dmq1, mpint_t *iqmp) {
         if ((p) && (q) && (dmp1) && (dmq1) && (iqmp)) {
             if ((m_p) && (m_q) && (m_dmp1) && (m_dmq1) && (m_iqmp) && (m_pbytes)) {
+
+                TALAS_LOG_DEBUG("BN_copy(p,m_p)...");
                 BN_copy(p,m_p);
+
+                TALAS_LOG_DEBUG("BN_copy(q,m_q)...");
                 BN_copy(q,m_q);
+
+                TALAS_LOG_DEBUG("BN_copy(dmp1,m_dmp1)...");
                 BN_copy(dmp1,m_dmp1);
+
+                TALAS_LOG_DEBUG("BN_copy(dmq1,m_dmq1)...");
                 BN_copy(dmq1,m_dmq1);
+
+                TALAS_LOG_DEBUG("BN_copy(iqmp,m_iqmp)...");
                 BN_copy(iqmp,m_iqmp);
                 plen = m_pbytes;
                 return true;
@@ -352,47 +444,67 @@ public:
     (void* out, size_t outsize, const void* in, size_t inlen) {
         if ((m_p) && (m_q) && (m_dmp1) && (m_dmq1)
             && (m_iqmp) && (m_pbytes) && (m_temp) && (m_ctx) && (m_modbytes)) {
-            const byte_t* inb;
-            byte_t* outb;
+            const byte_t* inb = 0;
+            byte_t* outb = 0;
 
             if ((inb = ((const byte_t*)in)) && (inlen == m_modbytes)
                 && (outb = ((byte_t*)out)) && (outsize >= m_modbytes)) {
-                bool subp;
+                bool subp = false;
 
+                TALAS_LOG_DEBUG("BN_set_msb(m_temp,inb,m_modbytes)...");
                 BN_set_msb(m_temp,inb,m_modbytes);
 
-                /* Compute q2 = (value mod q) ^ dmq1 mod q.
-                 */
+                // Compute q2 = (value mod q) ^ dmq1 mod q.
+                //
+                TALAS_LOG_DEBUG("BN_mod(m_qtemp,m_temp,m_q,m_ctx)...");
                 BN_mod(m_qtemp,m_temp,m_q,m_ctx);
+
+                TALAS_LOG_DEBUG("BN_mod_exp(m_qtemp,m_qtemp,m_dmq1,m_q,m_ctx)...");
                 BN_mod_exp(m_qtemp,m_qtemp,m_dmq1,m_q,m_ctx);
 
-                /* Compute p2 = (value mod p) ^ dmp1 mod p.
-                 */
+                // Compute p2 = (value mod p) ^ dmp1 mod p.
+                //
+                TALAS_LOG_DEBUG("BN_mod(m_ptemp,m_temp,m_p,m_ctx)...");
                 BN_mod(m_ptemp,m_temp,m_p,m_ctx);
+
+                TALAS_LOG_DEBUG("BN_mod_exp(m_ptemp,m_ptemp,m_dmp1,m_p,m_ctx)...");
                 BN_mod_exp(m_ptemp,m_ptemp,m_dmp1,m_p,m_ctx);
 
-                /* if q2 > p then q2 = q2 - p
-                 */
-                if ((subp=(BN_cmp(m_qtemp,m_p)>0))!=0)
+                // if q2 > p then q2 = q2 - p
+                //
+                if ((subp=(BN_cmp(m_qtemp,m_p)>0))!=0) {
+                    TALAS_LOG_DEBUG("BN_sub(m_qtemp,m_qtemp,m_p)...");
                     BN_sub(m_qtemp,m_qtemp,m_p);
-
-                /* Compute k = (((p2 + p) - q2) mod p) * iqmp mod p.
-                 */
+                }
+                // Compute k = (((p2 + p) - q2) mod p) * iqmp mod p.
+                //
+                TALAS_LOG_DEBUG("BN_add(m_temp,m_ptemp,m_p)...");
                 BN_add(m_temp,m_ptemp,m_p);
+
+                TALAS_LOG_DEBUG("BN_sub(m_temp,m_temp,m_qtemp)...");
                 BN_sub(m_temp,m_temp,m_qtemp);
+
+                TALAS_LOG_DEBUG("BN_mul(m_ptemp,m_temp,m_iqmp)...");
                 BN_mul(m_ptemp,m_temp,m_iqmp);
+
+                TALAS_LOG_DEBUG("BN_mod(m_temp,m_ptemp,m_p,m_ctx)...");
                 BN_mod(m_temp,m_ptemp,m_p,m_ctx);
 
-                /* Compute value = q2 + q * k.
-                 */
+                // Compute value = q2 + q * k.
+                //
+                TALAS_LOG_DEBUG("BN_mul(m_ptemp,m_temp,m_q)...");
                 BN_mul(m_ptemp,m_temp,m_q);
+
+                TALAS_LOG_DEBUG("BN_add(m_temp,m_ptemp,m_qtemp)...");
                 BN_add(m_temp,m_ptemp,m_qtemp);
 
-                /* if we subtracted p before the add it back here
-                 */
-                if (subp)
+                // if we subtracted p before the add it back here
+                //
+                if (subp) {
+                    TALAS_LOG_DEBUG("BN_add(m_temp,m_temp,m_p)...");
                     BN_add(m_temp,m_temp,m_p);
-
+                }
+                TALAS_LOG_DEBUG("BN_get_msb(m_temp,outb,m_modbytes)...");
                 BN_get_msb(m_temp,outb,m_modbytes);
                 return m_modbytes;
             }
@@ -421,13 +533,9 @@ public:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
 protected:
-    BIGNUM* m_p;
-    BIGNUM* m_q;
-    BIGNUM* m_dmp1;
-    BIGNUM* m_dmq1;
-    BIGNUM* m_iqmp;
-    BIGNUM* m_ptemp;
-    BIGNUM* m_qtemp;
+    BIGNUM *m_p, *m_q, 
+           *m_dmp1, *m_dmq1, 
+           *m_iqmp, *m_ptemp, *m_qtemp;
 };
 
 } // namespace bn 

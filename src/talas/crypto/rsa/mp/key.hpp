@@ -63,6 +63,8 @@ public:
     virtual bool create(size_t modbytes, size_t expbytes) {
         if ((this->destroyed())) {
             if ((Extends::create(modbytes, expbytes))) {
+
+                TALAS_LOG_DEBUG("mpz_init_set_ui(&m_temp,0)...");
                 mpz_init_set_ui(&m_temp,0);
                 return true;
                 Extends::destroy();
@@ -73,6 +75,8 @@ public:
     virtual bool create(size_t pbytes) {
         if ((this->destroyed())) {
             if ((Extends::create(pbytes))) {
+
+                TALAS_LOG_DEBUG("mpz_init_set_ui(&m_temp,0)...");
                 mpz_init_set_ui(&m_temp,0);
                 return true;
                 Extends::destroy();
@@ -83,6 +87,8 @@ public:
     virtual bool destroy() {
         if ((this->is_created())) {
             bool success = true;
+
+            TALAS_LOG_DEBUG("mpz_clear(&m_temp)...");
             mpz_clear(&m_temp);
             if (!(Extends::destroy())) {
                 success = false;
