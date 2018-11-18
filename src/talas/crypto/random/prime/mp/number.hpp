@@ -27,6 +27,7 @@
 #define _TALAS_CRYPTO_RANDOM_PRIME_MP_NUMBER_HPP
 
 #include "talas/crypto/base.hpp"
+#include "talas/io/logger.hpp"
 #include "xos/base/created.hpp"
 #include "xos/base/creator.hpp"
 #include "xos/base/attached.hpp"

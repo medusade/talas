@@ -34,6 +34,7 @@
 #define _TALAS_CRYPTO_CIPHER_DEVINE_AES_HPP
 
 #include "talas/crypto/cipher/aes.hpp"
+#include "talas/io/logger.hpp"
 
 namespace talas {
 namespace crypto {
@@ -98,9 +99,8 @@ public:
      const void* padd = 0, size_t paddlen = 0) {
         ClearKey();
         if (0 > (initialize(key, keylen, iv, ivlen, padd, paddlen))) {
-            error e = error_failed;
-            TALAS_LOG_ERROR("...failed on initialize() throwing error " << e << "...");
-            throw (e);
+            TALAS_LOG_ERROR("...failed on initialize() throw (error_failed)...");
+            throw (error_failed);
         }
     }
     aes
@@ -109,9 +109,8 @@ public:
      const void* padd = 0) {
         ClearKey();
         if (0 > (initialize(key, iv, padd))) {
-            error e = error_failed;
-            TALAS_LOG_ERROR("...failed on initialize() throwing error " << e << "...");
-            throw (e);
+            TALAS_LOG_ERROR("...failed on initialize() throw (error_failed)...");
+            throw (error_failed);
         }
     }
     aes() {

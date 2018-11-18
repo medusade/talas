@@ -169,7 +169,10 @@ public:
     virtual int run(int argc, char_t** argv, char_t** env) {
         int err = 0;
         time_t t = 0;
-        ::srand(::time(&t));
+
+        //::srand(::time(&t));
+        ::srand(2018);
+
         TALAS_LOG_DEBUG("try {...");
         try {
             if ((run_)) {

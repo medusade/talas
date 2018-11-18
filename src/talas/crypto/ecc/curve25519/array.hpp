@@ -23,6 +23,7 @@
 
 #include "talas/crypto/base.hpp"
 #include "talas/base/base.hpp"
+#include "talas/io/logger.hpp"
 #include "xos/base/array.hpp"
 
 #define TALAS_CRYPTO_ECC_CURVE25519_KEY_SIZE 32
@@ -72,14 +73,12 @@ public:
         if ((TALAS_CRYPTO_ECC_CURVE25519_KEY_SIZE != (this->size()))
             || (TALAS_CRYPTO_ECC_CURVE25519_KEY_SIZE != (this->length()))
             || (!(b = this->elements()))) {
-            error e = error_failed;
-            TALAS_LOG_ERROR("...unexpected condition throwing error " << e);
-            throw(e);
+            TALAS_LOG_ERROR("...unexpected condition throw (error_failed)...");
+            throw (error_failed);
         } else {
             if (index >= TALAS_CRYPTO_ECC_CURVE25519_KEY_SIZE) {
-                error e = error_failed;
-                TALAS_LOG_ERROR("...index [" << index << "] out of range throwing error " << e);
-                throw(e);
+                TALAS_LOG_ERROR("...index [" << index << "] out of range throw (error_failed)...");
+                throw (error_failed);
             }
         }
         return b[index];

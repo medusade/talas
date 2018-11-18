@@ -67,6 +67,7 @@
 #define _TALAS_CRYPTO_CIPHER_OPENSSL_DES_HPP
 
 #include "talas/crypto/cipher/des3.hpp"
+#include "talas/io/logger.hpp"
 
 namespace talas {
 namespace crypto {
@@ -152,9 +153,8 @@ public:
      const void* iv, size_t ivlen,
      const void* padd = 0, size_t paddlen = 0) {
         if (0 > (initialize(key, keylen, iv, ivlen, padd, paddlen))) {
-            error e = error_failed;
-            TALAS_LOG_ERROR("...failed on initialize() throwing error " << e << "...");
-            throw (e);
+            TALAS_LOG_ERROR("...failed on initialize() throw (error_failed)...");
+            throw (error_failed);
         }
     }
     des3
@@ -162,9 +162,8 @@ public:
      const void* iv,
      const void* padd = 0) {
         if (0 > (initialize(key, iv, padd))) {
-            error e = error_failed;
-            TALAS_LOG_ERROR("...failed on initialize() throwing error " << e << "...");
-            throw (e);
+            TALAS_LOG_ERROR("...failed on initialize() throw (error_failed)...");
+            throw (error_failed);
         }
     }
     des3() {
