@@ -18,89 +18,89 @@
 # Author: $author$
 #   Date: 11/18/2018
 #
-# generic Gcc Makefile for talas Executable talas
+# generic Gcc Makefile for talas Library libmp
 ########################################################################
 
 
 #
 # target
 #
-talas_exe_EXETARGET = talas
+libmp_LIBTARGET = libmp.${LIBEXT}
 
 ########################################################################
 
 #
 # user c++ flags
 #
-talas_exe_USRCXXFLAGS += \
+libmp_USRCXXFLAGS += \
 ${talas_USRCXXFLAGS} \
 
 #
 # user defines
 #
-talas_exe_USRDEFINES += \
+libmp_USRDEFINES += \
 ${talas_USRDEFINES} \
 
 #
 # user includes
 #
-talas_exe_USRINCLUDES += \
+libmp_USRINCLUDES += \
 ${talas_USRINCLUDES} \
 
 #
 # user libdirs
 #
-talas_exe_USRLIBDIRS += \
+libmp_USRLIBDIRS += \
 ${talas_USRLIBDIRS} \
 
 ########################################################################
 
 #
-# Executable .c sources
+# Library .c sources
 #
-#talas_exe_EXE_C_SOURCES += \
-#${TALAS_SRC}/talas/base/Base.c \
+libmp_LIB_C_SOURCES += \
+${MP_SRC}/extract-double.c \
+${MP_SRC}/insert-double.c \
+${MP_SRC}/memory.c \
+${MP_SRC}/mp_bpl.c \
+${MP_SRC}/mp_clz_tab.c \
+${MP_SRC}/mp_set_fns.c \
+${MP_SRC}/stack-alloc.c \
+${MP_SRC}/version.c \
 
 #
-# Executable .cc sources
+# Library .cc sources
 #
-#talas_exe_EXE_CC_SOURCES += \
+#libmp_LIB_CC_SOURCES += \
 #${TALAS_SRC}/talas/base/Base.cc \
 
 #
-# Executable .cxx sources
+# Library .cxx sources
 #
-#talas_exe_EXE_CXX_SOURCES += \
+#libmp_LIB_CXX_SOURCES += \
 #${TALAS_SRC}/talas/base/Base.cxx \
 
 #
-# Executable .cpp sources
+# Library .cpp sources
 #
-talas_exe_EXE_CPP_SOURCES += \
-${TALAS_SRC}/talas/console/main_opt.cpp \
-${TALAS_SRC}/talas/console/main_main.cpp \
-${TALAS_SRC}/talas/app/console/talas/main.cpp \
+#libmp_LIB_CPP_SOURCES += \
+#${TALAS_SRC}/talas/base/Base.cpp \
 
 #
-# Executable .m sources
+# Library .m sources
 #
-#talas_exe_EXE_M_SOURCES += \
+#libmp_LIB_M_SOURCES += \
 #${TALAS_SRC}/talas/base/Base.m \
 
 #
-# Executable .mm sources
+# Library .mm sources
 #
-#talas_exe_EXE_MM_SOURCES += \
+#libmp_LIB_MM_SOURCES += \
 #${TALAS_SRC}/talas/base/Base.mm \
 
 
 ########################################################################
 
-#
-# Executable libraries
-#
-talas_exe_LIBS += \
-${talas_LIBS}
 
 
 

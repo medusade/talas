@@ -1,5 +1,5 @@
 ########################################################################
-# Copyright (c) 1988-2015 $organization$
+# Copyright (c) 1988-2018 $organization$
 #
 # This software is provided by the author and contributors ``as is''
 # and any express or implied warranties, including, but not limited to,
@@ -16,39 +16,60 @@
 #   File: libmp.pri
 #
 # Author: $author$
-#   Date: 4/23/2015
+#   Date: 11/17/2018
+#
+# QtCreator .pri file for talas library libmp
 ########################################################################
 
+########################################################################
+# libmp
+
+# libmp TARGET
+#
 libmp_TARGET = mp
 libmp_TEMPLATE = lib
 libmp_CONFIG += staticlib
 
+# libmp INCLUDEPATH
+#
 libmp_INCLUDEPATH += \
-$${mp_INCLUDEPATH} \
+$${talas_INCLUDEPATH} \
 
+# libmp DEFINES
+#
 libmp_DEFINES += \
-$${mp_DEFINES} \
+$${talas_DEFINES} \
 
 ########################################################################
-libmp_HEADERS += \
+# libmp OBJECTIVE_HEADERS
+#
+#libmp_OBJECTIVE_HEADERS += \
+#$${TALAS_SRC}/talas/base/Base.hh \
 
+# libmp OBJECTIVE_SOURCES
+#
+#libmp_OBJECTIVE_SOURCES += \
+#$${TALAS_SRC}/talas/base/Base.mm \
+
+########################################################################
+# libmp HEADERS
+#
+#libmp_HEADERS += \
+#$${TALAS_SRC}/talas/base/Base.hpp \
+
+# libmp SOURCES
+#
 libmp_SOURCES += \
-$${mp_SRC}/extract-double.c \
-$${mp_SRC}/insert-double.c \
-$${mp_SRC}/memory.c \
-$${mp_SRC}/mp_bpl.c \
-$${mp_SRC}/mp_clz_tab.c \
-$${mp_SRC}/mp_set_fns.c \
-$${mp_SRC}/stack-alloc.c \
-$${mp_SRC}/version.c \
+$${MP_SRC}/extract-double.c \
+$${MP_SRC}/insert-double.c \
+$${MP_SRC}/memory.c \
+$${MP_SRC}/mp_bpl.c \
+$${MP_SRC}/mp_clz_tab.c \
+$${MP_SRC}/mp_set_fns.c \
+$${MP_SRC}/stack-alloc.c \
+$${MP_SRC}/version.c \
 
 ########################################################################
-libmp_LIBS += \
--L$${NADIR_LIB}/libmpz \
--lmpz \
--L$${NADIR_LIB}/libmpn \
--lmpn \
 
-unused = \
--L$${NADIR_LIB}/libmp \
--lmp \
+
+

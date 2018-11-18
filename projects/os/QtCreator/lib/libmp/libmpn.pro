@@ -13,94 +13,56 @@
 # or otherwise) arising in any way out of the use of this software,
 # even if advised of the possibility of such damage.
 #
-#   File: Makefile
+#   File: libmpn.pro
 #
 # Author: $author$
-#   Date: 11/18/2018
+#   Date: 11/17/2018
 #
-# generic Gcc Makefile for talas Executable talas
+# QtCreator .pro file for talas library libmpn
 ########################################################################
+include(../../../../../build/QtCreator/talas.pri)
+include(../../../../QtCreator/talas.pri)
+include(../../talas.pri)
+include(../../../../QtCreator/lib/libmp/libmpn.pri)
 
-
-#
-# target
-#
-talas_exe_EXETARGET = talas
-
-########################################################################
-
-#
-# user c++ flags
-#
-talas_exe_USRCXXFLAGS += \
-${talas_USRCXXFLAGS} \
-
-#
-# user defines
-#
-talas_exe_USRDEFINES += \
-${talas_USRDEFINES} \
-
-#
-# user includes
-#
-talas_exe_USRINCLUDES += \
-${talas_USRINCLUDES} \
-
-#
-# user libdirs
-#
-talas_exe_USRLIBDIRS += \
-${talas_USRLIBDIRS} \
+TARGET = $${libmpn_TARGET}
+TEMPLATE = $${libmpn_TEMPLATE}
+CONFIG += $${libmpn_CONFIG}
 
 ########################################################################
+# INCLUDEPATH
+#
+INCLUDEPATH += \
+$${libmpn_INCLUDEPATH} \
 
-#
-# Executable .c sources
-#
-#talas_exe_EXE_C_SOURCES += \
-#${TALAS_SRC}/talas/base/Base.c \
-
-#
-# Executable .cc sources
-#
-#talas_exe_EXE_CC_SOURCES += \
-#${TALAS_SRC}/talas/base/Base.cc \
-
-#
-# Executable .cxx sources
-#
-#talas_exe_EXE_CXX_SOURCES += \
-#${TALAS_SRC}/talas/base/Base.cxx \
-
-#
-# Executable .cpp sources
-#
-talas_exe_EXE_CPP_SOURCES += \
-${TALAS_SRC}/talas/console/main_opt.cpp \
-${TALAS_SRC}/talas/console/main_main.cpp \
-${TALAS_SRC}/talas/app/console/talas/main.cpp \
-
-#
-# Executable .m sources
-#
-#talas_exe_EXE_M_SOURCES += \
-#${TALAS_SRC}/talas/base/Base.m \
-
-#
-# Executable .mm sources
-#
-#talas_exe_EXE_MM_SOURCES += \
-#${TALAS_SRC}/talas/base/Base.mm \
-
+# DEFINES
+# 
+DEFINES += \
+$${libmpn_DEFINES} \
 
 ########################################################################
-
+# OBJECTIVE_HEADERS
 #
-# Executable libraries
-#
-talas_exe_LIBS += \
-${talas_LIBS}
+OBJECTIVE_HEADERS += \
+$${libmpn_OBJECTIVE_HEADERS} \
 
+# OBJECTIVE_SOURCES
+#
+OBJECTIVE_SOURCES += \
+$${libmpn_OBJECTIVE_SOURCES} \
+
+########################################################################
+# HEADERS
+#
+HEADERS += \
+$${libmpn_HEADERS} \
+$${OBJECTIVE_HEADERS} \
+
+# SOURCES
+#
+SOURCES += \
+$${libmpn_SOURCES} \
+
+########################################################################
 
 

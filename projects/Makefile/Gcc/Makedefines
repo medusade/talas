@@ -1,5 +1,5 @@
 ########################################################################
-# Copyright (c) 1988-2014 $organization$
+# Copyright (c) 1988-2018 $organization$
 #
 # This software is provided by the author and contributors ``as is''
 # and any express or implied warranties, including, but not limited to,
@@ -16,9 +16,160 @@
 #   File: Makedefines
 #
 # Author: $author$
-#   Date: 11/22/2014
+#   Date: 11/18/2018
 #
-# Generic Gcc Makedefines for talas
+# generic Gcc Makedefines
 ########################################################################
-INS = $(HOME)/build/talas
+
+ifndef BUILD_HOME
+BUILD_HOME = $(HOME)
+endif
+
+ifndef BUILD_TYPE
+BUILD_TYPE = Debug
+endif
+
+ifeq ($(BUILD_TYPE),Debug)
+DBGFLAGS = -D_DEBUG -g
+BUILD_DEFINE = -DDEBUG_BUILD
+else
+DBGFLAGS = -D_RELEASE
+BUILD_DEFINE = -DRELEASE_BUILD
+endif
+
+ifndef UNAME
+UNAME = $(shell uname)
+endif
+
+ifndef OS
+ifneq ($(UNAME),Darwin)
+OS = linux
+else
+OS = macosx
+endif
+endif
+
+ifndef BLD
+BLD = build/$(OS)
+endif
+
+ifndef INS
+INS = $(BUILD_HOME)/$(BLD)
+endif
+
+PKGROOT = $(PKG)
+PKGBLD = $(PKG)/$(BLD)/$(BUILD_TYPE)
+BINDIR = $(PKGBLD)/bin
+LIBDIR = $(PKGBLD)/lib
+INSBIN = $(INS)/bin
+INSLIB = $(INS)/lib
+
+COMPILER_PATH =
+COMPILER_PREFIX =
+
+DEFINES = \
+$(DBGFLAGS) \
+$(BUILD_DEFINE) \
+
+INCLUDES = \
+-I$(PKG)/$(SRC) \
+-I$(PKG) \
+
+LIBDIRS	= \
+-L$(LIBDIR) \
+
+ifeq ($(OS),macosx)
+STDLIBS	= \
+-lpthread \
+-ldl
+else
+STDLIBS	= \
+-lpthread \
+-ldl \
+-lrt
+endif
+
+#
+# C
+#
+CC = $(COMPILER_PATH)$(COMPILER_PREFIX)gcc
+CCLD = $(CC)
+CCDSO = $(CCLD)
+OPTIM = -fpic
+CFLAGS = $(OPTIM) $(USRINCLUDES) $(INCLUDES) $(DEFINES) $(USRDEFINES) $(USRDEFS) $(OPTIONS) $(USRCFLAGS) $(USRFLAGS)
+
+#
+# C++
+#
+CXX = $(COMPILER_PATH)$(COMPILER_PREFIX)g++
+CXXLD = $(CXX)
+CXXDSO = $(CXXLD)
+CXXOPTIM = -fno-rtti
+CXXFLAGS = $(OPTIM) $(CXXOPTIM) $(USRINCLUDES) $(INCLUDES) $(DEFINES) $(USRDEFINES) $(USRDEFS) $(OPTIONS) $(USRCXXFLAGS) $(USRFLAGS)
+
+#
+# Librarian
+#
+AR = $(COMPILER_PATH)$(COMPILER_PREFIX)ar
+RANLIB = ranlib
+STRIP = strip
+LIBTOOL =
+LIBEXT = a
+
+ifeq ($(OS),macosx)
+SLIBEXT = dylib
+else
+SLIBEXT = so
+endif
+
+#
+# Filesystem
+#
+CHMOD =	chmod
+CP =	cp
+LN =	ln -sf
+MV =	mv
+RM =	rm -f
+MKDIR =	mkdir -p
+D2U  =	dos2unix
+
+DSOFLAGS = -shared $(USRDSOFLAGS)
+LDFLAGS = $(LIBDIRS) $(USRLIBDIRS) $(USRLDFLAGS) $(OPTIM) $(CXXOPTIM)
+ARFLAGS = crs $(USRARFLAGS)
+
+OPTIONS := $(shell if [ "$(BUILD_TYPE)" = "Debug" ] ; then echo -g; fi)
+STRIP := $(shell if [ "$(BUILD_TYPE)" = "Debug" ] ; then echo "@echo Not Stripping"; else echo strip; fi)
+
+#
+# Rules
+#
+.cpp.o:
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+.cxx.o:
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+.cc.o:
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+.mm.o:
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+.c.o:
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CC) -c $(CFLAGS) -o $@ $<
+
+.m.o:
+	@echo Compiling $(BUILD_TYPE) $< ...
+	@$(CC) -c $(CFLAGS) -o $@ $<
+
+.S.o:
+	@$(CC) -c -o $*.o $<
+
+.s.o:
+	@$(AS) -o $*.o $<
 
