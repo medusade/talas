@@ -28,8 +28,65 @@ TALAS_OS = macosx
 TALAS_OS = linux
 }
 
+contains(TALAS_OS,os) {
+TALAS_BUILD = os
+} else {
+TALAS_BUILD = $${TALAS_OS}
+}
+
 #CONFIG += c++11
 #CONFIG += c++0x
+
+########################################################################
+# openssl
+OPENSSL_THIRDPARTY_PKG_MAKE_BLD = $${OPENSSL_THIRDPARTY_PKG}/build/$${TALAS_BUILD}/$${BUILD_CONFIG}
+OPENSSL_THIRDPARTY_PRJ_MAKE_BLD = $${OPENSSL_THIRDPARTY_PRJ}/build/$${TALAS_BUILD}/$${BUILD_CONFIG}
+OPENSSL_THIRDPARTY_PKG_BLD = $${OPENSSL_THIRDPARTY_PKG}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
+OPENSSL_THIRDPARTY_PRJ_BLD = $${OPENSSL_THIRDPARTY_PRJ}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
+OPENSSL_PKG_BLD = $${OTHER_BLD}/$${OPENSSL_PKG}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
+OPENSSL_PRJ_BLD = $${OTHER_BLD}/$${OPENSSL_PRJ}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
+#OPENSSL_LIB = $${OPENSSL_THIRDPARTY_PKG_MAKE_BLD}/lib
+#OPENSSL_LIB = $${OPENSSL_THIRDPARTY_PRJ_MAKE_BLD}/lib
+#OPENSSL_LIB = $${OPENSSL_THIRDPARTY_PKG_BLD}/lib
+#OPENSSL_LIB = $${OPENSSL_THIRDPARTY_PRJ_BLD}/lib
+#OPENSSL_LIB = $${OPENSSL_PKG_BLD}/lib
+#OPENSSL_LIB = $${OPENSSL_PRJ_BLD}/lib
+#OPENSSL_LIB = $${TALAS_LIB}
+#OPENSSL_LIB_DIR = $${OPENSSL_LIB}/lib$${OPENSSL_NAME}
+OPENSSL_LIB_DIR = $${OPENSSL_HOME_BUILD_LIB}
+
+# openssl LIBS
+#
+openssl_LIBS += \
+-L$${OPENSSL_LIB_DIR} \
+-lssl \
+-lcrypto \
+
+########################################################################
+# libressl
+LIBRESSL_THIRDPARTY_PKG_MAKE_BLD = $${LIBRESSL_THIRDPARTY_PKG}/build/$${TALAS_BUILD}/$${BUILD_CONFIG}
+LIBRESSL_THIRDPARTY_PRJ_MAKE_BLD = $${LIBRESSL_THIRDPARTY_PRJ}/build/$${TALAS_BUILD}/$${BUILD_CONFIG}
+LIBRESSL_THIRDPARTY_PKG_BLD = $${LIBRESSL_THIRDPARTY_PKG}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
+LIBRESSL_THIRDPARTY_PRJ_BLD = $${LIBRESSL_THIRDPARTY_PRJ}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
+LIBRESSL_PKG_BLD = $${OTHER_BLD}/$${LIBRESSL_PKG}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
+LIBRESSL_PRJ_BLD = $${OTHER_BLD}/$${LIBRESSL_PRJ}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
+#LIBRESSL_LIB = $${LIBRESSL_THIRDPARTY_PKG_MAKE_BLD}/lib
+#LIBRESSL_LIB = $${LIBRESSL_THIRDPARTY_PRJ_MAKE_BLD}/lib
+#LIBRESSL_LIB = $${LIBRESSL_THIRDPARTY_PKG_BLD}/lib
+#LIBRESSL_LIB = $${LIBRESSL_THIRDPARTY_PRJ_BLD}/lib
+#LIBRESSL_LIB = $${LIBRESSL_PKG_BLD}/lib
+#LIBRESSL_LIB = $${LIBRESSL_PRJ_BLD}/lib
+#LIBRESSL_LIB = $${TALAS_LIB}
+#LIBRESSL_LIB_DIR = $${LIBRESSL_LIB}/lib$${LIBRESSL_NAME}
+LIBRESSL_LIB_DIR = $${LIBRESSL_HOME_BUILD_LIB}
+
+# libressl LIBS
+#
+libressl_LIBS += \
+-L$${LIBRESSL_LIB_DIR} \
+-ltls \
+-lssl \
+-lcrypto \
 
 ########################################################################
 # bn
@@ -118,6 +175,38 @@ $${build_talas_LIBS} \
 
 contains(TALAS_OS,linux) {
 talas_LIBS += \
+-lrt
+} else {
+}
+
+########################################################################
+# talas openssl LIBS
+#
+talas_openssl_LIBS += \
+$${xosnadir_LIBS} \
+$${openssl_LIBS} \
+$${build_talas_LIBS} \
+-lpthread \
+-ldl \
+
+contains(TALAS_OS,linux) {
+talas_openssl_LIBS += \
+-lrt
+} else {
+}
+
+########################################################################
+# talas libressl LIBS
+#
+talas_libressl_LIBS += \
+$${xosnadir_LIBS} \
+$${libressl_LIBS} \
+$${build_talas_LIBS} \
+-lpthread \
+-ldl \
+
+contains(TALAS_OS,linux) {
+talas_libressl_LIBS += \
 -lrt
 } else {
 }
