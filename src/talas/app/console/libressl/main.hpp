@@ -217,6 +217,7 @@ protected:
             do {
                 if (0 < (amount = tls_read(tls, buf, sizeof(buf)))) {
                     this->out(buf, amount);
+                    this->out_flush();
                     count += amount;
                 }
             } while (amount);
@@ -356,12 +357,12 @@ protected:
         if ((success = !(err = tls_accept_cbs(tls, &tlc, read_cb, write_cb, cb_arg)))) {
             success = process_request(tlc);
 
-            TALAS_LOG_DEBUG("tls_close(tlc)...");
+            /*TALAS_LOG_DEBUG("tls_close(tlc)...");
             if (!(success = !(err = tls_close(tlc)))) {
                 TALAS_LOG_ERROR("...failed err = " << err << " \"" << tls_error(tlc) << "\" on tls_close()");
             }
             TALAS_LOG_DEBUG("tls_free(tlc)...");
-            tls_free(tlc);
+            tls_free(tlc);*/
             tlc = 0;
         } else {
             TALAS_LOG_ERROR("...failed err = " << err << " \"" << tls_error(tls) << "\" on tls_accept_cbs()");
@@ -379,12 +380,12 @@ protected:
         if ((success = !(err = tls_accept_socket(tls, &tlc, sock)))) {
             success = process_request(tlc);
 
-            TALAS_LOG_DEBUG("tls_close(tlc)...");
+            /*TALAS_LOG_DEBUG("tls_close(tlc)...");
             if (!(success = !(err = tls_close(tlc)))) {
                 TALAS_LOG_ERROR("...failed err = " << err << " \"" << tls_error(tlc) << "\" on tls_close()");
             }
             TALAS_LOG_DEBUG("tls_free(tlc)...");
-            tls_free(tlc);
+            tls_free(tlc);*/
             tlc = 0;
         } else {
             TALAS_LOG_ERROR("...failed err = " << err << " \"" << tls_error(tls) << "\" on tls_accept_socket()");
@@ -402,6 +403,7 @@ protected:
         do {
             if (0 < (amount = tls_read(tlc, buf, sizeof(buf)))) {
                 this->out(buf, amount);
+                this->out_flush();
                 count += amount;
             }
         } while (amount == sizeof(buf));

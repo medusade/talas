@@ -31,9 +31,9 @@ namespace openssl {
 
 typedef SSL* connection_attached_t;
 
-typedef nadir::attachert
+typedef xos::base::attachert
 <connection_attached_t, int, 0, tls::connection> connection_attacher;
-typedef nadir::attachedt
+typedef xos::base::attachedt
 <connection_attached_t, int, 0, connection_attacher> connection_attached;
 
 typedef connection_attacher connectiont_implements;

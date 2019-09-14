@@ -36,8 +36,8 @@ typedef SSL* session_attached_t;
 ///////////////////////////////////////////////////////////////////////
 template
 <class TSession,
- class TCreator = nadir::creatort<TSession>,
- class TImplements = nadir::attachert
+ class TCreator = xos::base::creatort<TSession>,
+ class TImplements = xos::base::attachert
  <session_attached_t, int, 0, TCreator> >
 
 class _EXPORT_CLASS session_implementt: virtual public TImplements {
@@ -53,9 +53,9 @@ public:
 template
 <class TSession,
  class TImplements = session_implementt<TSession>,
- class TExtends = nadir::createdt
+ class TExtends = xos::base::createdt
  <session_attached_t, int, 0, TImplements,
-  nadir::attachedt<session_attached_t, int, 0, TImplements> > >
+  xos::base::attachedt<session_attached_t, int, 0, TImplements> > >
 
 class _EXPORT_CLASS sessiont: virtual public TImplements, public TExtends {
 public:

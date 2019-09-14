@@ -34,6 +34,14 @@ namespace talas {
 typedef xos::base::implement_base implement_base;
 typedef xos::base::base base;
 
+typedef ::xos::base::create_exception create_exception;
+static const create_exception create_failed = ::xos::base::create_failed;
+static const create_exception destroy_failed = ::xos::base::destroy_failed;
+
+typedef ::xos::base::open_exception open_exception;
+static const open_exception open_failed = ::xos::base::open_failed;
+static const open_exception close_failed = ::xos::base::close_failed;
+
 typedef ::xos::base::creator_exception creator_exception;
 static const creator_exception failed_to_create = ::xos::base::failed_to_create;
 static const creator_exception failed_to_destroy = ::xos::base::failed_to_destroy;

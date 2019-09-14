@@ -32,12 +32,12 @@ namespace openssl {
 
 typedef SSL_CTX* context_attached_t;
 
-typedef nadir::creatort<tls::context> context_creator;
-typedef nadir::attachert
+typedef xos::base::creatort<tls::context> context_creator;
+typedef xos::base::attachert
 <context_attached_t, int, 0, context_creator> context_attacher;
-typedef nadir::attachedt
+typedef xos::base::attachedt
 <context_attached_t, int, 0, context_attacher> context_attached;
-typedef nadir::createdt
+typedef xos::base::createdt
 <context_attached_t, int, 0, context_attacher, context_attached> context_created;
 
 typedef context_attacher contextt_implements;
