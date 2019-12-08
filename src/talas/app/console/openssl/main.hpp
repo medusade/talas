@@ -620,10 +620,13 @@ protected:
             TALAS_LOG_MESSAGE_DEBUG("X509_V_OK == (SSL_get_verify_result(ssl))...");
             if (X509_V_OK == (verify = SSL_get_verify_result(ssl))) {
                 TALAS_LOG_MESSAGE_DEBUG("...X509_V_OK == (SSL_get_verify_result(ssl))");
-
                 err = run_request(argc, argv, env);
             } else {
                 TALAS_LOG_MESSAGE_DEBUG("...failed X509_V_OK != (" << verify << " = SSL_get_verify_result(ssl))");
+            }
+            if ((X509_V_ERR_CERT_HAS_EXPIRED == (verify)) 
+                || (X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT == (verify))) {
+                err = run_request(argc, argv, env);
             }
             TALAS_LOG_MESSAGE_DEBUG("...BIO_reset(bio)");
             BIO_reset(bio);
