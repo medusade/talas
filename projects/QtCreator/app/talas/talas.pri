@@ -16,7 +16,7 @@
 #   File: talas.pri
 #
 # Author: $author$
-#   Date: 11/17/2018
+#   Date: 11/17/2018, 12/26/2020
 #
 # QtCreator .pri file for talas executable talas
 ########################################################################
@@ -37,6 +37,7 @@ $${talas_INCLUDEPATH} \
 #
 talas_exe_DEFINES += \
 $${talas_DEFINES} \
+XOS_DEFAULT_LOG_ERROR \
 
 ########################################################################
 # talas_exe OBJECTIVE_HEADERS

@@ -16,10 +16,14 @@
 #   File: Makefile
 #
 # Author: $author$
-#   Date: 12/22/2017
+#   Date: 12/22/2017, 12/4/2020
 #
-# Thirdpary Makefile for openssl
+# Thirdpary Makefile for openssl for talas
 ########################################################################
+
+ifndef BUILD_HOME
+BUILD_HOME = $(HOME)
+endif
 
 ########################################################################
 #
@@ -133,7 +137,7 @@ OPENSSL_EXTRACT_DOCS_TGZ = $(OPENSSL_EXTRACT_DOCS) $(OPENSSL_DOCS_TGZ) -C$(OPENS
 #
 # openssl build
 #
-OPENSSL_BUILD = $(HOME)/build
+OPENSSL_BUILD = $(BUILD_HOME)/build
 OPENSSL_PREFIX = $(OPENSSL_BUILD)/$(OPENSSL_INSTALL_NAME)
 OPENSSL_EXEC_PREFIX = $(OPENSSL_PREFIX)
 OPENSSL_CONF_PREFIX = $(OPENSSL_PREFIX)

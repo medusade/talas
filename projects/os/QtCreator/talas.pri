@@ -16,26 +16,47 @@
 #   File: talas.pri
 #
 # Author: $author$
-#   Date: 11/17/2018
+#   Date: 11/17/2018, 12/26/2020
 #
-# Os QtCreator .pri file for talas
+# Os specific QtCreator .pri file for talas
 ########################################################################
 UNAME = $$system(uname)
 
 contains(UNAME,Darwin) {
 TALAS_OS = macosx
 } else {
+contains(UNAME,Linux) {
 TALAS_OS = linux
-}
-
-contains(TALAS_OS,os) {
-TALAS_BUILD = os
 } else {
-TALAS_BUILD = $${TALAS_OS}
-}
+TALAS_OS = windows
+} # contains(UNAME,Linux)
+} # contains(UNAME,Darwin)
 
-#CONFIG += c++11
-#CONFIG += c++0x
+contains(BUILD_OS,TALAS_OS) {
+TALAS_BUILD = $${TALAS_OS}
+} else {
+TALAS_BUILD = $${BUILD_OS}
+} # contains(BUILD_OS,TALAS_OS)
+
+contains(BUILD_CPP_VERSION,10) {
+CONFIG += c++0x
+} else {
+contains(BUILD_CPP_VERSION,98|03|11|14|17) {
+CONFIG += c++$${BUILD_CPP_VERSION}
+} else {
+} # contains(BUILD_CPP_VERSION,98|03|11|14|17)
+} # contains(BUILD_CPP_VERSION,10)
+
+contains(TALAS_OS,macosx) {
+} else {
+contains(TALAS_OS,linux) {
+QMAKE_CXXFLAGS += -fpermissive
+} else {
+contains(TALAS_OS,windows) {
+} else {
+} # contains(TALAS_OS,windows)
+} # contains(TALAS_OS,linux)
+} # contains(TALAS_OS,macosx)
 
 ########################################################################
 # openssl
@@ -90,10 +111,10 @@ libressl_LIBS += \
 
 ########################################################################
 # bn
-BN_THIRDPARTY_PKG_BLD = $${BN_THIRDPARTY_PKG}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
-BN_THIRDPARTY_PRJ_BLD = $${BN_THIRDPARTY_PRJ}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
-BN_PKG_BLD = $${OTHER_BLD}/$${BN_PKG}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
-BN_PRJ_BLD = $${OTHER_BLD}/$${BN_PRJ}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
+BN_THIRDPARTY_PKG_BLD = $${BN_THIRDPARTY_PKG}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
+BN_THIRDPARTY_PRJ_BLD = $${BN_THIRDPARTY_PRJ}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
+BN_PKG_BLD = $${OTHER_BLD}/$${BN_PKG}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
+BN_PRJ_BLD = $${OTHER_BLD}/$${BN_PRJ}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
 #BN_LIB = $${BN_THIRDPARTY_PKG_BLD}/lib
 #BN_LIB = $${BN_THIRDPARTY_PRJ_BLD}/lib
 #BN_LIB = $${BN_PKG_BLD}/lib
@@ -106,12 +127,12 @@ bn_LIBS += \
 
 ########################################################################
 # nadir
-NADIR_THIRDPARTY_PKG_MAKE_BLD = $${NADIR_THIRDPARTY_PKG}/build/$${TALAS_OS}/$${BUILD_CONFIG}
-NADIR_THIRDPARTY_PRJ_MAKE_BLD = $${NADIR_THIRDPARTY_PRJ}/build/$${TALAS_OS}/$${BUILD_CONFIG}
-NADIR_THIRDPARTY_PKG_BLD = $${NADIR_THIRDPARTY_PKG}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
-NADIR_THIRDPARTY_PRJ_BLD = $${NADIR_THIRDPARTY_PRJ}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
-NADIR_PKG_BLD = $${OTHER_BLD}/$${NADIR_PKG}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
-NADIR_PRJ_BLD = $${OTHER_BLD}/$${NADIR_PRJ}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
+NADIR_THIRDPARTY_PKG_MAKE_BLD = $${NADIR_THIRDPARTY_PKG}/build/$${TALAS_BUILD}/$${BUILD_CONFIG}
+NADIR_THIRDPARTY_PRJ_MAKE_BLD = $${NADIR_THIRDPARTY_PRJ}/build/$${TALAS_BUILD}/$${BUILD_CONFIG}
+NADIR_THIRDPARTY_PKG_BLD = $${NADIR_THIRDPARTY_PKG}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
+NADIR_THIRDPARTY_PRJ_BLD = $${NADIR_THIRDPARTY_PRJ}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
+NADIR_PKG_BLD = $${OTHER_BLD}/$${NADIR_PKG}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
+NADIR_PRJ_BLD = $${OTHER_BLD}/$${NADIR_PRJ}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
 #NADIR_LIB = $${NADIR_THIRDPARTY_PKG_MAKE_BLD}/lib
 #NADIR_LIB = $${NADIR_THIRDPARTY_PRJ_MAKE_BLD}/lib
 #NADIR_LIB = $${NADIR_THIRDPARTY_PKG_BLD}/lib
@@ -134,10 +155,10 @@ xosnadir_LIBS += \
 
 ########################################################################
 # mp
-MP_THIRDPARTY_PKG_BLD = $${MP_THIRDPARTY_PKG}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
-MP_THIRDPARTY_PRJ_BLD = $${MP_THIRDPARTY_PRJ}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
-MP_PKG_BLD = $${OTHER_BLD}/$${MP_PKG}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
-MP_PRJ_BLD = $${OTHER_BLD}/$${MP_PRJ}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONFIG}
+MP_THIRDPARTY_PKG_BLD = $${MP_THIRDPARTY_PKG}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
+MP_THIRDPARTY_PRJ_BLD = $${MP_THIRDPARTY_PRJ}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
+MP_PKG_BLD = $${OTHER_BLD}/$${MP_PKG}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
+MP_PRJ_BLD = $${OTHER_BLD}/$${MP_PRJ}/build/$${TALAS_BUILD}/QtCreator/$${BUILD_CONFIG}
 #MP_LIB = $${MP_THIRDPARTY_PKG_BLD}/lib
 #MP_LIB = $${MP_THIRDPARTY_PRJ_BLD}/lib
 #MP_LIB = $${MP_PKG_BLD}/lib
@@ -145,12 +166,12 @@ MP_PRJ_BLD = $${OTHER_BLD}/$${MP_PRJ}/build/$${TALAS_OS}/QtCreator/$${BUILD_CONF
 MP_LIB = $${TALAS_LIB}
 
 mp_LIBS += \
--L$${MP_LIB}/lib$${MP_NAME} \
--l$${MP_NAME} \
--L$${MP_LIB}/lib$${MP_NAME}n \
--l$${MP_NAME}n \
 -L$${MP_LIB}/lib$${MP_NAME}z \
 -l$${MP_NAME}z \
+-L$${MP_LIB}/lib$${MP_NAME}n \
+-l$${MP_NAME}n \
+-L$${MP_LIB}/lib$${MP_NAME} \
+-l$${MP_NAME} \
 
 ########################################################################
 # talas

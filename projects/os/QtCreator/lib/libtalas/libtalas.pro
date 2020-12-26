@@ -20,6 +20,7 @@
 #
 # QtCreator .pro file for talas library libtalas
 ########################################################################
+include(../../../../../../build/QtCreator/talas.pri)
 include(../../../../../build/QtCreator/talas.pri)
 include(../../../../QtCreator/talas.pri)
 include(../../talas.pri)

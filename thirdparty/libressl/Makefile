@@ -16,10 +16,14 @@
 #   File: Makefile
 #
 # Author: $author$
-#   Date: 12/22/2017
+#   Date: 12/22/2017, 12/4/2020
 #
-# Thirdpary Makefile for libressl
+# Thirdpary Makefile for libressl for talas
 ########################################################################
+
+ifndef BUILD_HOME
+BUILD_HOME = $(HOME)
+endif
 
 ########################################################################
 #
@@ -139,7 +143,7 @@ LIBRESSL_EXTRACT_DOCS_TGZ = $(LIBRESSL_EXTRACT_DOCS) $(LIBRESSL_DOCS_TGZ) -C$(LI
 #
 # libressl build
 #
-LIBRESSL_BUILD = $(HOME)/build
+LIBRESSL_BUILD = $(BUILD_HOME)/build
 LIBRESSL_PREFIX = $(LIBRESSL_BUILD)/$(LIBRESSL_INSTALL_NAME)
 LIBRESSL_EXEC_PREFIX = $(LIBRESSL_PREFIX)
 LIBRESSL_CONF_PREFIX = $(LIBRESSL_PREFIX)
@@ -421,9 +425,4 @@ libressl-archived:
 #
 libressl-extracted: 
 	@(echo $(LIBRESSL_EXTRACT) $(LIBRESSL_TGZ))
-
-
-
-
-        
 

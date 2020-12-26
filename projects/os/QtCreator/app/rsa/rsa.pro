@@ -16,10 +16,11 @@
 #   File: rsa.pro
 #
 # Author: $author$
-#   Date: 3/25/2019
+#   Date: 3/25/2019, 12/4/2020
 #
 # QtCreator .pro file for talas executable rsa
 ########################################################################
+include(../../../../../../build/QtCreator/talas.pri)
 include(../../../../../build/QtCreator/talas.pri)
 include(../../../../QtCreator/talas.pri)
 include(../../talas.pri)
@@ -54,7 +55,7 @@ $${rsa_OBJECTIVE_SOURCES} \
 #
 HEADERS += \
 $${rsa_HEADERS} \
-$${OBJECTIVE_HEADERS} \
+$${rsa_OBJECTIVE_HEADERS} \
 
 # SOURCES
 #
@@ -72,5 +73,3 @@ $${rsa_FRAMEWORKS} \
 LIBS += \
 $${rsa_LIBS} \
 $${FRAMEWORKS} \
-
-

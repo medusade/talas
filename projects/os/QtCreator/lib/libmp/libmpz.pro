@@ -16,10 +16,11 @@
 #   File: libmpz.pro
 #
 # Author: $author$
-#   Date: 11/17/2018
+#   Date: 11/17/2018, 12/4/2020
 #
 # QtCreator .pro file for talas library libmpz
 ########################################################################
+include(../../../../../../build/QtCreator/talas.pri)
 include(../../../../../build/QtCreator/talas.pri)
 include(../../../../QtCreator/talas.pri)
 include(../../talas.pri)

@@ -16,7 +16,7 @@
 #   File: libtalas.pri
 #
 # Author: $author$
-#   Date: 11/17/2018
+#   Date: 11/17/2018, 12/26/2020
 #
 # QtCreator .pri file for talas library libtalas
 ########################################################################
@@ -39,6 +39,7 @@ $${talas_INCLUDEPATH} \
 #
 libtalas_DEFINES += \
 $${talas_DEFINES} \
+XOS_DEFAULT_LOG_ERROR \
 
 ########################################################################
 # libtalas OBJECTIVE_HEADERS
@@ -60,7 +61,6 @@ $${TALAS_SRC}/talas/crypto/random/reader.hpp \
 
 libtalas_random_SOURCES += \
 $${TALAS_SRC}/talas/crypto/random/pseudo.cpp \
-$${TALAS_SRC}/talas/crypto/random/generator.cpp \
 
 ########################################################################
 # hash
@@ -98,6 +98,16 @@ $${TALAS_SRC}/talas/crypto/cipher/devine/aes.cpp \
 $${TALAS_SRC}/talas/crypto/cipher/openssl/des.cpp \
 
 ########################################################################
+# prime
+libtalas_prime_HEADERS += \
+$${TALAS_SRC}/talas/crypto/random/prime/generator.hpp \
+$${TALAS_SRC}/talas/crypto/random/prime/reader.hpp \
+$${TALAS_SRC}/talas/crypto/random/prime/small_primes.hpp \
+
+libtalas_prime_SOURCES += \
+$${TALAS_SRC}/talas/crypto/random/prime/small_primes.cpp \
+
+########################################################################
 # rsa
 libtalas_rsa_HEADERS += \
 $${TALAS_SRC}/talas/crypto/rsa/mp/key_generator.hpp \
@@ -119,10 +129,6 @@ $${TALAS_SRC}/talas/crypto/random/prime/bn/generator.hpp \
 $${TALAS_SRC}/talas/crypto/random/prime/bn/miller_rabin.hpp \
 $${TALAS_SRC}/talas/crypto/random/prime/bn/reader.hpp \
 $${TALAS_SRC}/talas/crypto/random/prime/bn/number.hpp \
-$${TALAS_SRC}/talas/crypto/bn/number.hpp \
-$${TALAS_SRC}/talas/crypto/random/prime/generator.hpp \
-$${TALAS_SRC}/talas/crypto/random/prime/reader.hpp \
-$${TALAS_SRC}/talas/crypto/random/prime/small_primes.hpp \
 
 libtalas_rsa_SOURCES += \
 $${TALAS_SRC}/talas/crypto/rsa/mp/key_generator.cpp \
@@ -133,7 +139,6 @@ $${TALAS_SRC}/talas/crypto/random/prime/mp/generator.cpp \
 $${TALAS_SRC}/talas/crypto/random/prime/mp/miller_rabin.cpp \
 $${TALAS_SRC}/talas/crypto/random/prime/mp/reader.cpp \
 $${TALAS_SRC}/talas/crypto/random/prime/mp/number.cpp \
-$${TALAS_SRC}/talas/crypto/random/prime/small_primes.cpp \
 
 ########################################################################
 # ecc
@@ -151,9 +156,6 @@ $${TALAS_SRC}/talas/crypto/ecc/curve25519/array.hpp \
 libtalas_ecc_SOURCES += \
 $${TALAS_SRC}/thirdparty/msotoodeh/curve25519/curve25519_mehdi.cxx \
 $${TALAS_SRC}/thirdparty/google/curve25519/curve25519-donna.c \
-$${TALAS_SRC}/talas/crypto/ecc/curve25519/google/donna/public_key.cpp \
-$${TALAS_SRC}/talas/crypto/ecc/curve25519/private_key.cpp \
-$${TALAS_SRC}/talas/crypto/ecc/curve25519/key.cpp \
 $${TALAS_SRC}/talas/crypto/ecc/curve25519/base_point.cpp \
 $${TALAS_SRC}/talas/crypto/ecc/curve25519/array.cpp \
 
@@ -173,6 +175,7 @@ libtalas_SOURCES += \
 $${libtalas_random_SOURCES} \
 $${libtalas_hash_SOURCES} \
 $${libtalas_cipher_SOURCES} \
+$${libtalas_prime_SOURCES} \
 $${libtalas_rsa_SOURCES} \
 $${libtalas_ecc_SOURCES} \
 

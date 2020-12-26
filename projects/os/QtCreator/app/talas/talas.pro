@@ -16,10 +16,11 @@
 #   File: talas.pro
 #
 # Author: $author$
-#   Date: 11/17/2018
+#   Date: 11/17/2018, 12/26/2020
 #
 # QtCreator .pro file for talas executable talas
 ########################################################################
+include(../../../../../../build/QtCreator/talas.pri)
 include(../../../../../build/QtCreator/talas.pri)
 include(../../../../QtCreator/talas.pri)
 include(../../talas.pri)
@@ -54,7 +55,7 @@ $${talas_exe_OBJECTIVE_SOURCES} \
 #
 HEADERS += \
 $${talas_exe_HEADERS} \
-$${OBJECTIVE_HEADERS} \
+$${talas_exe_OBJECTIVE_HEADERS} \
 
 # SOURCES
 #
