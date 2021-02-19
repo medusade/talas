@@ -16,7 +16,7 @@
 #   File: talas.pri
 #
 # Author: $author$
-#   Date: 11/17/2018
+#   Date: 11/17/2018, 2/11/2021
 #
 # QtCreator .pri file for talas
 ########################################################################
@@ -61,12 +61,18 @@ OPENSSL_SRC = $${OPENSSL_THIRDPARTY_PRJ}/$${OPENSSL_SOURCE}
 #OPENSSL_SRC = $${OPENSSL_PKG}/$${OPENSSL_SOURCE}
 #OPENSSL_SRC = $${OPENSSL_PRJ}/$${OPENSSL_SOURCE}
 
+contains(OPENSSL_INCLUDE_DIR, OPENSSL_HOME_BUILD_INCLUDE) {
+OPENSSL_INCLUDE_DIR = $${OPENSSL_HOME_BUILD_INCLUDE}
+} else {
+OPENSSL_INCLUDE_DIR = $${OPENSSL_SRC}
+} # contains(OPENSSL_INCLUDE_DIR, OPENSSL_HOME_BUILD_INCLUDE)
+
 # openssl INCLUDEPATH
 #
 openssl_INCLUDEPATH += \
-$${OPENSSL_SRC}/include \
-$${OPENSSL_SRC}/crypto \
-$${OPENSSL_SRC} \
+$${OPENSSL_INCLUDE_DIR}/include \
+$${OPENSSL_INCLUDE_DIR}/crypto \
+$${OPENSSL_INCLUDE_DIR} \
 
 # openssl DEFINES
 #

@@ -16,7 +16,7 @@
 #   File: libressl.pri
 #
 # Author: $author$
-#   Date: 9/12/2019
+#   Date: 9/12/2019, 2/14/2021
 #
 # QtCreator .pri file for talas executable libressl
 ########################################################################
@@ -26,7 +26,7 @@
 
 # libressl TARGET
 #
-libressl_exe_TARGET = talas-libressl
+libressl_exe_TARGET = libressl
 
 # libressl INCLUDEPATH
 #
@@ -39,6 +39,7 @@ $${libressl_INCLUDEPATH} \
 libressl_exe_DEFINES += \
 $${talas_DEFINES} \
 $${libressl_DEFINES} \
+XOS_DEFAULT_LOG_ERROR \
 
 ########################################################################
 # libressl OBJECTIVE_HEADERS

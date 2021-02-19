@@ -16,10 +16,11 @@
 #   File: libressl.pro
 #
 # Author: $author$
-#   Date: 9/12/2019
+#   Date: 9/12/2019, 2/14/2021
 #
 # QtCreator .pro file for talas executable libressl
 ########################################################################
+include(../../../../../../build/QtCreator/talas.pri)
 include(../../../../../build/QtCreator/talas.pri)
 include(../../../../QtCreator/talas.pri)
 include(../../talas.pri)
@@ -59,7 +60,7 @@ $${libressl_exe_HEADERS} \
 #
 SOURCES += \
 $${libressl_exe_SOURCES} \
-$${OBJECTIVE_SOURCES} \
+$${libressl_exe_OBJECTIVE_SOURCES} \
 
 ########################################################################
 # FRAMEWORKS

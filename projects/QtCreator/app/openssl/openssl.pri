@@ -16,7 +16,7 @@
 #   File: openssl.pri
 #
 # Author: $author$
-#   Date: 9/13/2019
+#   Date: 9/13/2019, 2/14/2021
 #
 # QtCreator .pri file for talas executable openssl
 ########################################################################
@@ -26,19 +26,20 @@
 
 # openssl TARGET
 #
-openssl_exe_TARGET = talas-openssl
+openssl_exe_TARGET = openssl
 
 # openssl INCLUDEPATH
 #
 openssl_exe_INCLUDEPATH += \
-$${talas_INCLUDEPATH} \
 $${openssl_INCLUDEPATH} \
+$${talas_INCLUDEPATH} \
 
 # openssl DEFINES
 #
 openssl_exe_DEFINES += \
 $${talas_DEFINES} \
 $${openssl_DEFINES} \
+XOS_DEFAULT_LOG_ERROR \
 
 ########################################################################
 # openssl OBJECTIVE_HEADERS

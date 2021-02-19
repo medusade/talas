@@ -16,10 +16,11 @@
 #   File: openssl.pro
 #
 # Author: $author$
-#   Date: 9/13/2019
+#   Date: 9/13/2019, 2/11/2021
 #
 # QtCreator .pro file for talas executable openssl
 ########################################################################
+include(../../../../../../build/QtCreator/talas.pri)
 include(../../../../../build/QtCreator/talas.pri)
 include(../../../../QtCreator/talas.pri)
 include(../../talas.pri)
@@ -59,7 +60,7 @@ $${openssl_exe_HEADERS} \
 #
 SOURCES += \
 $${openssl_exe_SOURCES} \
-$${OBJECTIVE_SOURCES} \
+$${openssl_exe_OBJECTIVE_SOURCES} \
 
 ########################################################################
 # FRAMEWORKS
