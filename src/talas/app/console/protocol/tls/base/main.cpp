@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2015 $organization$
+/// Copyright (c) 1988-2021 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,46 +13,30 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: writer.hpp
+///   File: main.cpp
 ///
 /// Author: $author$
-///   Date: 12/27/2015, 2/15/2021
+///   Date: 2/18/2021
 ///////////////////////////////////////////////////////////////////////
-#ifndef _TALAS_IO_WRITER_HPP
-#define _TALAS_IO_WRITER_HPP
-
-#include "talas/base/base.hpp"
-#include "xos/io/writer.hpp"
+#include "talas/app/console/protocol/tls/base/main.hpp"
 
 namespace talas {
-namespace io {
-
-typedef xos::io::writer writer;
-typedef xos::io::char_writer char_writer;
-typedef xos::io::byte_writer byte_writer;
+namespace app {
+namespace console {
+namespace protocol {
+namespace tls {
+namespace base {
 
 ///////////////////////////////////////////////////////////////////////
-/// class writert
+/// class maint
 ///////////////////////////////////////////////////////////////////////
-template 
-<typename TWhat = void, typename TSized = char,  typename TEnd = int, TEnd VEnd = 0, 
- class TImplements = xos::io::writert<TWhat, TSized, TEnd, VEnd> >
-class EXPORT_CLASS writert: virtual public TImplements {
-public:
-    typedef TImplements Implements;
-    typedef writert Derives;
+#if defined(TALAS_APP_CONSOLE_PROTOCOL_TLS_BASE_MAIN_INSTANCE)
+static main the_main;
+#endif /// defined(TALAS_APP_CONSOLE_PROTOCOL_TLS_BASE_MAIN_INSTANCE) 
 
-    typedef TWhat what_t;
-    typedef TSized sized_t;
-    typedef TSized char_t;
-    typedef TEnd end_t;
-    enum { end = VEnd };
-
-    ///////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////
-}; /// class writert
-
-} // namespace io
-} // namespace talas 
-
-#endif // _TALAS_IO_WRITER_HPP 
+} /// namespace base 
+} /// namespace tls 
+} /// namespace protocol 
+} /// namespace console 
+} /// namespace app 
+} /// namespace talas 

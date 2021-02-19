@@ -97,23 +97,23 @@ public:
      int argc, char_t**argv, char_t**env) {
         int err = 0;
         switch(optval) {
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTVAL_C:
+        case TALAS_APP_CONSOLE_LIBRESSL_MAIN_CLIENT_OPTVAL_C:
             err = on_client_option
             (optval, optarg, optname, optind, argc, argv, env);
             break;
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTVAL_C:
+        case TALAS_APP_CONSOLE_LIBRESSL_MAIN_SERVER_OPTVAL_C:
             err = on_server_option
             (optval, optarg, optname, optind, argc, argv, env);
             break;
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_HOST_OPTVAL_C:
+        case TALAS_APP_CONSOLE_LIBRESSL_MAIN_HOST_OPTVAL_C:
             err = on_host_option
             (optval, optarg, optname, optind, argc, argv, env);
             break;
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTVAL_C:
+        case TALAS_APP_CONSOLE_LIBRESSL_MAIN_PORT_OPTVAL_C:
             err = on_port_option
             (optval, optarg, optname, optind, argc, argv, env);
             break;
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_ONE_OPTVAL_C:
+        case TALAS_APP_CONSOLE_LIBRESSL_MAIN_ONE_OPTVAL_C:
             err = on_one_option
             (optval, optarg, optname, optind, argc, argv, env);
             break;
@@ -128,25 +128,25 @@ public:
     (const char_t*& optarg, const struct option* longopt) {
         const char_t* chars = "";
         switch(longopt->val) {
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTVAL_C:
-            optarg = TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTARG;
-            chars = TALAS_APP_CONSOLE_OPENSSL_MAIN_CLIENT_OPTUSE;
+        case TALAS_APP_CONSOLE_LIBRESSL_MAIN_CLIENT_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_LIBRESSL_MAIN_CLIENT_OPTARG;
+            chars = TALAS_APP_CONSOLE_LIBRESSL_MAIN_CLIENT_OPTUSE;
             break;
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTVAL_C:
-            optarg = TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTARG;
-            chars = TALAS_APP_CONSOLE_OPENSSL_MAIN_SERVER_OPTUSE;
+        case TALAS_APP_CONSOLE_LIBRESSL_MAIN_SERVER_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_LIBRESSL_MAIN_SERVER_OPTARG;
+            chars = TALAS_APP_CONSOLE_LIBRESSL_MAIN_SERVER_OPTUSE;
             break;
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_HOST_OPTVAL_C:
-            optarg = TALAS_APP_CONSOLE_OPENSSL_MAIN_HOST_OPTARG;
-            chars = TALAS_APP_CONSOLE_OPENSSL_MAIN_HOST_OPTUSE;
+        case TALAS_APP_CONSOLE_LIBRESSL_MAIN_HOST_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_LIBRESSL_MAIN_HOST_OPTARG;
+            chars = TALAS_APP_CONSOLE_LIBRESSL_MAIN_HOST_OPTUSE;
             break;
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTVAL_C:
-            optarg = TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTARG;
-            chars = TALAS_APP_CONSOLE_OPENSSL_MAIN_PORT_OPTUSE;
+        case TALAS_APP_CONSOLE_LIBRESSL_MAIN_PORT_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_LIBRESSL_MAIN_PORT_OPTARG;
+            chars = TALAS_APP_CONSOLE_LIBRESSL_MAIN_PORT_OPTUSE;
             break;
-        case TALAS_APP_CONSOLE_OPENSSL_MAIN_ONE_OPTVAL_C:
-            optarg = TALAS_APP_CONSOLE_OPENSSL_MAIN_ONE_OPTARG;
-            chars = TALAS_APP_CONSOLE_OPENSSL_MAIN_ONE_OPTUSE;
+        case TALAS_APP_CONSOLE_LIBRESSL_MAIN_ONE_OPTVAL_C:
+            optarg = TALAS_APP_CONSOLE_LIBRESSL_MAIN_ONE_OPTARG;
+            chars = TALAS_APP_CONSOLE_LIBRESSL_MAIN_ONE_OPTUSE;
             break;
         default:
             chars = Extends::option_usage(optarg, longopt);
@@ -156,9 +156,9 @@ public:
     ///////////////////////////////////////////////////////////////////////
     virtual const char_t* options(const struct option*& longopts) {
         int err = 0;
-        static const char_t* chars = TALAS_APP_CONSOLE_OPENSSL_MAIN_OPTIONS_CHARS;
+        static const char_t* chars = TALAS_APP_CONSOLE_LIBRESSL_MAIN_OPTIONS_CHARS;
         static struct option optstruct[]= {
-            TALAS_APP_CONSOLE_OPENSSL_MAIN_OPTIONS_OPTIONS
+            TALAS_APP_CONSOLE_LIBRESSL_MAIN_OPTIONS_OPTIONS
             {0, 0, 0, 0}};
         longopts = optstruct;
         return chars;

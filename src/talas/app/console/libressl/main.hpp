@@ -16,7 +16,7 @@
 ///   File: main.hpp
 ///
 /// Author: $author$
-///   Date: 2/3/2017
+///   Date: 2/3/2017, 2/14/2021
 ///////////////////////////////////////////////////////////////////////
 #ifndef _TALAS_APP_CONSOLE_LIBRESSL_MAIN_HPP
 #define _TALAS_APP_CONSOLE_LIBRESSL_MAIN_HPP
@@ -45,10 +45,11 @@ public:
     ///////////////////////////////////////////////////////////////////////
     main()
     : run_(0),
+      connect_socket_cbs_(0),
       accept_one_(false),
       host_("localhost"), port_("4433"),
-      request_("GET / HTTP/1.0\r\n\r\nHello\r\n"),
-      response_("HTTP/1.0 200 Ok\r\n\r\nHello\r\n"),
+      request_("GET / HTTP/1.0\r\nHost:localhost:4433\r\n\r\nHello\r\n"),
+      response_("HTTP/1.0 200 Ok\r\nHost:localhost:4433\r\n\r\nHello\r\n"),
       protocols_("secure"),
       ciphers_("ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384"),
       key_file_("localhost.key.pem"),
@@ -67,6 +68,7 @@ protected:
     };
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
+    int (Derives::*run_)(int argc, char** argv, char** env);
     virtual int run(int argc, char** argv, char** env) {
         int err = 0;
 
@@ -153,7 +155,17 @@ protected:
         return success;
     }
     ///////////////////////////////////////////////////////////////////////
+    bool (Derives::*connect_socket_cbs_)(socket& s, struct tls* tls);
     virtual bool connect_socket_cbs(socket& s, struct tls* tls) {
+        bool success = false;
+        if ((connect_socket_cbs_)) {
+            success = (this->*connect_socket_cbs_)(s, tls);
+        } else {
+            success = connect_socket(s, tls);
+        }
+        return success;
+    }
+    virtual bool connect_cbs(socket& s, struct tls* tls) {
         bool success = false;
         const char *host_chars = host_.chars();
         tls_read_cb read_cb = network_os_socket_read_cb;
@@ -473,8 +485,8 @@ protected:
 protected:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
-    typedef int (Derives::*run_t)(int argc, char** argv, char** env);
-    run_t run_;
+    /*typedef int (Derives::*run_t)(int argc, char** argv, char** env);
+    run_t run_;*/
     bool accept_one_;
     string_t host_, port_, request_, response_,
              protocols_, ciphers_, key_file_, cert_file_;

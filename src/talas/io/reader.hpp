@@ -16,7 +16,7 @@
 ///   File: reader.hpp
 ///
 /// Author: $author$
-///   Date: 4/27/2015
+///   Date: 4/27/2015, 2/15/2021
 ///////////////////////////////////////////////////////////////////////
 #ifndef _TALAS_IO_READER_HPP
 #define _TALAS_IO_READER_HPP
@@ -38,6 +38,56 @@ enum {
 typedef xos::io::reader reader;
 typedef xos::io::char_reader char_reader;
 typedef xos::io::byte_reader byte_reader;
+
+///////////////////////////////////////////////////////////////////////
+/// class readert
+///////////////////////////////////////////////////////////////////////
+template 
+<typename TWhat = void, typename TSized = char,  typename TEnd = int, TEnd VEnd = 0, 
+ class TImplements = xos::io::readert<TWhat, TSized, TEnd, VEnd> >
+class EXPORT_CLASS readert: virtual public TImplements {
+public:
+    typedef TImplements Implements;
+    typedef readert Derives;
+
+    typedef TWhat what_t;
+    typedef TSized sized_t;
+    typedef TSized char_t;
+    typedef TEnd end_t;
+    enum { end = VEnd };
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual ssize_t read_crlf(what_t* what, size_t size) { 
+        sized_t* sized = 0;
+
+        if ((sized = ((sized_t*)what)) && (size)) {
+            static const sized_t cr = ((sized_t)'\r');
+            static const sized_t lf = ((sized_t)'\n');
+            sized_t c = ((sized_t)0);
+            ssize_t amount = 0, count = 0;
+            
+            for (bool cr_read = false; size; --size, ++sized) {
+                if (0 < (amount = this->read(sized, 1))) {
+                    ++count;
+                    if (lf == (c = *sized)) {
+                        if ((cr_read)) {
+                            return count;
+                        } else {
+                            cr_read = (cr == (c = *sized));
+                        }
+                    } else {
+                        cr_read = (cr == (c = *sized));
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+}; /// class readert
 
 namespace sized {
 

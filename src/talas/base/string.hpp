@@ -16,7 +16,7 @@
 ///   File: string.hpp
 ///
 /// Author: $author$
-///   Date: 4/7/2015
+///   Date: 4/7/2015, 2/17/2021
 ///////////////////////////////////////////////////////////////////////
 #ifndef _TALAS_BASE_STRING_HPP
 #define _TALAS_BASE_STRING_HPP
@@ -26,23 +26,74 @@
 
 namespace talas {
 
+typedef xos::base::string_extends string_extends;
+typedef xos::base::wstring_extends wstring_extends;
+
 ///////////////////////////////////////////////////////////////////////
 ///  Class: string
 ///////////////////////////////////////////////////////////////////////
-#if defined(USE_CPP_11)
 template
 <typename TChar = char, typename TEnd = TChar, TEnd VEnd = 0,
- class TExtends = std::basic_string<TChar>,
- class TImplements = xos::base::string_implement>
+ class TExtends = xos::base::stringt<TChar, TEnd, VEnd>, 
+ class TImplements = typename TExtends::Implements>
 
-using stringt = typename xos::base::stringt
-<TChar, TEnd, VEnd, TExtends, TImplements>;
-#else // defined(USE_CPP_11)
-#endif // defined(USE_CPP_11)
+class _EXPORT_CLASS stringt: virtual public TImplements, public TExtends {
+public:
+    typedef TImplements Implements;
+    typedef TExtends Extends;
+    typedef stringt Derives;
 
-typedef xos::base::string string_t, char_string_t;
-typedef xos::base::tstring tstring_t, tchar_string_t;
-typedef xos::base::wstring wstring_t, wchar_string_t;
+    typedef TChar Char;
+    typedef Char char_t;
+    typedef TEnd end_t;
+    enum { End = VEnd, end = End };
+
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    stringt(const wchar_t* chars, size_t length) {
+        this->append(chars, length);
+    }
+    stringt(const wchar_t* chars) {
+        this->append(chars);
+    }
+    stringt(const char* chars, size_t length) {
+        this->append(chars, length);
+    }
+    stringt(const char* chars) {
+        this->append(chars);
+    }
+    stringt(ssize_t value) {
+        this->append_ssize(value);
+    }
+    stringt(size_t value) {
+        this->append_size(value);
+    }
+    stringt(const wstring_extends& copy) {
+        this->append(copy.c_str());
+    }
+    stringt(const string_extends& copy) {
+        this->append(copy.c_str());
+    }
+    stringt(const stringt& copy): Extends(copy) {
+    }
+    stringt() {
+    }
+    virtual ~stringt() {
+    }
+    
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    using Extends::append;
+    using Extends::assign;
+    using Extends::compare;
+    
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+};
+
+typedef stringt<char> string_t, char_string_t;
+typedef stringt<tchar_t> tstring_t, tchar_string_t;
+typedef stringt<wchar_t> wstring_t, wchar_string_t;
 
 typedef xos::base::unsigned_to_string unsigned_to_string;
 typedef xos::base::signed_to_string signed_to_string;

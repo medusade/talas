@@ -16,7 +16,7 @@
 ///   File: main.hpp
 ///
 /// Author: $author$
-///   Date: 11/18/2014
+///   Date: 11/18/2014, 2/16/2021
 ///////////////////////////////////////////////////////////////////////
 #ifndef _TALAS_CONSOLE_MAIN_HPP
 #define _TALAS_CONSOLE_MAIN_HPP
@@ -25,6 +25,8 @@
 #include "talas/io/logger.hpp"
 #include "xos/base/getopt/main.hpp"
 #include "xos/base/main.hpp"
+#include "talas/io/reader.hpp"
+#include "talas/io/writer.hpp"
 
 #define TALAS_CONSOLE_MAIN_LOGGING_LEVELS_OPT "logging"
 #define TALAS_CONSOLE_MAIN_LOGGING_LEVELS_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_REQUIRED
@@ -78,11 +80,19 @@ public:
     typedef TImplements Implements;
     typedef TExtends Extends;
 
+    typedef typename TExtends::char_t char_t;
+    typedef typename talas::stringt<char_t> string_t;
+    typedef talas::io::writert<char_t, char_t> writer_t;
+    typedef talas::io::readert<char_t, char_t> reader_t;
+    
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
     maint() {
     }
     virtual ~maint() {
+    }
+private:
+    maint(const maint& copy) {
     }
 
 protected:
