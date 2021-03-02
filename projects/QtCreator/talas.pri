@@ -280,6 +280,7 @@ talas_DEFINES += RELEASE_BUILD
 #
 talas_INCLUDEPATH += \
 $${TALAS_SRC} \
+$${TALAS_SRC}/stara \
 $${xosnadir_INCLUDEPATH} \
 $${bn_INCLUDEPATH} \
 $${mp_INCLUDEPATH} \
