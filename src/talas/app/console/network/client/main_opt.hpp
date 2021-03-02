@@ -191,6 +191,14 @@ protected:
         }
         return err;
     }
+    virtual int set_client_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = this->set_sockets_run(argc, argv, env))) {
+            if (!(err = this->set_client_sockets_run(argc, argv, env))) {
+            }
+        }
+        return err;
+    }
 
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
@@ -199,9 +207,7 @@ protected:
      const char* optname, int optind,
      int argc, char_t** argv, char_t** env) {
         int err = 0;
-        if (!(err = this->set_sockets_run(argc, argv, env))) {
-            if (!(err = this->set_client_sockets_run(argc, argv, env))) {
-            }
+        if (!(err = this->set_client_run(argc, argv, env))) {
         }
         return err;
     }

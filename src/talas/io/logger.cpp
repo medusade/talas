@@ -21,9 +21,7 @@
 #include "talas/io/logger.hpp"
 
 namespace talas {
-namespace io {
 
-} // namespace io 
 } // namespace talas 
 
 

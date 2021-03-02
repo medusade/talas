@@ -131,19 +131,27 @@ protected:
     ///////////////////////////////////////////////////////////////////////
     virtual int on_recv_response(string_t& response, reader_t& reader, int argc, char_t** argv, char_t** env) {
         int err = 0;
-        const char_t* chars = 0; size_t length = 0;
-        
-        if ((chars = response.has_chars(length))) {
-            size_t content_length = 0, content_size = 0;
-            char_t* content = 0;
 
-            this->outln(chars, length);
-            if ((0 < (content_length = this->content_length())) && (content = this->content(content_size))) {
-                sized_reader_t content_reader(reader, content_length);
+        if (!(err = all_on_process_response(response, argc, argv, env))) {
+            char_t* content = 0; size_t content_size = 0;
+
+            if ((content = this->content(content_size))) {
+                string_t& content_type = this->content_type();
+                size_t content_length = 0;
                 ssize_t amount = 0;
                 
-                for (length = 0; (0 < (amount = content_reader.read(content, content_size))); length += amount) {
-                    this->outln(content, amount);
+                if ((0 < (content_length = this->content_length()))) {
+                    sized_reader_t content_reader(reader, content_length);
+                    
+                    err = all_on_recv_response_content
+                    (content, content_size, content_length, content_type, content_reader, argc, argv, env);
+                } else {
+                    const char_t* chars = 0; size_t length = 0;
+
+                    if ((chars = content_type.has_chars(length))) {
+                        err = all_on_recv_response_content
+                        (content, content_size, content_length, content_type, reader, argc, argv, env);
+                    }
                 }
             }
         }
@@ -163,6 +171,119 @@ protected:
             int err2 = 0;
             err = on_recv_response(response, reader, argc, argv, env);
             if ((err2 = after_on_recv_response(response, reader, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int on_recv_response_content
+    (char_t* content, size_t content_size, size_t content_length, 
+     string_t& content_type, reader_t& content_reader, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+
+        if ((content) && (content_size)) {
+            string_t& content_encoding = this->content_encoding();
+            size_t length = 0;
+            ssize_t amount = 0;
+
+            for (length = 0; (0 < (amount = content_reader.read(content, content_size))); length += amount) {
+                if ((err = all_on_process_response_content
+                     (content, amount, content_length, content_encoding, content_type, argc, argv, env))) {
+                    break;
+                }
+            }
+        }
+        return err;
+    }
+    virtual int before_on_recv_response_content
+    (char_t* content, size_t content_size, size_t content_length, 
+     string_t& content_type, reader_t& content_reader, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_on_recv_response_content
+    (char_t* content, size_t content_size, size_t content_length, 
+     string_t& content_type, reader_t& content_reader, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_on_recv_response_content(char_t* content, size_t content_size, size_t content_length, string_t& content_type, reader_t& content_reader, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_on_recv_response_content(content, content_size, content_length, content_type, content_reader, argc, argv, env))) {
+            int err2 = 0;
+            err = on_recv_response_content(content, content_size, content_length, content_type, content_reader, argc, argv, env);
+            if ((err2 = after_on_recv_response_content(content, content_size, content_length, content_type, content_reader, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int on_process_response(string_t& response, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        const char_t* chars = 0; size_t length = 0;
+        
+        if ((chars = response.has_chars(length))) {
+            this->outln(chars, length);
+        }
+        return err;
+    }
+    virtual int before_on_process_response(string_t& response, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_on_process_response(string_t& response, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_on_process_response(string_t& response, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_on_process_response(response, argc, argv, env))) {
+            int err2 = 0;
+            err = on_process_response(response, argc, argv, env);
+            if ((err2 = after_on_process_response(response, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    
+    ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
+    virtual int on_process_response_content
+    (char_t* content, size_t content_size, size_t content_length, 
+     string_t& content_encoding, string_t& content_type, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if ((content) && (content_size)) {
+            this->outln(content, content_size);
+        }
+        return err;
+    }
+    virtual int before_on_process_response_content
+    (char_t* content, size_t content_size, size_t content_length, 
+     string_t& content_encoding, string_t& content_type, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_on_process_response_content
+    (char_t* content, size_t content_size, size_t content_length, 
+     string_t& content_encoding, string_t& content_type, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_on_process_response_content
+    (char_t* content, size_t content_size, size_t content_length, 
+     string_t& content_encoding, string_t& content_type, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_on_process_response_content(content, content_size, content_length, content_encoding, content_type, argc, argv, env))) {
+            int err2 = 0;
+            err = on_process_response_content(content, content_size, content_length, content_encoding, content_type, argc, argv, env);
+            if ((err2 = after_on_process_response_content(content, content_size, content_length, content_encoding, content_type, argc, argv, env))) {
                 if (!(err)) err = err2;
             }
         }
@@ -514,6 +635,28 @@ protected:
         return (string_t&)response_;
     }
     ///////////////////////////////////////////////////////////////////////
+    virtual string_t& set_content_encoding(const char_t* to, size_t length) {
+        string_t& content_encoding = this->content_encoding();
+        const string_t to_s(to, length);
+        set_content_encoding(to_s);
+        return content_encoding;
+    }
+    virtual string_t& set_content_encoding(const char_t* to) {
+        string_t& content_encoding = this->content_encoding();
+        const string_t to_s(to);
+        set_content_encoding(to_s);
+        return content_encoding;
+    }
+    virtual string_t& set_content_encoding(const string_t& to) {
+        string_t& content_encoding = this->content_encoding();
+        TALAS_LOG_DEBUG("...content_encoding.assign(\"" << to << "\")...");
+        content_encoding.assign(to);
+        return content_encoding;
+    }
+    virtual string_t& content_encoding() const {
+        return (string_t&)content_encoding_;
+    }
+    ///////////////////////////////////////////////////////////////////////
     virtual string_t& set_content_type(const char_t* to, size_t length) {
         string_t& content_type = this->content_type();
         const string_t to_s(to, length);
@@ -578,7 +721,7 @@ protected:
     ///////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////
 protected:
-    string_t request_, response_, content_type_;
+    string_t request_, response_, content_type_, content_encoding_;
     ssize_t content_length_;
 }; /// class maint
 typedef maint<> main;

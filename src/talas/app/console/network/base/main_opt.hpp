@@ -21,7 +21,7 @@
 #ifndef TALAS_APP_CONSOLE_NETWORK_BASE_MAIN_OPT_HPP
 #define TALAS_APP_CONSOLE_NETWORK_BASE_MAIN_OPT_HPP
 
-#include "talas/console/main.hpp"
+#include "talas/app/console/main.hpp"
 #include "talas/network/os/sockets.hpp"
 
 #if !defined(TALAS_APP_CONSOLE_NETWORK_BASE_MAIN_HOST)
@@ -39,8 +39,8 @@
 #define TALAS_APP_CONSOLE_NETWORK_BASE_MAIN_HOST_OPTARG_RESULT 0
 #define TALAS_APP_CONSOLE_NETWORK_BASE_MAIN_HOST_OPTARG "<string>"
 #define TALAS_APP_CONSOLE_NETWORK_BASE_MAIN_HOST_OPTUSE "Host name or address"
-#define TALAS_APP_CONSOLE_NETWORK_BASE_MAIN_HOST_OPTVAL_S "h::"
-#define TALAS_APP_CONSOLE_NETWORK_BASE_MAIN_HOST_OPTVAL_C 'h'
+#define TALAS_APP_CONSOLE_NETWORK_BASE_MAIN_HOST_OPTVAL_S "o::"
+#define TALAS_APP_CONSOLE_NETWORK_BASE_MAIN_HOST_OPTVAL_C 'o'
 #define TALAS_APP_CONSOLE_NETWORK_BASE_MAIN_HOST_OPTION \
    {TALAS_APP_CONSOLE_NETWORK_BASE_MAIN_HOST_OPT, \
     TALAS_APP_CONSOLE_NETWORK_BASE_MAIN_HOST_OPTARG_REQUIRED, \
@@ -70,11 +70,11 @@
 
 #define TALAS_APP_CONSOLE_NETWORK_BASE_MAIN_OPTIONS_CHARS \
     TALAS_APP_CONSOLE_NETWORK_BASE_MAIN_OPTIONS_CHARS_EXTEND \
-    TALAS_CONSOLE_MAIN_OPTIONS_CHARS \
+    TALAS_APP_CONSOLE_MAIN_OPTIONS_CHARS \
 
 #define TALAS_APP_CONSOLE_NETWORK_BASE_MAIN_OPTIONS_OPTIONS \
     TALAS_APP_CONSOLE_NETWORK_BASE_MAIN_OPTIONS_OPTIONS_EXTEND \
-    TALAS_CONSOLE_MAIN_OPTIONS_OPTIONS \
+    TALAS_APP_CONSOLE_MAIN_OPTIONS_OPTIONS \
 
 ///////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////
@@ -88,7 +88,7 @@ namespace base {
 ///////////////////////////////////////////////////////////////////////
 /// class main_optt
 ///////////////////////////////////////////////////////////////////////
-template <class TExtends = talas::console::main, class TImplements = typename TExtends::Implements>
+template <class TExtends = talas::app::console::main, class TImplements = typename TExtends::Implements>
 class EXPORT_CLASS main_optt: virtual public TImplements, public TExtends {
 public:
     typedef TImplements Implements;

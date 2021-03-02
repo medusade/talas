@@ -22,6 +22,7 @@
 #define _TALAS_IO_LOGGER_HPP
 
 #include "talas/io/io.hpp"
+#include "xos/base/logged.hpp"
 #include "xos/io/logger.hpp"
 
 #define TALAS_LOG_ANY XOS_LOG_ANY
@@ -57,9 +58,9 @@
 #define TALAS_LOG_MESSAGE_TRACEF XOS_LOG_MESSAGE_TRACEF
 
 namespace talas {
-namespace io {
 
-} // namespace io 
+typedef xos::base::logged logged;
+
 } // namespace talas 
 
 #endif // _TALAS_IO_LOGGER_HPP 
